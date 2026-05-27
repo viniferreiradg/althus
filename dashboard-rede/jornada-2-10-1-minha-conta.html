@@ -11,7 +11,7 @@
 
   <!-- Design system -->
   <link rel="stylesheet" href="../storybook/src/tokens/tokens.css" />
-  <link rel="stylesheet" href="shared/page.css" />
+  <link rel="stylesheet" href="../shared/page.css" />
   <link rel="stylesheet" href="../storybook/src/components/Sidebar/Sidebar.module.css" />
   <link rel="stylesheet" href="../storybook/src/components/Avatar/Avatar.module.css" />
   <link rel="stylesheet" href="../storybook/src/components/Background/Background.module.css" />
@@ -76,10 +76,14 @@
         <h2 class="sectionTitle">Foto de perfil</h2>
         <p class="sectionSubtitle">Visível para outros usuários com acesso ao painel</p>
         <div class="avatarSection">
-          <div class="avatar avatarXl"><span class="avatarInitials">AR</span></div>
+          <div class="avatar avatarXl"><img class="avatarImg" src="../links/perfl-rede.png" alt="Admin Rede" /></div>
           <div class="avatarMeta">
             <span class="avatarName">Admin Rede</span>
             <span class="avatarRole">Administrador · admin@rededemo.com.br</span>
+            <div class="avatarActions">
+              <button class="btn secondary sm">Remover imagem</button>
+              <button class="btn secondary sm">Alterar imagem</button>
+            </div>
           </div>
         </div>
       </div>

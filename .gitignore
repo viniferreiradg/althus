@@ -6,3 +6,5 @@ public/
 ~$*
 .env
 .env.*
+.claude/
+00 backups/

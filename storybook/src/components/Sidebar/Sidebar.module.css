@@ -258,6 +258,7 @@
   box-shadow: var(--shadow-xs);
   transition: background 150ms ease, color 150ms ease;
   z-index: 9999;
+  top: 43px;
 }
 
 .toggleBtn:hover {

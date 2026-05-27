@@ -23,6 +23,9 @@ Source of truth do projeto. Nenhuma decisão visual ou estrutural é tomada fora
 5. **Componente novo** → pedir autorização → criar → criar story no Storybook → registrar neste CLAUDE.md → apresentar para aprovação.
 6. **Sempre ler este CLAUDE.md** antes de criar qualquer tela ou componente.
 7. **Peso de fonte para texto corrido e tabelas: `--font-weight-regular` (400).** Nunca usar medium (500) em células de tabela ou parágrafos de texto. Medium e semibold são reservados para títulos, labels de campo e destaques pontuais.
+8. **Respostas curtas.** Ao executar tarefas, responder apenas "Feito." — sem descrever o que foi feito. Explicar somente se houver dúvida, algo saiu do planejado, ou o usuário pedir explicitamente.
+9. **Valores de layout sem token → `../shared/page.css`.** Quando um valor pixel-específico não tem token equivalente (ex: `min-width: 720px`, `margin-top: 1px`, `width: 140px`), criar uma classe nomeada em `../shared/page.css` — nunca usar `style=""` inline nem `<style>` na página. O `<style>` de página é reservado apenas para classes de layout exclusivas daquela tela que usem 100% tokens.
+10. **Sempre atualizar `prototipo.html`** ao criar qualquer tela nova. Adicionar a tela no fluxo correspondente dentro do array `FLOWS`. Se o fluxo ainda não existir, criar um novo objeto `{ label, screens }` com o RF correto.
 
 ---
 
@@ -34,6 +37,102 @@ Os tokens semânticos (ex: `--color-text-primary`, `--color-bg-default`) se adap
 ---
 
 ## Componentes disponíveis
+
+### AppBar _(Mobile)_
+**Import:** `import { AppBar } from '../components/AppBar/AppBar'`  
+**Story:** `Mobile/AppBar`
+
+| Prop | Tipo | Padrão | Descrição |
+|------|------|--------|-----------|
+| `title` | `string` | — | Título centralizado |
+| `onBack` | `() => void` | — | Exibe botão de voltar (ChevronLeft) quando fornecido |
+| `action` | `ReactNode` | — | Elemento opcional no lado direito |
+| `className` | `string` | — | Classe extra no container |
+
+```tsx
+<AppBar title="Esqueci minha senha" onBack={() => router.pop()} />
+<AppBar title="Detalhes" onBack={() => {}} action={<IconButton />} />
+```
+
+**Em telas HTML (sem React):** usar as classes do `AppBar.module.css` diretamente:
+```html
+<header class="appBar">
+  <div class="appBarSide appBarSideLeft">
+    <button class="appBarIconBtn" onclick="router.pop()" aria-label="Voltar">
+      <i data-lucide="chevron-left" width="24" height="24"></i>
+    </button>
+  </div>
+  <span class="appBarTitle">Título</span>
+  <div class="appBarSide appBarSideRight"></div>
+</header>
+```
+
+> O `padding-top` usa `calc(var(--status-bar-height, 0px) + var(--spacing-xs))`.  
+> No Storybook `--status-bar-height` é `0px` (fallback). Nas telas mobile é `59px` (definido em `page-mobile.css`).
+
+---
+
+### FAB _(Mobile)_
+**Import:** `import { FAB } from '../components/FAB/FAB'`  
+**Story:** `Mobile/FAB`
+
+| Prop | Tipo | Padrão | Descrição |
+|------|------|--------|-----------|
+| `icon` | `ReactNode` | — | Ícone Lucide React |
+| `variant` | `'glass' \| 'brand'` | `'glass'` | Glass (padrão) ou gradiente brand |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | `md` = 48×48px |
+| `aria-label` | `string` | — | **Obrigatório** — acessibilidade |
+| `disabled` | `boolean` | — | Herdado do `<button>` |
+
+```tsx
+<FAB icon={<Car size={20} />} aria-label="Selecionar veículo" />
+<FAB icon={<QrCode size={20} />} aria-label="Escanear QR Code" />
+<FAB icon={<Zap size={22} />} variant="brand" aria-label="Iniciar recarga" />
+```
+
+**Em telas HTML:** usar a classe `.fab` de `FAB.module.css` + variantes `.brand`, `.sm`, `.lg`.  
+Posicionamento no mapa via `.map-fabs` em `page-mobile.css`.
+
+---
+
+### BottomNav _(Mobile)_
+**Import:** `import { BottomNav } from '../components/BottomNav/BottomNav'`  
+**Story:** `Mobile/BottomNav`
+
+| Prop | Tipo | Padrão | Descrição |
+|------|------|--------|-----------|
+| `items` | `NavItemDef[]` | — | Array de `{ id, label, icon }` |
+| `activeId` | `string` | — | ID da aba ativa |
+| `onSelect` | `(id: string) => void` | — | Callback ao clicar numa aba |
+
+> **Nota:** Em `prototipo.html`, o BottomNav vive no shell (fora dos iframes). O router chama `updateBottomNav(screenId)` para alternar o `.navActive`. O nav flutua sobre as telas com `position: absolute; bottom: 0`.
+
+**Em telas HTML (sem React):** usar as classes do `BottomNav.module.css` diretamente no shell.
+
+---
+
+### OTPInput _(Mobile)_
+**Import:** `import { OTPInput } from '../components/OTPInput/OTPInput'`  
+**Story:** `Mobile/OTPInput`
+
+| Prop | Tipo | Padrão | Descrição |
+|------|------|--------|-----------|
+| `length` | `number` | `6` | Quantidade de células |
+| `onChange` | `(value: string) => void` | — | Dispara a cada mudança |
+| `onComplete` | `(value: string) => void` | — | Dispara quando todas as células estão preenchidas |
+| `error` | `boolean` | `false` | Bordas vermelhas em todas as células |
+| `success` | `boolean` | `false` | Bordas verdes em todas as células |
+| `disabled` | `boolean` | `false` | Desabilita todas as células |
+
+```tsx
+<OTPInput length={6} onComplete={(code) => verify(code)} />
+<OTPInput length={6} error />
+```
+
+**Em telas HTML:** usar as classes `otpRoot` e `otpCell` do `OTPInput.module.css` diretamente,  
+com o comportamento de foco escrito em vanilla JS (ver `screens/recuperar-otp.html`).
+
+---
 
 ### Button
 **Import:** `import { Button } from '../components/Button/Button'`
@@ -302,6 +401,74 @@ Sem props. Header da área pública (beneficiário/profissional). Logo centraliz
   </>}>
   <p>Esta ação não pode ser desfeita.</p>
 </Dialog>
+```
+
+**HTML standalone — classes:**
+
+> ⚠️ As classes internas usam prefixo `dialog` para evitar conflito com `Sidebar.module.css` (que define `.body` globalmente).
+
+| Classe | Descrição |
+|--------|-----------|
+| `.dialogOverlay` | Backdrop fixo `inset: 0`, centraliza o dialog |
+| `.dialog` | Container do modal (fundo, sombra, border-radius) |
+| `.sm` / `.md` / `.lg` | Largura: 360px / 540px / 720px |
+| `.dialogHeader` | Barra de título + botão fechar |
+| `.dialogTitle` | Texto do título |
+| `.dialogCloseBtn` | Botão X |
+| `.dialogBody` | Conteúdo scrollável |
+| `.dialogFooter` | Rodapé com ações (justify: flex-end) |
+
+**Abrir/fechar via JS:** usar `style="display:none"` por padrão e `style.display = 'flex'` para abrir.
+
+```html
+<link rel="stylesheet" href="../storybook/src/components/Dialog/Dialog.module.css" />
+
+<div class="dialogOverlay" id="meu-dialog" style="display:none;" onclick="dialogClose()">
+  <div class="dialog md" onclick="event.stopPropagation()" role="dialog" aria-modal="true">
+    <div class="dialogHeader">
+      <span class="dialogTitle">Título do dialog</span>
+      <button class="dialogCloseBtn" onclick="dialogClose()" aria-label="Fechar" type="button">
+        <i data-lucide="x" width="16" height="16"></i>
+      </button>
+    </div>
+    <div class="dialogBody">
+      <!-- conteúdo / campos de formulário -->
+    </div>
+    <div class="dialogFooter">
+      <button class="btn ghost" type="button" onclick="dialogClose()">Cancelar</button>
+      <button class="btn primary" type="button">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function dialogOpen()  { document.getElementById('meu-dialog').style.display = 'flex'; }
+  function dialogClose() { document.getElementById('meu-dialog').style.display = 'none'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') dialogClose(); });
+</script>
+```
+
+**Dialog de confirmação de exclusão (padrão):**
+```html
+<div class="dialogOverlay" id="del-dialog" style="display:none;" onclick="delDialogClose()">
+  <div class="dialog sm" onclick="event.stopPropagation()" role="dialog" aria-modal="true">
+    <div class="dialogHeader">
+      <span class="dialogTitle">Excluir [entidade]</span>
+      <button class="dialogCloseBtn" onclick="delDialogClose()" aria-label="Fechar" type="button">
+        <i data-lucide="x" width="16" height="16"></i>
+      </button>
+    </div>
+    <div class="dialogBody">
+      <p style="margin:0;color:var(--color-text-secondary);">
+        Tem certeza que deseja excluir <strong id="del-nome"></strong>? Esta ação não pode ser desfeita.
+      </p>
+    </div>
+    <div class="dialogFooter">
+      <button class="btn ghost" type="button" onclick="delDialogClose()">Cancelar</button>
+      <button class="btn destructive" type="button" onclick="delDialogClose()">Excluir</button>
+    </div>
+  </div>
+</div>
 ```
 
 ---
@@ -820,6 +987,48 @@ Linha do tempo vertical com estados visuais. Usado em telas de detalhe para most
 
 ---
 
+### Chip / ChipGroup
+**Import:** `import { Chip, ChipGroup } from '../components/Chip/Chip'`
+**CSS:** `../storybook/src/components/Chip/Chip.module.css`
+
+Seletor multi-opção em formato de pílulas. Usa `<input type="checkbox">` oculto com `:has(input:checked)` para estado ativo — sem JS necessário.
+
+| Prop (Chip) | Tipo | Descrição |
+|-------------|------|-----------|
+| `label` | `string` | Texto do chip |
+| `value` | `string` | Valor do checkbox |
+| `checked` | `boolean` | Estado marcado |
+| `icon` | `ReactNode` | Ícone opcional à esquerda |
+| `onChange` | `(value, checked) => void` | Callback |
+
+**CSS classes:**
+
+| Classe | Descrição |
+|--------|-----------|
+| `.chipGroup` | Container flex-wrap dos chips |
+| `.chip` | Pílula `<label>` com checkbox oculto |
+| `.chip:has(input:checked)` | Estado ativo — borda brand, fundo brand |
+| `.chipIcon` | Wrapper do ícone interno |
+
+```html
+<link rel="stylesheet" href="../storybook/src/components/Chip/Chip.module.css" />
+
+<span class="label">Tipos de conectores</span>
+<div class="chipGroup">
+  <label class="chip"><input type="checkbox" value="ccs2" />CCS2</label>
+  <label class="chip"><input type="checkbox" value="ccs1" />CCS1</label>
+  <label class="chip"><input type="checkbox" value="tipo2" />Tipo 2</label>
+</div>
+
+<!-- Com ícone -->
+<div class="chipGroup">
+  <label class="chip"><input type="checkbox" checked /><i data-lucide="mail" width="14" height="14"></i>E-mail</label>
+  <label class="chip"><input type="checkbox" /><i data-lucide="bell" width="14" height="14"></i>Sistema</label>
+</div>
+```
+
+---
+
 ### DetailCard
 **Import:** `import { DetailGrid, DetailCard, TitleRow } from '../components/DetailCard/DetailCard'`
 **CSS:** `../storybook/src/components/DetailCard/DetailCard.module.css`
@@ -878,6 +1087,53 @@ Layout padrão de telas de detalhe (visualizar entidade). Grid de 2 colunas com 
 ```
 
 **Nota:** `.titleRow` não tem `h1` embutido — usar o `h1.pageTitle` da página normalmente.
+
+---
+
+### Skeleton
+**Import:** `import { Skeleton } from '../components/Skeleton/Skeleton'`
+
+Bloco de carregamento com efeito shimmer (faixa deslizante). Use para substituir qualquer elemento enquanto os dados carregam.
+
+| Prop | Tipo | Padrão | Descrição |
+|------|------|--------|-----------|
+| `width` | `string \| number` | — | Largura. Ex: `200`, `'100%'`, `'12rem'` |
+| `height` | `string \| number` | `16px` | Altura. Ex: `20`, `'1.5rem'` |
+| `borderRadius` | `string` | `--radius-xs` | Override de raio. Ex: `'50%'` para círculo |
+| `className` | `string` | — | Classe extra |
+
+**CSS:** `../storybook/src/components/Skeleton/Skeleton.module.css`  
+**Classe:** `.skeleton`
+
+```tsx
+{/* Linha de texto */}
+<Skeleton width="60%" height={14} />
+
+{/* Avatar circular */}
+<Skeleton width={40} height={40} borderRadius="50%" />
+
+{/* Área de gráfico */}
+<Skeleton width="100%" height={220} />
+
+{/* Cartão de métrica */}
+<div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+  <Skeleton width={36} height={36} borderRadius="var(--radius-sm)" />
+  <Skeleton height={12} width="65%" />
+  <Skeleton height={28} width="50%" />
+</div>
+```
+
+**HTML standalone:**
+```html
+<link rel="stylesheet" href="../storybook/src/components/Skeleton/Skeleton.module.css" />
+<span class="skeleton" style="width:200px;height:16px;"></span>
+<span class="skeleton" style="width:40px;height:40px;border-radius:50%;"></span>
+```
+
+**Notas:**
+- `aria-hidden="true"` embutido — não precisa adicionar manualmente
+- O efeito shimmer adapta automaticamente ao tema claro/escuro via tokens
+- `min-height: var(--spacing-md)` garante visibilidade mesmo sem `height`
 
 ---
 
@@ -1185,6 +1441,7 @@ Gráfico de rosca com ApexCharts. Total centralizado automático, legenda na bas
 ```
 
 ---
+
 
 ## Telas HTML standalone (dashboard-rede, dashboard-adm, app)
 

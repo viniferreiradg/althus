@@ -19,22 +19,22 @@
 .dismiss:hover { opacity: 1; }
 
 /* ── Types ───────────────────────────────── */
-.success {
+.alert.success {
   background: var(--color-status-success-bg);
   border-color: var(--color-status-success-fg);
   color: var(--color-status-success-fg);
 }
-.error {
+.alert.error {
   background: var(--color-status-error-bg);
   border-color: var(--color-status-error-fg);
   color: var(--color-status-error-fg);
 }
-.warning {
+.alert.warning {
   background: var(--color-status-warning-bg);
   border-color: var(--color-status-warning-fg);
   color: var(--color-status-warning-fg);
 }
-.info {
+.alert.info {
   background: var(--color-status-info-bg);
   border-color: var(--color-status-info-fg);
   color: var(--color-status-info-fg);

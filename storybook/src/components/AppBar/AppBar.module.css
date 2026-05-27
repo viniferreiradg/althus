@@ -1,0 +1,60 @@
+/* ── Container ─────────────────────────────────────── */
+.appBar {
+  display: flex;
+  align-items: center;
+  padding-top: calc(var(--status-bar-height, 0px) + var(--spacing-xs));
+  padding-bottom: var(--spacing-sm);
+  padding-left: var(--spacing-sm);
+  padding-right: var(--spacing-sm);
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Symmetric side slots ──────────────────────────── */
+.appBarSide {
+  width: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+.appBarSideLeft  { justify-content: flex-start; }
+.appBarSideRight { justify-content: flex-end; }
+
+/* ── Title ─────────────────────────────────────────── */
+.appBarTitle {
+  flex: 1;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.25;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Icon button ───────────────────────────────────── */
+.appBarIconBtn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  border: none;
+  background: transparent;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  padding: 0;
+}
+
+.appBarIconBtn:hover  { background: var(--color-glass-surface); }
+.appBarIconBtn:active { background: var(--color-bg-subtle); }
+
+.appBarIconBtn:focus-visible {
+  outline: var(--border-width-medium) solid var(--color-border-focus);
+  outline-offset: 2px;
+}

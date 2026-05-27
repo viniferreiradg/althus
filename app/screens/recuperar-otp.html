@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verifique seu e-mail — Althus</title>
+  <link rel="stylesheet" href="../../storybook/src/tokens/tokens.css" />
+  <link rel="stylesheet" href="../../shared/page-mobile.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/AppBar/AppBar.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/OTPInput/OTPInput.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Button/Button.module.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="layout-screen">
+
+  <div class="screenBlob1"></div>
+  <div class="screenBlob2"></div>
+
+  <header class="appBar">
+    <div class="appBarSide appBarSideLeft">
+      <button class="appBarIconBtn" onclick="router.pop()" aria-label="Voltar">
+        <i data-lucide="chevron-left" width="24" height="24"></i>
+      </button>
+    </div>
+    <span class="appBarTitle">Verifique seu e-mail</span>
+    <div class="appBarSide appBarSideRight"></div>
+  </header>
+
+  <div class="screen-content">
+
+    <p class="screen-description">
+      Enviamos um código de 6 dígitos para o seu e-mail. Insira-o abaixo para continuar.
+    </p>
+
+    <div class="otpRoot" id="otp-root" role="group" aria-label="Código de verificação">
+      <input class="otpCell" type="text" inputmode="numeric" maxlength="1"
+             placeholder="·" autocomplete="one-time-code" aria-label="Dígito 1 de 6" />
+      <input class="otpCell" type="text" inputmode="numeric" maxlength="1"
+             placeholder="·" aria-label="Dígito 2 de 6" />
+      <input class="otpCell" type="text" inputmode="numeric" maxlength="1"
+             placeholder="·" aria-label="Dígito 3 de 6" />
+      <input class="otpCell" type="text" inputmode="numeric" maxlength="1"
+             placeholder="·" aria-label="Dígito 4 de 6" />
+      <input class="otpCell" type="text" inputmode="numeric" maxlength="1"
+             placeholder="·" aria-label="Dígito 5 de 6" />
+      <input class="otpCell" type="text" inputmode="numeric" maxlength="1"
+             placeholder="·" aria-label="Dígito 6 de 6" />
+    </div>
+
+    <button class="btn primary full-width" id="btn-verificar"
+            onclick="router.push('recuperar-senha')">
+      Verificar
+    </button>
+
+    <p class="otp-resend">
+      Não recebeu o código?
+      <button type="button" class="otp-resend-link" id="btn-reenviar">Reenviar</button>
+    </p>
+
+  </div>
+
+  <script>
+    var router = (window.parent && window.parent.router)
+      ? window.parent.router
+      : { push: function(){}, pop: function(){}, replace: function(){}, modal: function(){}, closeModal: function(){}, tab: function(){} };
+  </script>
+  <script>
+    lucide.createIcons();
+
+    (function () {
+      var cells = Array.from(document.querySelectorAll('#otp-root .otpCell'));
+
+      function focusCell(i) {
+        if (cells[i]) cells[i].focus();
+      }
+
+      function markFilled(cell) {
+        cell.classList.toggle('filled', cell.value.length > 0);
+      }
+
+      cells.forEach(function (cell, i) {
+        /* Allow only single digit */
+        cell.addEventListener('input', function () {
+          var digit = cell.value.replace(/\D/g, '').slice(-1);
+          cell.value = digit;
+          markFilled(cell);
+          if (digit && i < cells.length - 1) focusCell(i + 1);
+        });
+
+        cell.addEventListener('keydown', function (e) {
+          if (e.key === 'Backspace') {
+            if (cell.value) {
+              cell.value = '';
+              markFilled(cell);
+            } else if (i > 0) {
+              focusCell(i - 1);
+              cells[i - 1].value = '';
+              markFilled(cells[i - 1]);
+            }
+            e.preventDefault();
+          } else if (e.key === 'ArrowLeft' && i > 0) {
+            focusCell(i - 1);
+          } else if (e.key === 'ArrowRight' && i < cells.length - 1) {
+            focusCell(i + 1);
+          }
+        });
+
+        cell.addEventListener('paste', function (e) {
+          e.preventDefault();
+          var pasted = (e.clipboardData || window.clipboardData)
+            .getData('text').replace(/\D/g, '').slice(0, cells.length - i);
+          for (var j = 0; j < pasted.length; j++) {
+            cells[i + j].value = pasted[j];
+            markFilled(cells[i + j]);
+          }
+          var last = Math.min(i + pasted.length, cells.length - 1);
+          focusCell(last);
+        });
+
+        cell.addEventListener('focus', function () { cell.select(); });
+      });
+
+      /* Reenviar — feedback simples */
+      document.getElementById('btn-reenviar').addEventListener('click', function () {
+        var btn = this;
+        btn.disabled = true;
+        btn.textContent = 'Reenviado!';
+        setTimeout(function () {
+          btn.disabled = false;
+          btn.textContent = 'Reenviar';
+        }, 3000);
+      });
+    }());
+  </script>
+
+</body>
+</html>

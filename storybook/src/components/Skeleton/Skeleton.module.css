@@ -1,0 +1,31 @@
+.skeleton {
+  --_base:  var(--color-bg-disabled);
+  --_shine: var(--color-gray-400);
+
+  display: block;
+  position: relative;
+  overflow: hidden;
+  background: var(--_base);
+  border-radius: var(--radius-xs);
+  min-height: var(--spacing-md);
+  flex-shrink: 0;
+}
+
+/* Faixa de shimmer que desliza da esquerda para a direita */
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--_shine) 50%,
+    transparent 100%
+  );
+  animation: skeletonShimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes skeletonShimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}

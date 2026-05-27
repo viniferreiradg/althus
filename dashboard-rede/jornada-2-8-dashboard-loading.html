@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Carregando… — Althus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../storybook/src/tokens/tokens.css" />
+  <link rel="stylesheet" href="../shared/page.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Sidebar/Sidebar.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Avatar/Avatar.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Background/Background.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Skeleton/Skeleton.module.css" />
+
+  <style>
+    body        { transition: opacity var(--transition-slow) ease; }
+    .fade-out   { opacity: 0 !important; }
+    .skContent  { display: flex; flex-direction: column; gap: var(--spacing-lg); padding-top: var(--spacing-lg); }
+    .skGrid5    { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--spacing-md); }
+    .skCard     { display: flex; flex-direction: column; gap: var(--spacing-sm); background: var(--color-glass-surface); border: var(--border-width-thin) solid var(--color-glass-border); border-radius: var(--radius-sm); padding: var(--spacing-lg); }
+    .skLegend   { display: flex; flex-direction: column; gap: var(--spacing-xs); }
+    .skDonut    { margin: var(--spacing-sm) auto; }
+  </style>
+</head>
+<body data-page="dashboard">
+
+<aside id="sidebar-root"></aside>
+
+<main class="main bgWrapper">
+  <div class="blob1"></div>
+  <div class="blob2"></div>
+
+  <!-- Page header -->
+  <div class="pageHeader pageHeaderRow">
+    <div style="display:flex;flex-direction:column;gap:var(--spacing-xs);">
+      <span class="skeleton" style="width:180px;height:27px;"></span>
+      <span class="skeleton" style="width:270px;height:14px;"></span>
+    </div>
+    <span class="skeleton" style="width:168px;height:36px;border-radius:var(--radius-full);"></span>
+  </div>
+
+  <div class="pageContent skContent">
+
+    <!-- ── KPI cards ── -->
+    <div class="skGrid5">
+
+      <div class="skCard">
+        <span class="skeleton" style="width:36px;height:36px;border-radius:var(--radius-sm);"></span>
+        <span class="skeleton" style="width:70%;height:12px;"></span>
+        <span class="skeleton" style="width:52%;height:28px;"></span>
+        <span class="skeleton" style="width:60%;height:12px;"></span>
+      </div>
+
+      <div class="skCard">
+        <span class="skeleton" style="width:36px;height:36px;border-radius:var(--radius-sm);"></span>
+        <span class="skeleton" style="width:66%;height:12px;"></span>
+        <span class="skeleton" style="width:55%;height:28px;"></span>
+        <span class="skeleton" style="width:62%;height:12px;"></span>
+      </div>
+
+      <div class="skCard">
+        <span class="skeleton" style="width:36px;height:36px;border-radius:var(--radius-sm);"></span>
+        <span class="skeleton" style="width:74%;height:12px;"></span>
+        <span class="skeleton" style="width:50%;height:28px;"></span>
+        <span class="skeleton" style="width:58%;height:12px;"></span>
+      </div>
+
+      <div class="skCard">
+        <span class="skeleton" style="width:36px;height:36px;border-radius:var(--radius-sm);"></span>
+        <span class="skeleton" style="width:68%;height:12px;"></span>
+        <span class="skeleton" style="width:57%;height:28px;"></span>
+        <span class="skeleton" style="width:64%;height:12px;"></span>
+      </div>
+
+      <div class="skCard">
+        <span class="skeleton" style="width:36px;height:36px;border-radius:var(--radius-sm);"></span>
+        <span class="skeleton" style="width:72%;height:12px;"></span>
+        <span class="skeleton" style="width:54%;height:28px;"></span>
+        <span class="skeleton" style="width:61%;height:12px;"></span>
+      </div>
+
+    </div>
+
+    <!-- ── Charts ── -->
+    <div class="chartsRow">
+
+      <!-- Line chart -->
+      <div class="skCard">
+        <span class="skeleton" style="width:44%;height:16px;"></span>
+        <span class="skeleton" style="width:100%;height:264px;"></span>
+      </div>
+
+      <!-- Donut chart -->
+      <div class="skCard">
+        <span class="skeleton" style="width:60%;height:16px;"></span>
+        <span class="skeleton skDonut" style="width:174px;height:174px;border-radius:50%;"></span>
+        <div class="skLegend">
+          <span class="skeleton" style="width:78%;height:12px;"></span>
+          <span class="skeleton" style="width:63%;height:12px;"></span>
+          <span class="skeleton" style="width:70%;height:12px;"></span>
+          <span class="skeleton" style="width:53%;height:12px;"></span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</main>
+
+<script src="shared/sidebar.js"></script>
+<script>
+  lucide.createIcons();
+
+  setTimeout(() => {
+    document.body.classList.add('fade-out');
+    setTimeout(() => window.location.replace('jornada-2-8-dashboard.html'), 400);
+  }, 3000);
+</script>
+
+</body>
+</html>

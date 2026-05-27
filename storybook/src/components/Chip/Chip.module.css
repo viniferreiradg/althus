@@ -1,0 +1,39 @@
+.chipGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-xs);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: var(--border-width-thin) solid var(--color-border-muted);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    background var(--transition-fast);
+}
+
+.chip input[type="checkbox"] {
+  display: none;
+}
+
+.chip:has(input:checked) {
+  border-color: var(--color-action-primary);
+  color: var(--color-text-brand);
+  background: var(--color-bg-brand);
+}
+
+.chipIcon {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}

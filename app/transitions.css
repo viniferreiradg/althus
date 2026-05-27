@@ -1,0 +1,111 @@
+/* ─── Screen container — layout gerenciado pelo shell ── */
+/* (flex:1, margin-top e overflow definidos em index.html) */
+
+/* ─── Base screen ───────────────────────────────────── */
+.screen {
+  position: absolute;
+  inset: 0;
+  background: var(--color-bg-default);
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  will-change: transform, opacity;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Modal screen ──────────────────────────────────── */
+.modalScreen {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  max-height: 90%;
+  overflow-y: auto;
+  z-index: 10;
+  will-change: transform;
+}
+
+/* ─── Modal backdrop ────────────────────────────────── */
+.modalBackdrop {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  transition: background 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 9;
+  cursor: pointer;
+}
+.modalBackdrop.backdropVisible {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* ─── Push ──────────────────────────────────────────── */
+@keyframes enterPush {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+@keyframes exitPush {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-30%); }
+}
+.screen.enterPush { animation: enterPush 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+.screen.exitPush  { animation: exitPush  300ms cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+/* ─── Pop ───────────────────────────────────────────── */
+@keyframes enterPop {
+  from { transform: translateX(-30%); }
+  to   { transform: translateX(0); }
+}
+@keyframes exitPop {
+  from { transform: translateX(0); }
+  to   { transform: translateX(100%); }
+}
+.screen.enterPop { animation: enterPop 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+.screen.exitPop  { animation: exitPop  300ms cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+/* ─── Replace (fade + scale) ────────────────────────── */
+@keyframes enterReplace {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes exitReplace {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(1.05); }
+}
+.screen.enterReplace { animation: enterReplace 350ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.screen.exitReplace  { animation: exitReplace  250ms cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+/* ─── Modal ─────────────────────────────────────────── */
+@keyframes enterModal {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+@keyframes exitModal {
+  from { transform: translateY(0); }
+  to   { transform: translateY(100%); }
+}
+.modalScreen.enterModal { animation: enterModal 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+.modalScreen.exitModal  { animation: exitModal  300ms cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+/* ─── Tab (fade + upward shift) ─────────────────────── */
+@keyframes enterTab {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes exitTab {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(8px); }
+}
+.screen.enterTab { animation: enterTab 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+.screen.exitTab  { animation: exitTab  300ms cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+/* ─── Screen layout helpers ─────────────────────────── */
+.screenContent {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+}

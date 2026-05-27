@@ -1,0 +1,80 @@
+/* ── Row of cells ──────────────────────────────────── */
+.otpRoot {
+  display: flex;
+  gap: var(--spacing-sm);
+  width: 100%;
+  justify-content: center;
+}
+
+/* ── Individual cell ───────────────────────────────── */
+.otpCell {
+  width: var(--spacing-2xl);
+  height: var(--spacing-2xl);
+  flex: 1;
+  max-width: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: var(--font-body);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  text-align: center;
+
+  background: var(--color-glass-surface);
+  border: var(--border-width-thin) solid var(--color-border-muted);
+  border-radius: var(--radius-sm);
+  outline: none;
+  caret-color: var(--color-border-focus);
+
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+
+  /* Remove number spinners */
+  -moz-appearance: textfield;
+}
+
+.otpCell::-webkit-outer-spin-button,
+.otpCell::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.otpCell::placeholder {
+  color: var(--color-text-disabled);
+}
+
+.otpCell:hover:not(:disabled) {
+  border-color: var(--color-border-default);
+}
+
+.otpCell:focus {
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px rgba(142, 68, 70, 0.18);
+}
+
+/* ── States ────────────────────────────────────────── */
+.otpCell.error {
+  border-color: var(--color-action-error);
+}
+.otpCell.error:focus {
+  box-shadow: 0 0 0 3px rgba(185, 28, 46, 0.15);
+}
+
+.otpCell.success {
+  border-color: var(--color-action-success);
+}
+
+.otpCell:disabled {
+  background: var(--color-status-disabled-bg);
+  border-color: var(--color-border-disabled);
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* ── Filled indicator (has content) ───────────────── */
+.otpCell.filled {
+  border-color: var(--color-border-default);
+  background: var(--color-bg-surface);
+}

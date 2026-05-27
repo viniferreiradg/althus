@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Novo distribuidor — Althus ADM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../storybook/src/tokens/tokens.css" />
+  <link rel="stylesheet" href="../shared/page.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Sidebar/Sidebar.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Avatar/Avatar.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Background/Background.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Button/Button.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Input/Input.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Dropdown/Dropdown.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Breadcrumb/Breadcrumb.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Divider/Divider.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Feedback/Feedback.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Card/Card.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Sheet/Sheet.module.css" />
+
+</head>
+<body data-page="credenciados">
+
+<aside id="sidebar-root"></aside>
+
+<main class="main bgWrapper" id="main">
+  <div class="blob1"></div>
+  <div class="blob2"></div>
+
+  <!-- Page header -->
+  <div class="pageHeader">
+    <nav aria-label="Breadcrumb" class="nav">
+      <ol class="list">
+        <li class="item">
+          <a href="jornada-3-6-1b-distribuidores.html" class="link">
+            Distribuidores
+            <span class="sep" aria-hidden="true"><i data-lucide="chevron-right" width="12" height="12"></i></span>
+          </a>
+        </li>
+        <li class="item">
+          <span class="current" aria-current="page">Novo distribuidor</span>
+        </li>
+      </ol>
+    </nav>
+    <h1 class="pageTitle">Novo distribuidor</h1>
+    <p class="pageSubtitle">Cadastre um parceiro de roaming via protocolo OCPI</p>
+  </div>
+
+  <div class="pageContent">
+
+    <!-- Feedback -->
+    <div class="feedbackWrap" id="feedback-wrap">
+      <div class="alert success" role="alert">
+        <span class="feedbackIconNudge">
+          <i data-lucide="circle-check" width="18" height="18"></i>
+        </span>
+        <div class="body">
+          <div class="title">Distribuidor cadastrado com sucesso!</div>
+          <div class="message">Os postos deste parceiro já estão disponíveis para exibição no mapa.</div>
+        </div>
+        <button class="dismiss" aria-label="Fechar" onclick="document.getElementById('feedback-wrap').classList.remove('visible')">
+          <i data-lucide="x" width="14" height="14"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+
+      <!-- ── Seção 1: Identificação ── -->
+      <div class="formSection">
+        <h2 class="sectionTitle">Identificação</h2>
+        <p class="sectionSubtitle">Nome do distribuidor parceiro</p>
+
+        <div class="formGrid grid2">
+          <div class="wrapper">
+            <label class="label" for="nome">Nome do distribuidor</label>
+            <div class="inputWrap">
+              <input class="input" id="nome" type="text" placeholder="Ex.: Tupi, DCC, PlugShare BR" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- ── Seção 2: Integração OCPI ── -->
+      <div class="formSection">
+        <h2 class="sectionTitle">Integração OCPI</h2>
+        <p class="sectionSubtitle">Credenciais de comunicação com a API do parceiro</p>
+
+        <div class="formGrid">
+
+          <div class="wrapper hasLeft">
+            <label class="label" for="ocpi-url">URL da API OCPI</label>
+            <div class="inputWrap">
+              <span class="iconLeft"><i data-lucide="link" width="16" height="16"></i></span>
+              <input class="input" id="ocpi-url" type="url" placeholder="https://api.parceiro.com.br/ocpi/v2.2/locations" />
+            </div>
+          </div>
+
+          <div class="wrapper">
+            <label class="label" for="token">Token de autenticação</label>
+            <div class="inputWrap hasRight">
+              <input class="input" id="token" type="password" placeholder="Token fornecido pelo parceiro" autocomplete="new-password" />
+              <button class="iconRight" type="button" id="token-toggle" aria-label="Mostrar token">
+                <i data-lucide="eye" width="16" height="16"></i>
+              </button>
+            </div>
+            <p class="fieldHint">
+              <i data-lucide="lock" width="12" height="12"></i>
+              Armazenado criptografado. Não será exibido após salvar.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- ── Seção 3: Configurações ── -->
+      <div class="formSection">
+        <h2 class="sectionTitle">Configurações</h2>
+        <p class="sectionSubtitle">Aparência e status do distribuidor no app</p>
+
+        <div class="formGrid grid2">
+
+          <div class="wrapper">
+            <label class="label" for="cor-hex">Cor do pino no mapa</label>
+            <div class="colorPickerWrap">
+              <input class="colorPickerNative" type="color" id="cor-picker" value="#2196F3" aria-label="Selecionar cor" />
+              <div class="inputWrap colorHexInput">
+                <input class="input inputMono" id="cor-hex" type="text" value="#2196F3" maxlength="7" placeholder="#000000" />
+              </div>
+            </div>
+          </div>
+
+          <div class="wrapper" id="status-dropdown">
+            <label class="label" for="status-trigger">Status</label>
+            <div class="trigger" id="status-trigger" role="button" tabindex="0" aria-haspopup="listbox">
+              <span id="status-value" class="placeholder">Selecione o status</span>
+              <span class="chevron"><i data-lucide="chevron-down" width="14" height="14"></i></span>
+            </div>
+            <div class="menu" role="listbox">
+              <div class="option" data-value="ativo">Ativo</div>
+              <div class="option" data-value="inativo">Inativo</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Rodapé ── -->
+      <div class="formFooter">
+        <button class="btn ghost" type="button" onclick="location.href='jornada-3-6-1b-distribuidores.html'">Cancelar</button>
+        <button class="btn primary" type="button" id="btn-salvar">Cadastrar distribuidor</button>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- ── Sheet: Notificações ── -->
+<div class="sheetOverlay" id="notif-sheet" onclick="notifSheetClose()">
+  <aside class="sheetPanel sheetNotif" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-label="Notificações">
+    <div class="sheetHeader">
+      <span class="sheetTitle">Notificações</span>
+      <button class="sheetClose" onclick="notifSheetClose()" aria-label="Fechar" type="button">
+        <i data-lucide="x" width="16" height="16"></i>
+      </button>
+    </div>
+    <div class="sheetBody">
+      <p style="color:var(--color-text-secondary);font-size:var(--font-size-sm);">Nenhuma notificação no momento.</p>
+    </div>
+  </aside>
+</div>
+
+<script src="shared/sidebar.js"></script>
+<script>
+
+  /* ── Token show/hide ── */
+  const tokenInput  = document.getElementById('token');
+  const tokenToggle = document.getElementById('token-toggle');
+  tokenToggle.addEventListener('click', () => {
+    const isHidden = tokenInput.type === 'password';
+    tokenInput.type = isHidden ? 'text' : 'password';
+    tokenToggle.setAttribute('aria-label', isHidden ? 'Ocultar token' : 'Mostrar token');
+    tokenToggle.innerHTML = isHidden
+      ? '<i data-lucide="eye-off" width="16" height="16"></i>'
+      : '<i data-lucide="eye" width="16" height="16"></i>';
+    lucide.createIcons();
+  });
+
+  /* ── Color picker sincroniza com hex input ── */
+  const picker = document.getElementById('cor-picker');
+  const hexInput = document.getElementById('cor-hex');
+  picker.addEventListener('input', () => {
+    hexInput.value = picker.value.toUpperCase();
+  });
+  hexInput.addEventListener('input', () => {
+    const v = hexInput.value;
+    if (/^#[0-9A-Fa-f]{6}$/.test(v)) picker.value = v;
+  });
+
+  /* ── Dropdown status ── */
+  const statusDrop = document.getElementById('status-dropdown');
+  const statusVal  = document.getElementById('status-value');
+  document.getElementById('status-trigger').addEventListener('click', e => { e.stopPropagation(); statusDrop.classList.toggle('open'); });
+  statusDrop.querySelectorAll('.option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      statusDrop.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      statusVal.textContent = opt.textContent;
+      statusVal.classList.remove('placeholder');
+      statusDrop.classList.remove('open');
+    });
+  });
+  document.addEventListener('click', () => statusDrop.classList.remove('open'));
+
+  /* ── Submit ── */
+  document.getElementById('btn-salvar').addEventListener('click', () => {
+    const wrap = document.getElementById('feedback-wrap');
+    wrap.classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    lucide.createIcons();
+    setTimeout(() => location.href = 'jornada-3-6-1b-distribuidores.html', 2000);
+  });
+
+  /* ── Notificações ── */
+  function notifSheetOpen()  { document.getElementById('notif-sheet').classList.add('sheetOpen'); document.body.style.overflow = 'hidden'; }
+  function notifSheetClose() { document.getElementById('notif-sheet').classList.remove('sheetOpen'); document.body.style.overflow = ''; }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') notifSheetClose(); });
+
+  lucide.createIcons();
+</script>
+
+</body>
+</html>

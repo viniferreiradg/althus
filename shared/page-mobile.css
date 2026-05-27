@@ -1,0 +1,216 @@
+/* ─── Mobile custom properties ──────────────────────── */
+:root {
+  --status-bar-height: 59px;
+  --nav-height: 72px; /* pill height ~52px + margin-bottom 16px + spacing-xs 4px */
+}
+
+/* ─── Map background (prototype placeholder) ─────────── */
+.map-bg-dark {
+  background-image: url('../links/mapa-dark.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* ─── Reset ──────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Base body ──────────────────────────────────────── */
+body {
+  font-family: var(--font-body);
+  color: var(--color-text-primary);
+  background: var(--color-bg-default);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Layout: tela mobile padrão ─────────────────────── */
+body.layout-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Telas com scroll vertical — nunca mostra a barra */
+body.layout-screen.scrollable {
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+body.layout-screen.scrollable::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─── Layout: mapa ou mídia full-bleed ───────────────── */
+body.layout-fullbleed {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ─── Splash ─────────────────────────────────────────── */
+body.splash-screen {
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.splashBlob1 {
+  position: absolute;
+  top: -15%;
+  right: -25%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, var(--color-blob-1) 0%, transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+@keyframes splashGrow {
+  from { transform: scale(0.9); }
+  to   { transform: scale(1); }
+}
+
+.splashLogo {
+  animation: splashGrow 2.5s cubic-bezier(0.2, 0, 0, 1) forwards;
+  position: relative;
+  z-index: 1;
+}
+
+.splashBlob2 {
+  position: absolute;
+  bottom: -15%;
+  left: -25%;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, var(--color-blob-2) 0%, transparent 70%);
+  filter: blur(50px);
+  pointer-events: none;
+}
+
+/* ─── Login ──────────────────────────────────────────── */
+body.login-screen {
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+}
+
+.login-card {
+  padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+.login-forgot {
+  text-align: right;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-brand);
+  text-decoration: none;
+  margin-top: calc(var(--spacing-xs) * -1);
+  cursor: pointer;
+}
+
+.login-footer {
+  margin-top: var(--spacing-lg);
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+}
+
+.login-footer a {
+  color: var(--color-text-brand);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.full-width {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ─── Screen content area (below AppBar) ─────────────── */
+.screen-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-xl) var(--spacing-md);
+  gap: var(--spacing-lg);
+  position: relative;
+  z-index: 1;
+}
+
+/* Description text used in auth/onboarding screens */
+.screen-description {
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  line-height: 1.6;
+}
+
+/* ─── Map FABs ───────────────────────────────────────── */
+
+/* Row of FABs sitting just above the BottomNav */
+.map-fabs {
+  position: absolute;
+  bottom: calc(var(--nav-height) + var(--spacing-sm));
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 var(--spacing-md);
+  pointer-events: none;
+}
+
+.map-fabs > * {
+  pointer-events: auto;
+}
+
+/* ─── OTP resend row ─────────────────────────────────── */
+.otp-resend {
+  text-align: center;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+}
+
+.otp-resend-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-brand);
+  cursor: pointer;
+}
+
+.otp-resend-link:disabled {
+  color: var(--color-text-tertiary);
+  cursor: default;
+}
+
+/* ─── Reusable background blobs (any screen) ─────────── */
+.screenBlob1 {
+  position: absolute;
+  top: -10%;
+  right: -25%;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, var(--color-blob-1) 0%, transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.screenBlob2 {
+  position: absolute;
+  bottom: -10%;
+  left: -25%;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, var(--color-blob-2) 0%, transparent 70%);
+  filter: blur(50px);
+  pointer-events: none;
+  z-index: 0;
+}

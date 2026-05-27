@@ -22,15 +22,15 @@
 
   /* ── 2. Itens de navegação ─────────────────────────────────────────────── */
   const NAV_ITEMS = [
-    { id: 'dashboard',     label: 'Dashboard',      icon: 'layout-dashboard', href: 'jornada-2-8-dashboard.html' },
-    { id: 'locais',        label: 'Locais',          icon: 'map-pin',          href: 'jornada-2-1-1-listar-localidades.html' },
-    { id: 'carregadores',  label: 'Carregadores',    icon: 'zap',              href: 'jornada-2-7-1-listar-carregadores.html' },
-    { id: 'tarifas',       label: 'Tarifas',         icon: 'receipt',          href: 'jornada-2-2-1-opcoes-de-tarifas.html' },
-    { id: 'cupons',        label: 'Cupons',           icon: 'tag',              href: 'jornada-2-4-1-listar-cupons.html' },
-    { id: 'extrato',       label: 'Extrato',          icon: 'file-text',        href: 'jornada-2-3-1-extrato.html' },
-    { id: 'reservas',      label: 'Reservas',         icon: 'calendar-clock',   href: 'jornada-2-9-1-lista-reservas.html' },
-    { id: 'logs',          label: 'Logs de Erros',    icon: 'triangle-alert',   href: 'jornada-2-5-1-logs-de-erros.html' },
-    { id: 'usuarios',      label: 'Usuários',         icon: 'users',            href: 'jornada-2-6-1-lista-usuarios.html' },
+    { id: 'dashboard',    label: 'Dashboard',     icon: 'layout-dashboard', href: 'jornada-2-8-dashboard.html' },
+    { id: 'usuarios',     label: 'Usuários',      icon: 'users',            href: 'jornada-2-6-1-lista-usuarios.html' },
+    { id: 'locais',       label: 'Locais',        icon: 'map-pin',          href: 'jornada-2-1-1-listar-localidades.html' },
+    { id: 'carregadores', label: 'Carregadores',  icon: 'zap',              href: 'jornada-2-7-1-listar-carregadores.html' },
+    { id: 'tarifas',      label: 'Tarifas',       icon: 'receipt',          href: 'jornada-2-2-1-opcoes-de-tarifas.html' },
+    { id: 'cupons',       label: 'Cupons',        icon: 'tag',              href: 'jornada-2-4-1-listar-cupons.html' },
+    { id: 'reservas',     label: 'Reservas',      icon: 'calendar-clock',   href: 'jornada-2-9-1-lista-reservas.html' },
+    { id: 'extrato',      label: 'Extrato',       icon: 'file-text',        href: 'jornada-2-3-1-extrato.html' },
+    { id: 'logs',         label: 'Logs de Erros', icon: 'triangle-alert',   href: 'jornada-2-5-1-logs-de-erros.html' },
   ];
 
   /* ── 3. Página ativa ───────────────────────────────────────────────────── */
@@ -87,7 +87,9 @@
         </div>
         <div class="separator"></div>
         <div class="userRow">
-          <div class="avatar md"><span class="avatarInitials">AR</span></div>
+          <div style="padding:2px;background:linear-gradient(135deg,var(--color-gray-300),var(--color-gray-500));border-radius:var(--radius-full);display:inline-flex;flex-shrink:0;">
+            <div class="avatar md"><img class="avatarImg" src="../links/perfl-rede.png" alt="Admin Rede" /></div>
+          </div>
           <div class="userInfo">
             <div class="userName">Admin Rede</div>
             <div class="userEmail">admin@rededemo.com.br</div>

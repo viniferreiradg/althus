@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nova senha — Althus</title>
+  <link rel="stylesheet" href="../../storybook/src/tokens/tokens.css" />
+  <link rel="stylesheet" href="../../shared/page-mobile.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/AppBar/AppBar.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Input/Input.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/PasswordStrength/PasswordStrength.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/PasswordRequirements/PasswordRequirements.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Button/Button.module.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="layout-screen">
+
+  <div class="screenBlob1"></div>
+  <div class="screenBlob2"></div>
+
+  <header class="appBar">
+    <div class="appBarSide appBarSideLeft">
+      <button class="appBarIconBtn" onclick="router.pop()" aria-label="Voltar">
+        <i data-lucide="chevron-left" width="24" height="24"></i>
+      </button>
+    </div>
+    <span class="appBarTitle">Nova senha</span>
+    <div class="appBarSide appBarSideRight"></div>
+  </header>
+
+  <div class="screen-content">
+
+    <p class="screen-description">
+      Escolha uma nova senha para a sua conta. Use pelo menos 8 caracteres com letras, números e símbolos.
+    </p>
+
+    <!-- Nova senha -->
+    <div class="wrapper">
+      <label class="label" for="nova-senha">Nova senha</label>
+      <div class="inputWrap hasRight">
+        <input class="input" id="nova-senha" type="password"
+               placeholder="••••••••" autocomplete="new-password" />
+        <button type="button" class="iconRightBtn" id="toggle-nova"
+                aria-label="Mostrar senha">
+          <i data-lucide="eye" width="16" height="16"></i>
+          <i data-lucide="eye-off" width="16" height="16"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Força da senha -->
+    <div class="root" id="strength-root">
+      <div class="bars">
+        <div class="bar" id="bar-0"></div>
+        <div class="bar" id="bar-1"></div>
+        <div class="bar" id="bar-2"></div>
+        <div class="bar" id="bar-3"></div>
+      </div>
+      <span class="strengthLabel" id="strength-label"></span>
+    </div>
+
+    <!-- Requisitos -->
+    <div class="root" id="requirements-root">
+      <p class="title" id="req-title">A senha deve conter:</p>
+      <ul class="list">
+        <li class="item" id="req-length">
+          <span class="iconWrap">
+            <span class="bullet"></span>
+            <i class="iconSuccess" data-lucide="circle-check" width="14" height="14"></i>
+            <i class="iconError"   data-lucide="circle-x"     width="14" height="14"></i>
+          </span>
+          No mínimo 8 caracteres
+        </li>
+        <li class="item" id="req-uppercase">
+          <span class="iconWrap">
+            <span class="bullet"></span>
+            <i class="iconSuccess" data-lucide="circle-check" width="14" height="14"></i>
+            <i class="iconError"   data-lucide="circle-x"     width="14" height="14"></i>
+          </span>
+          Letra maiúscula
+        </li>
+        <li class="item" id="req-lowercase">
+          <span class="iconWrap">
+            <span class="bullet"></span>
+            <i class="iconSuccess" data-lucide="circle-check" width="14" height="14"></i>
+            <i class="iconError"   data-lucide="circle-x"     width="14" height="14"></i>
+          </span>
+          Letra minúscula
+        </li>
+        <li class="item" id="req-number">
+          <span class="iconWrap">
+            <span class="bullet"></span>
+            <i class="iconSuccess" data-lucide="circle-check" width="14" height="14"></i>
+            <i class="iconError"   data-lucide="circle-x"     width="14" height="14"></i>
+          </span>
+          Número
+        </li>
+        <li class="item" id="req-symbol">
+          <span class="iconWrap">
+            <span class="bullet"></span>
+            <i class="iconSuccess" data-lucide="circle-check" width="14" height="14"></i>
+            <i class="iconError"   data-lucide="circle-x"     width="14" height="14"></i>
+          </span>
+          Símbolo (ex: !@#,)
+        </li>
+      </ul>
+    </div>
+
+    <!-- Confirmar senha -->
+    <div class="wrapper" id="confirmar-wrapper">
+      <label class="label" for="confirmar-senha">Confirmar senha</label>
+      <div class="inputWrap hasRight">
+        <input class="input" id="confirmar-senha" type="password"
+               placeholder="••••••••" autocomplete="new-password" />
+        <button type="button" class="iconRightBtn" id="toggle-confirmar"
+                aria-label="Mostrar senha">
+          <i data-lucide="eye" width="16" height="16"></i>
+          <i data-lucide="eye-off" width="16" height="16"></i>
+        </button>
+      </div>
+      <span class="errorText" id="match-error" style="display:none">
+        <span class="msgIcon"><i data-lucide="circle-x" width="14" height="14"></i></span>
+        As senhas não coincidem
+      </span>
+    </div>
+
+    <button class="btn primary full-width" id="btn-salvar"
+            onclick="router.replace('login')">
+      Salvar senha
+    </button>
+
+  </div>
+
+  <script>
+    var router = (window.parent && window.parent.router)
+      ? window.parent.router
+      : { push: function(){}, pop: function(){}, replace: function(){}, modal: function(){}, closeModal: function(){}, tab: function(){} };
+  </script>
+  <script>
+    lucide.createIcons();
+
+    (function () {
+
+      /* ── Password toggles ──────────────────────────── */
+      function initToggle(inputId, btnId) {
+        var input = document.getElementById(inputId);
+        var btn   = document.getElementById(btnId);
+        var svgs  = btn.querySelectorAll('svg');
+        if (svgs.length === 2) svgs[1].style.display = 'none';
+        btn.addEventListener('click', function () {
+          var showing = input.type === 'text';
+          input.type  = showing ? 'password' : 'text';
+          var s = btn.querySelectorAll('svg');
+          if (s.length === 2) {
+            s[0].style.display = showing ? ''     : 'none';
+            s[1].style.display = showing ? 'none' : '';
+          }
+          btn.setAttribute('aria-label', showing ? 'Mostrar senha' : 'Ocultar senha');
+        });
+      }
+      initToggle('nova-senha',      'toggle-nova');
+      initToggle('confirmar-senha', 'toggle-confirmar');
+
+      /* ── Strength score ────────────────────────────── */
+      var LEVELS = ['', 'weak', 'medium', 'medium', 'strong'];
+      var LABELS = ['', 'Fraca', 'Média', 'Boa', 'Forte'];
+
+      function getScore(v) {
+        if (!v) return 0;
+        var s = 0;
+        if (v.length >= 8)           s++;
+        if (/[A-Z]/.test(v))        s++;
+        if (/[0-9]/.test(v))        s++;
+        if (/[^A-Za-z0-9]/.test(v)) s++;
+        return s;
+      }
+
+      var bars  = [0,1,2,3].map(function(i){ return document.getElementById('bar-' + i); });
+      var label = document.getElementById('strength-label');
+
+      function updateStrength(v) {
+        var score = getScore(v);
+        var level = LEVELS[score];
+        bars.forEach(function(bar, i) {
+          bar.className = 'bar' + (i < score && level ? ' ' + level : '');
+        });
+        label.textContent = v ? LABELS[score] : '';
+      }
+
+      /* ── Requirements ──────────────────────────────── */
+      var REQS = [
+        { id: 'req-length',    test: function(v){ return v.length >= 8; } },
+        { id: 'req-uppercase', test: function(v){ return /[A-Z]/.test(v); } },
+        { id: 'req-lowercase', test: function(v){ return /[a-z]/.test(v); } },
+        { id: 'req-number',    test: function(v){ return /[0-9]/.test(v); } },
+        { id: 'req-symbol',    test: function(v){ return /[^A-Za-z0-9]/.test(v); } },
+      ];
+      var reqTitle = document.getElementById('req-title');
+
+      function updateRequirements(v) {
+        var typed   = v.length > 0;
+        var allMet  = true;
+        var anyFail = false;
+        REQS.forEach(function(r) {
+          var el  = document.getElementById(r.id);
+          var met = typed ? r.test(v) : null;
+          el.classList.toggle('itemSuccess', met === true);
+          el.classList.toggle('itemError',   met === false);
+          if (met === false) anyFail = true;
+          if (!met)          allMet  = false;
+        });
+        reqTitle.classList.toggle('titleSuccess', typed && allMet);
+        reqTitle.classList.toggle('titleError',   typed && anyFail);
+        /* Re-run Lucide to replace newly visible icons */
+        lucide.createIcons();
+      }
+
+      /* ── Confirm match ─────────────────────────────── */
+      var confirmar       = document.getElementById('confirmar-senha');
+      var confirmarWrapper= document.getElementById('confirmar-wrapper');
+      var matchError      = document.getElementById('match-error');
+
+      function checkMatch() {
+        var nova = document.getElementById('nova-senha').value;
+        var conf = confirmar.value;
+        if (!conf) {
+          confirmarWrapper.classList.remove('error');
+          matchError.style.display = 'none';
+          return;
+        }
+        var ok = nova === conf;
+        confirmarWrapper.classList.toggle('error', !ok);
+        matchError.style.display = ok ? 'none' : 'flex';
+        if (!ok) lucide.createIcons();
+      }
+
+      /* ── Wire up events ────────────────────────────── */
+      document.getElementById('nova-senha').addEventListener('input', function() {
+        updateStrength(this.value);
+        updateRequirements(this.value);
+        checkMatch();
+      });
+      confirmar.addEventListener('input', checkMatch);
+
+    }());
+  </script>
+
+</body>
+</html>

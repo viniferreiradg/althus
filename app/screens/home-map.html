@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mapa — Althus</title>
+  <link rel="stylesheet" href="../../storybook/src/tokens/tokens.css" />
+  <link rel="stylesheet" href="../../shared/page-mobile.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/FAB/FAB.module.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="layout-fullbleed map-bg-dark">
+
+  <!-- ── Floating action buttons ──────────────────── -->
+  <div class="map-fabs">
+    <button class="fab" aria-label="Selecionar veículo"
+            onclick="router.push('veiculos-lista')">
+      <i data-lucide="car" width="20" height="20"></i>
+    </button>
+    <button class="fab" aria-label="Escanear QR Code"
+            onclick="router.push('recarga-metodo')">
+      <i data-lucide="qr-code" width="20" height="20"></i>
+    </button>
+  </div>
+
+  <script>
+    var router = (window.parent && window.parent.router)
+      ? window.parent.router
+      : { push: function(){}, pop: function(){}, replace: function(){}, modal: function(){}, closeModal: function(){}, tab: function(){} };
+  </script>
+  <script>lucide.createIcons();</script>
+
+</body>
+</html>

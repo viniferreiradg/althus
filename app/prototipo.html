@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Protótipo — Althus App</title>
+
+  <!-- ── Design tokens ───────────────────────────────── -->
+  <link rel="stylesheet" href="../storybook/src/tokens/tokens.css" />
+
+  <!-- ── Router transitions ──────────────────────────── -->
+  <link rel="stylesheet" href="../shared/transitions.css" />
+
+  <!-- ── Mobile components ────────────────────────────── -->
+  <link rel="stylesheet" href="../storybook/src/components/BottomNav/BottomNav.module.css" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    [hidden] { display: none !important; }
+
+    body {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #0a0a0a;
+    }
+
+    /* ─── Sidebar ────────────────────────────────────── */
+    .sidebar {
+      width: 260px;
+      flex-shrink: 0;
+      background: #111;
+      border-right: 1px solid #1f1f1f;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: width 220ms cubic-bezier(0.3, 0.07, 0.34, 1),
+                  border-color 220ms ease;
+    }
+    .sidebar.collapsed { width: 0; border-right-color: transparent; }
+
+    .sidebar-header {
+      padding: 20px 16px 16px;
+      border-bottom: 1px solid #1f1f1f;
+      flex-shrink: 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .sidebar-header-info { flex: 1; min-width: 0; }
+    .sidebar-badge {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #000;
+      background: #fff;
+      border-radius: 4px;
+      padding: 3px 7px;
+      margin-bottom: 10px;
+      white-space: nowrap;
+    }
+    .sidebar-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #e5e5e5;
+      line-height: 1.3;
+      white-space: nowrap;
+    }
+    .sidebar-subtitle {
+      font-size: 11px;
+      color: #555;
+      margin-top: 3px;
+      white-space: nowrap;
+    }
+    .collapse-btn {
+      flex-shrink: 0;
+      margin-top: 2px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #444;
+      padding: 4px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      transition: color 150ms ease, background 150ms ease;
+    }
+    .collapse-btn:hover { color: #aaa; background: #1e1e1e; }
+    .collapse-btn svg {
+      width: 14px; height: 14px;
+      stroke: currentColor; fill: none;
+      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+    }
+
+    .sidebar-toolbar {
+      padding: 8px 10px;
+      border-bottom: 1px solid #1a1a1a;
+      flex-shrink: 0;
+    }
+    .expand-all-btn {
+      width: 100%;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: #555;
+      background: none;
+      border: 1px solid #222;
+      border-radius: 4px;
+      padding: 5px 8px;
+      cursor: pointer;
+      font-family: inherit;
+      text-align: center;
+      transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+    }
+    .expand-all-btn:hover { color: #aaa; border-color: #333; background: #161616; }
+
+    .sidebar-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 0 16px;
+    }
+    .sidebar-list::-webkit-scrollbar { width: 4px; }
+    .sidebar-list::-webkit-scrollbar-track { background: transparent; }
+    .sidebar-list::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
+
+    .flow-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #444;
+      padding: 14px 16px 8px;
+      cursor: pointer;
+      user-select: none;
+      transition: color 150ms ease;
+    }
+    .flow-label:hover { color: #666; }
+    .flow-label .flow-chevron {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      transition: transform 220ms ease;
+    }
+    .flow-label .flow-chevron svg {
+      width: 12px; height: 12px;
+      stroke: currentColor; fill: none;
+      stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .flow-label.collapsed .flow-chevron { transform: rotate(-90deg); }
+
+    .flow-screens {
+      display: grid;
+      grid-template-rows: 1fr;
+      transition: grid-template-rows 220ms ease;
+    }
+    .flow-screens.collapsed { grid-template-rows: 0fr; }
+    .flow-screens-inner { overflow: hidden; }
+
+    .screen-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: calc(100% - 16px);
+      margin: 2px 8px;
+      padding: 9px 10px;
+      background: none;
+      border: 1px solid #1e1e1e;
+      border-radius: 7px;
+      cursor: pointer;
+      text-align: left;
+      color: #666;
+      font-family: inherit;
+      transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+    }
+    .screen-btn:hover { background: #161616; color: #ccc; border-color: #2a2a2a; }
+    .screen-btn.active {
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      border-color: rgba(255,255,255,0.35);
+    }
+
+    .screen-status {
+      font-size: 12px;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .screen-info {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .screen-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: inherit;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.3;
+    }
+    .screen-id {
+      font-size: 10px;
+      color: #3a3a3a;
+      font-family: ui-monospace, monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .screen-btn.active .screen-id { color: rgba(255,255,255,0.4); }
+
+    .sidebar-footer {
+      padding: 12px 16px;
+      border-top: 1px solid #1a1a1a;
+      font-size: 10px;
+      color: #333;
+      flex-shrink: 0;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .sidebar-footer-count { color: #2a2a2a; }
+
+    /* ─── Preview area ───────────────────────────────── */
+    .preview-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .preview-bar {
+      height: 36px;
+      background: #0d0d0d;
+      border-bottom: 1px solid #1a1a1a;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .preview-bar-dot { width: 10px; height: 10px; border-radius: 50%; background: #2a2a2a; }
+    .preview-url {
+      flex: 1;
+      font-size: 11px;
+      color: #444;
+      font-family: ui-monospace, monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ─── Phone frame area ───────────────────────────── */
+    .phone-area {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: radial-gradient(ellipse 60% 50% at 70% 20%, rgba(185,55,55,0.18) 0%, transparent 70%),
+                  radial-gradient(ellipse 50% 40% at 30% 80%, rgba(185,55,55,0.10) 0%, transparent 70%),
+                  #0a0a0b;
+    }
+
+    .phoneFrame {
+      position: relative;
+      width: 393px;
+      height: 852px;
+      background: var(--color-gray-950);
+      border-radius: 52px;
+      border: 2px solid var(--color-gray-800);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.06),
+        0 32px 80px rgba(0,0,0,0.70),
+        0 8px 20px rgba(0,0,0,0.50),
+        inset 0 0 0 1px rgba(255,255,255,0.04);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .phoneFrame::before {
+      content: '';
+      position: absolute;
+      left: -4px; top: 120px;
+      width: 3px; height: 36px;
+      background: var(--color-gray-800);
+      border-radius: 2px 0 0 2px;
+      box-shadow: 0 52px 0 var(--color-gray-800), 0 96px 0 var(--color-gray-800);
+    }
+    .phoneFrame::after {
+      content: '';
+      position: absolute;
+      right: -4px; top: 160px;
+      width: 3px; height: 64px;
+      background: var(--color-gray-800);
+      border-radius: 0 2px 2px 0;
+    }
+
+    .dynamicIsland {
+      position: absolute;
+      top: 12px; left: 50%;
+      transform: translateX(-50%);
+      width: 126px; height: 37px;
+      background: var(--color-gray-black);
+      border-radius: 9999px;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .statusBar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 59px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 0 32px 8px;
+      z-index: 50;
+      pointer-events: none;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+    .statusBarTime { font-size: 15px; font-weight: 600; }
+    .statusBarIcons { display: flex; align-items: center; gap: 6px; }
+
+    #app {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #screen-container {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    #bottom-nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+    }
+
+    .appBar {
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      min-height: 56px;
+      flex-shrink: 0;
+    }
+    .appBarTitle {
+      flex: 1;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      padding: 0 48px;
+    }
+
+    /* ─── Float button ───────────────────────────────── */
+    #float-btn {
+      position: absolute;
+      bottom: 24px;
+      left: 20px;
+      z-index: 100;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: #7c3aed;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.85);
+      transition: opacity 200ms ease, transform 200ms ease, background 150ms ease;
+    }
+    #float-btn.visible { opacity: 1; pointer-events: auto; transform: scale(1); }
+    #float-btn:hover { background: #6d28d9; }
+    #float-btn svg {
+      width: 18px; height: 18px;
+      stroke: #fff; fill: none;
+      stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Sidebar ─────────────────────────────────────── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-header-info">
+        <div class="sidebar-badge">Protótipo</div>
+        <div class="sidebar-title">Althus Eletropostos</div>
+        <div class="sidebar-subtitle">App Usuário Final</div>
+      </div>
+      <button class="collapse-btn" id="collapse-btn" aria-label="Ocultar menu">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+    </div>
+
+    <div class="sidebar-toolbar">
+      <button class="expand-all-btn" id="expand-all-btn">Expandir todos</button>
+    </div>
+
+    <nav class="sidebar-list" id="screen-list"></nav>
+
+    <div class="sidebar-footer">
+      <span>Navegação de protótipo</span>
+      <span class="sidebar-footer-count" id="footer-count"></span>
+    </div>
+  </aside>
+
+  <!-- ── Preview area ────────────────────────────────── -->
+  <div class="preview-area" id="preview-area">
+    <div class="preview-bar">
+      <div class="preview-bar-dot"></div>
+      <div class="preview-bar-dot"></div>
+      <div class="preview-bar-dot"></div>
+      <span class="preview-url" id="preview-url">screens/splash.html</span>
+    </div>
+
+    <!-- Phone frame -->
+    <div class="phone-area">
+      <div class="phoneFrame">
+
+        <div class="dynamicIsland"></div>
+
+        <div class="statusBar">
+          <span class="statusBarTime">9:41</span>
+          <div class="statusBarIcons">
+            <svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor">
+              <rect x="0" y="6" width="3" height="6" rx="1" opacity="0.4"/>
+              <rect x="4.5" y="4" width="3" height="8" rx="1" opacity="0.6"/>
+              <rect x="9" y="2" width="3" height="10" rx="1" opacity="0.8"/>
+              <rect x="13.5" y="0" width="3" height="12" rx="1"/>
+            </svg>
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor">
+              <path d="M8 9.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z"/>
+              <path d="M3.5 6.5a6.5 6.5 0 0 1 9 0" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+              <path d="M1 4A9.5 9.5 0 0 1 15 4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            </svg>
+            <svg width="25" height="12" viewBox="0 0 25 12" fill="currentColor">
+              <rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity="0.35" fill="none"/>
+              <rect x="2" y="2" width="17" height="8" rx="2"/>
+              <path d="M23 4v4a2 2 0 0 0 0-4z"/>
+            </svg>
+          </div>
+        </div>
+
+        <div id="app">
+          <div id="screen-container"></div>
+          <nav id="bottom-nav" class="bottomNav" hidden aria-label="Navegação principal">
+            <button class="navItem navActive" data-tab="mapa" onclick="router.tab('home-map')" aria-label="Mapa" aria-current="page">
+              <span class="navIcon"><i data-lucide="map" width="22" height="22"></i></span>
+            </button>
+            <button class="navItem" data-tab="historico" onclick="router.tab('historico-lista')" aria-label="Histórico">
+              <span class="navIcon"><i data-lucide="clock" width="22" height="22"></i></span>
+            </button>
+            <button class="navItem" data-tab="carteira" onclick="router.tab('carteira')" aria-label="Carteira">
+              <span class="navIcon"><i data-lucide="wallet" width="22" height="22"></i></span>
+            </button>
+            <button class="navItem" data-tab="perfil" onclick="router.tab('perfil')" aria-label="Perfil">
+              <span class="navIcon"><i data-lucide="user" width="22" height="22"></i></span>
+            </button>
+          </nav>
+        </div>
+
+      </div>
+    </div>
+
+    <button id="float-btn" aria-label="Abrir menu de navegação">
+      <svg viewBox="0 0 24 24">
+        <rect x="3" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/>
+        <rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- ── Lucide ───────────────────────────────────────── -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!-- ── Router ──────────────────────────────────────── -->
+  <script src="router.js"></script>
+
+  <!-- ── Prototype sidebar script ────────────────────── -->
+  <script>
+    const FLOWS = [
+      {
+        label: 'Onboarding',
+        screens: [
+          { label: 'Splash Screen',           id: 'splash',          built: true },
+          { label: 'Login',                   id: 'login',           built: true },
+          { label: 'Recuperar senha — Canal', id: 'recuperar-canal', built: true },
+          { label: 'Recuperar senha — OTP',    id: 'recuperar-otp',    built: true },
+          { label: 'Recuperar senha — Senha', id: 'recuperar-senha', built: true },
+        ],
+      },
+      {
+        label: 'Tab: Mapa',
+        screens: [
+          { label: 'Home — Mapa', id: 'home-map', built: true },
+        ],
+      },
+    ];
+
+    /* ── Build sidebar ──────────────────────────────── */
+    const list         = document.getElementById('screen-list');
+    const urlBar       = document.getElementById('preview-url');
+    const sidebar      = document.getElementById('sidebar');
+    const collapseBtn  = document.getElementById('collapse-btn');
+    const floatBtn     = document.getElementById('float-btn');
+    const previewArea  = document.getElementById('preview-area');
+    const expandAllBtn = document.getElementById('expand-all-btn');
+    const footerCount  = document.getElementById('footer-count');
+
+    let activeBtn = null;
+    let hideTimer = null;
+
+    const totalScreens = FLOWS.reduce((n, f) => n + f.screens.length, 0);
+    const builtScreens = FLOWS.reduce((n, f) => n + f.screens.filter(s => s.built).length, 0);
+    footerCount.textContent = `${builtScreens} / ${totalScreens} telas`;
+
+    function syncExpandAllBtn() {
+      const anyCollapsed = [...list.querySelectorAll('.flow-screens')].some(w => w.classList.contains('collapsed'));
+      expandAllBtn.textContent = anyCollapsed ? 'Expandir todos' : 'Recolher todos';
+    }
+
+    expandAllBtn.addEventListener('click', () => {
+      const wraps  = list.querySelectorAll('.flow-screens');
+      const labels = list.querySelectorAll('.flow-label');
+      const anyCollapsed = [...wraps].some(w => w.classList.contains('collapsed'));
+      wraps.forEach(w  => w.classList.toggle('collapsed', !anyCollapsed));
+      labels.forEach(l => l.classList.toggle('collapsed', !anyCollapsed));
+      syncExpandAllBtn();
+    });
+
+    FLOWS.forEach(flow => {
+      const label = document.createElement('div');
+      label.className = 'flow-label collapsed';
+      label.innerHTML = `
+        <span>${flow.label}</span>
+        <span class="flow-chevron">
+          <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+        </span>`;
+
+      const screensWrap  = document.createElement('div');
+      screensWrap.className = 'flow-screens collapsed';
+      const screensInner = document.createElement('div');
+      screensInner.className = 'flow-screens-inner';
+
+      label.addEventListener('click', () => {
+        const isCollapsed = screensWrap.classList.toggle('collapsed');
+        label.classList.toggle('collapsed', isCollapsed);
+        syncExpandAllBtn();
+      });
+
+      flow.screens.forEach(screen => {
+        const btn = document.createElement('button');
+        btn.className = 'screen-btn' + (screen.built ? '' : ' not-built');
+        btn.dataset.screenId = screen.id;
+        btn.innerHTML = `
+          <span class="screen-status">${screen.built ? '✅' : '⬜'}</span>
+          <div class="screen-info">
+            <span class="screen-label">${screen.label}</span>
+            <span class="screen-id">${screen.id}</span>
+          </div>`;
+
+        btn.addEventListener('click', () => {
+          if (!screen.built) {
+            urlBar.textContent = `screens/${screen.id}.html — ainda não criada`;
+            if (activeBtn) activeBtn.classList.remove('active');
+            btn.classList.add('active');
+            activeBtn = btn;
+            // Show placeholder in phone
+            const container = document.getElementById('screen-container');
+            container.innerHTML = `
+              <div style="
+                position:absolute;inset:0;display:flex;flex-direction:column;
+                align-items:center;justify-content:center;gap:16px;
+                background:var(--color-bg-default);padding:32px;text-align:center;
+              ">
+                <span style="font-size:32px">⬜</span>
+                <span style="font-size:14px;font-weight:600;color:var(--color-text-primary)">${screen.label}</span>
+                <span style="font-size:11px;color:var(--color-text-tertiary);font-family:monospace">${screen.id}</span>
+                <span style="font-size:12px;color:var(--color-text-disabled)">Tela ainda não criada</span>
+              </div>`;
+            document.getElementById('bottom-nav').hidden = true;
+            return;
+          }
+          router.goto(screen.id);
+          urlBar.textContent = `screens/${screen.id}.html`;
+          if (activeBtn) activeBtn.classList.remove('active');
+          btn.classList.add('active');
+          activeBtn = btn;
+        });
+
+        screensInner.appendChild(btn);
+      });
+
+      screensWrap.appendChild(screensInner);
+      list.appendChild(label);
+      list.appendChild(screensWrap);
+    });
+
+    /* ── Sidebar collapse ───────────────────────────── */
+    function showFloat() {
+      floatBtn.classList.add('visible');
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => floatBtn.classList.remove('visible'), 3000);
+    }
+
+    collapseBtn.addEventListener('click', () => {
+      sidebar.classList.add('collapsed');
+      showFloat();
+    });
+
+    previewArea.addEventListener('click', e => {
+      if (e.target === floatBtn) return;
+      if (sidebar.classList.contains('collapsed')) showFloat();
+    });
+
+    floatBtn.addEventListener('click', () => {
+      sidebar.classList.remove('collapsed');
+      floatBtn.classList.remove('visible');
+      clearTimeout(hideTimer);
+    });
+
+    /* ── Boot ───────────────────────────────────────── */
+    lucide.createIcons();
+    router.init('splash').then(() => {
+      const firstBtn = list.querySelector('.screen-btn[data-screen-id="splash"]');
+      if (firstBtn) {
+        firstBtn.closest('.flow-screens').classList.remove('collapsed');
+        firstBtn.closest('.flow-screens').previousElementSibling.classList.remove('collapsed');
+        firstBtn.classList.add('active');
+        activeBtn = firstBtn;
+        syncExpandAllBtn();
+      }
+    });
+  </script>
+
+</body>
+</html>

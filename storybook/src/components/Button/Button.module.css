@@ -96,27 +96,27 @@
 }
 
 /* ── Sizes ────────────────────────────────────────── */
-.sm {
+.btn.sm {
   font-size: var(--font-size-xs);
   padding: 7px 14px;
 }
-.sm.hasLeft  { padding-left: 10px; }
-.sm.hasRight { padding-right: 10px; }
+.btn.sm.hasLeft  { padding-left: 10px; }
+.btn.sm.hasRight { padding-right: 10px; }
 
 /* .md usa os valores base do .btn */
 
-.lg {
+.btn.lg {
   font-size: var(--font-size-md);
   padding: 12px 28px;
 }
-.lg.hasLeft  { padding-left: 20px; }
-.lg.hasRight { padding-right: 20px; }
+.btn.lg.hasLeft  { padding-left: 20px; }
+.btn.lg.hasRight { padding-right: 20px; }
 
 /* ── Icon Only ────────────────────────────────────── */
-.iconOnly         { padding: 12px; gap: 0; }
-.iconOnly.sm      { padding: 8px; }
-.iconOnly.lg      { padding: 14px; }
-.iconOnly.hasLeft,
-.iconOnly.hasRight { padding-left: 12px; padding-right: 12px; }
-.iconOnly.sm.hasLeft,
-.iconOnly.sm.hasRight { padding-left: 8px; padding-right: 8px; }
+.btn.iconOnly         { padding: 12px; gap: 0; }
+.btn.iconOnly.sm      { padding: 8px; }
+.btn.iconOnly.lg      { padding: 14px; }
+.btn.iconOnly.hasLeft,
+.btn.iconOnly.hasRight { padding-left: 12px; padding-right: 12px; }
+.btn.iconOnly.sm.hasLeft,
+.btn.iconOnly.sm.hasRight { padding-left: 8px; padding-right: 8px; }

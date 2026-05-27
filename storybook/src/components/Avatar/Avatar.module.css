@@ -10,8 +10,8 @@
   font-family: var(--font-body);
 }
 
-.sm { width: 32px; height: 32px; }
-.md { width: 40px; height: 40px; }
+.avatar.sm { width: 32px; height: 32px; }
+.avatar.md { width: 40px; height: 40px; }
 
 .avatarImg {
   width: 100%;
@@ -27,5 +27,5 @@
   user-select: none;
 }
 
-.sm .avatarInitials { font-size: var(--font-size-xs); }
-.md .avatarInitials { font-size: var(--font-size-sm); }
+.avatar.sm .avatarInitials { font-size: var(--font-size-xs); }
+.avatar.md .avatarInitials { font-size: var(--font-size-sm); }

@@ -1,0 +1,114 @@
+/* ─── Base screen ───────────────────────────────────── */
+.screen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  will-change: transform, opacity;
+}
+
+/* iframe inside the screen fills it entirely */
+.screen iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* ─── Modal screen ──────────────────────────────────── */
+.modalScreen {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  height: 70%;
+  max-height: 90%;
+  overflow: hidden;
+  z-index: 10;
+  will-change: transform;
+}
+
+/* ─── Modal backdrop ────────────────────────────────── */
+.modalBackdrop {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  transition: background 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 9;
+  cursor: pointer;
+}
+.modalBackdrop.backdropVisible {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* ─── Push ──────────────────────────────────────────── */
+@keyframes enterPush {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+@keyframes exitPush {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-30%); }
+}
+.screen.enterPush { animation: enterPush 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+.screen.exitPush  { animation: exitPush  300ms cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+/* ─── Pop ───────────────────────────────────────────── */
+@keyframes enterPop {
+  from { transform: translateX(-30%); }
+  to   { transform: translateX(0); }
+}
+@keyframes exitPop {
+  from { transform: translateX(0); }
+  to   { transform: translateX(100%); }
+}
+.screen.enterPop { animation: enterPop 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+.screen.exitPop  { animation: exitPop  300ms cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+/* ─── Replace (fade + scale) ────────────────────────── */
+@keyframes enterReplace {
+  from { opacity: 0; transform: scale(0.7); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes exitReplace {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(1.05); }
+}
+.screen.enterReplace { animation: enterReplace 350ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+.screen.exitReplace  { animation: exitReplace  250ms cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+/* ─── Modal ─────────────────────────────────────────── */
+@keyframes enterModal {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+@keyframes exitModal {
+  from { transform: translateY(0); }
+  to   { transform: translateY(100%); }
+}
+.modalScreen.enterModal { animation: enterModal 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+.modalScreen.exitModal  { animation: exitModal  300ms cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+/* ─── Fade (crossfade puro — sem escala nem slide) ─── */
+@keyframes enterFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes exitFade {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+.screen.enterFade { animation: enterFade 400ms ease forwards; }
+.screen.exitFade  { animation: exitFade  400ms ease forwards; }
+
+/* ─── Tab (fade + upward shift) ─────────────────────── */
+@keyframes enterTab {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes exitTab {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(8px); }
+}
+.screen.enterTab { animation: enterTab 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+.screen.exitTab  { animation: exitTab  300ms cubic-bezier(0.4, 0, 0.2, 1) forwards; }

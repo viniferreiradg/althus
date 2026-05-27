@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — Althus</title>
+  <link rel="stylesheet" href="../../storybook/src/tokens/tokens.css" />
+  <link rel="stylesheet" href="../../shared/page-mobile.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/AuthCard/AuthCard.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Input/Input.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Button/Button.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Divider/Divider.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Logo/Logo.module.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="layout-screen login-screen">
+
+  <div class="blob1"></div>
+  <div class="blob2"></div>
+
+  <div class="card login-card">
+
+    <div class="logoWrap">
+      <span class="logoDefault logoMd" aria-label="Althus" role="img"></span>
+    </div>
+
+    <div class="header">
+      <h1 class="title">Bem-vindo de volta</h1>
+      <p class="description">Entre na sua conta para continuar.</p>
+    </div>
+
+    <div class="body">
+
+      <div class="wrapper hasLeft">
+        <label class="label" for="login-email">E-mail</label>
+        <div class="inputWrap">
+          <span class="iconLeft"><i data-lucide="mail" width="16" height="16"></i></span>
+          <input class="input" id="login-email" type="email"
+                 placeholder="seu@email.com" autocomplete="email" />
+        </div>
+      </div>
+
+      <div class="wrapper">
+        <label class="label" for="login-senha">Senha</label>
+        <div class="inputWrap hasRight">
+          <input class="input" id="login-senha" type="password"
+                 placeholder="••••••••" autocomplete="current-password" />
+          <button type="button" class="iconRightBtn" id="toggle-senha"
+                  aria-label="Mostrar senha">
+            <i data-lucide="eye" width="16" height="16"></i>
+            <i data-lucide="eye-off" width="16" height="16" hidden></i>
+          </button>
+        </div>
+      </div>
+
+      <a class="login-forgot" onclick="router.push('recuperar-canal')">
+        Esqueci minha senha
+      </a>
+
+      <button class="btn primary full-width" onclick="router.replace('home-map')">
+        Entrar
+      </button>
+
+      <hr class="divider" />
+
+      <button class="btn secondary full-width" onclick="router.push('cadastro-step1')">
+        Criar conta
+      </button>
+
+    </div>
+  </div>
+
+  <p class="login-footer">
+    Ao entrar, você concorda com os<br/>
+    <a onclick="router.push('termos')">Termos de Uso e Privacidade</a>
+  </p>
+
+  <script>
+    var router = (window.parent && window.parent.router)
+      ? window.parent.router
+      : { push: function(){}, pop: function(){}, replace: function(){}, modal: function(){}, closeModal: function(){}, tab: function(){} };
+  </script>
+  <script>
+    lucide.createIcons();
+    (function () {
+      var input = document.getElementById('login-senha');
+      var btn   = document.getElementById('toggle-senha');
+      var svgs  = btn.querySelectorAll('svg');
+      if (svgs.length === 2) svgs[1].style.display = 'none';
+      btn.addEventListener('click', function () {
+        var showing = input.type === 'text';
+        input.type  = showing ? 'password' : 'text';
+        var s = btn.querySelectorAll('svg');
+        if (s.length === 2) {
+          s[0].style.display = showing ? '' : 'none';
+          s[1].style.display = showing ? 'none' : '';
+        }
+        btn.setAttribute('aria-label', showing ? 'Mostrar senha' : 'Ocultar senha');
+      });
+    }());
+  </script>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-.overlay {
+.dialogOverlay {
   position: fixed; inset: 0; z-index: 1000;
   background: rgba(0,0,0,0.45);
   display: flex; align-items: center; justify-content: center;
@@ -18,23 +18,32 @@
 .md { max-width: 540px; }
 .lg { max-width: 720px; }
 
-.header {
+.dialogHeader {
   display: flex; align-items: center; justify-content: space-between;
   padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-md);
   border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
+  flex-shrink: 0;
 }
-.title { font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0; }
-.closeBtn {
+.dialogTitle { font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-text-primary); margin: 0; }
+.dialogCloseBtn {
   background: none; border: none; cursor: pointer; padding: var(--spacing-xs);
   color: var(--color-text-tertiary); font-size: 18px; border-radius: var(--radius-xs);
   line-height: 1; transition: color var(--transition-fast), background var(--transition-fast);
+  display: flex; align-items: center; justify-content: center;
 }
-.closeBtn:hover { color: var(--color-text-primary); background: var(--color-bg-subtle); }
+.dialogCloseBtn:hover { color: var(--color-text-primary); background: var(--color-bg-subtle); }
 
-.body { padding: 16px var(--spacing-lg); flex: 1; overflow-y: auto; color: var(--color-text-secondary); line-height: var(--line-height-normal); }
+.dialogBody {
+  padding: var(--spacing-lg);
+  flex: 1;
+  overflow-y: auto;
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-normal);
+}
 
-.footer {
+.dialogFooter {
   padding: var(--spacing-md) var(--spacing-lg);
   border-top: var(--border-width-thin) solid var(--color-border-subtle);
   display: flex; justify-content: flex-end; gap: var(--spacing-sm);
+  flex-shrink: 0;
 }

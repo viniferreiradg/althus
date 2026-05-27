@@ -12,7 +12,7 @@
 
   <!-- Design system -->
   <link rel="stylesheet" href="../storybook/src/tokens/tokens.css" />
-  <link rel="stylesheet" href="shared/page.css" />
+  <link rel="stylesheet" href="../shared/page.css" />
   <link rel="stylesheet" href="../storybook/src/components/Sidebar/Sidebar.module.css" />
   <link rel="stylesheet" href="../storybook/src/components/Avatar/Avatar.module.css" />
   <link rel="stylesheet" href="../storybook/src/components/MetricCard/MetricCard.module.css" />
@@ -295,41 +295,79 @@
     },
   }).render();
 
-  /* Donut chart */
-  new ApexCharts(document.getElementById('chart-donut'), {
-    ...base,
-    chart: { ...base.chart, type: 'donut', height: 264 },
-    colors: [
+  /* Donut chart — SVG nativo (rounded caps, gaps) */
+  (function () {
+    const ns = 'http://www.w3.org/2000/svg';
+    const CX = 50, CY = 50, R = 38, SW = 8, GAP = 12;
+
+    const series     = [98, 24, 12, 8];
+    const labels     = ['Ativo', 'Inativo', 'Em manutenção', 'Instalando'];
+    const colors     = [
       css('--color-status-success-fg'),
       css('--color-status-disabled-fg'),
       css('--color-status-warning-fg'),
       css('--color-status-info-fg'),
-    ],
-    series: [98, 24, 12, 8],
-    labels: ['Ativo', 'Inativo', 'Em manutenção', 'Instalando'],
-    dataLabels: { enabled: false },
-    legend: { position: 'bottom', labels: { colors: css('--color-text-tertiary') }, fontSize: '12px' },
-    plotOptions: {
-      pie: {
-        donut: {
-          size: '68%',
-          labels: {
-            show: true,
-            total: {
-              show: true,
-              label: 'Total',
-              color: css('--color-text-tertiary'),
-              fontSize: '12px',
-              fontWeight: 500,
-              formatter: w => w.globals.seriesTotals.reduce((a, b) => a + b, 0),
-            },
-            value: { color: css('--color-text-primary'), fontSize: '22px', fontWeight: 600 },
-          },
-        },
-      },
-    },
-    stroke: { width: 0 },
-  }).render();
+    ];
+    const totalLabel = 'Total';
+    const svgSize    = 174; /* 264 - 90 */
+
+    const total = series.reduce((a, b) => a + b, 0);
+    const circ  = 2 * Math.PI * R;
+
+    /* SVG */
+    const svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('viewBox', '0 0 100 100');
+    svg.setAttribute('width',  svgSize);
+    svg.setAttribute('height', svgSize);
+    svg.setAttribute('aria-hidden', 'true');
+
+    let cum = 0;
+    series.forEach((v, i) => {
+      const arc = (v / total) * circ;
+      const len = Math.max(0, arc - GAP);
+      const rot = (cum / circ) * 360 - 90;
+      cum += arc;
+      const c = document.createElementNS(ns, 'circle');
+      c.setAttribute('cx', CX);           c.setAttribute('cy', CY);       c.setAttribute('r', R);
+      c.setAttribute('fill', 'none');     c.setAttribute('stroke', colors[i]);
+      c.setAttribute('stroke-width', SW); c.setAttribute('stroke-linecap', 'round');
+      c.setAttribute('stroke-dasharray', `${len} ${circ}`);
+      c.setAttribute('transform', `rotate(${rot}, ${CX}, ${CY})`);
+      svg.appendChild(c);
+    });
+
+    const mkText = (y, size, weight, fill, content) => {
+      const t = document.createElementNS(ns, 'text');
+      t.setAttribute('x', CX);       t.setAttribute('y', y);
+      t.setAttribute('text-anchor', 'middle');
+      t.setAttribute('dominant-baseline', 'middle');
+      t.setAttribute('font-size', size);   t.setAttribute('font-weight', weight);
+      t.setAttribute('font-family', 'Inter, system-ui, sans-serif');
+      t.setAttribute('fill', fill);  t.textContent = content;
+      return t;
+    };
+    svg.appendChild(mkText(44, 16, 600, 'var(--color-text-primary)',   total));
+    svg.appendChild(mkText(59,  8, 400, 'var(--color-text-tertiary)', totalLabel));
+
+    /* Legend */
+    const legend = document.createElement('div');
+    legend.className = 'legend';
+    labels.forEach((lbl, i) => {
+      const item  = document.createElement('div');  item.className  = 'legendItem';
+      const dot   = document.createElement('span'); dot.className   = 'legendDot';   dot.style.background = colors[i];
+      const label = document.createElement('span'); label.className = 'legendLabel'; label.textContent = lbl;
+      const val   = document.createElement('span'); val.className   = 'legendValue'; val.textContent   = series[i];
+      item.append(dot, label, val);
+      legend.appendChild(item);
+    });
+
+    const wrap = document.createElement('div');
+    wrap.className = 'svgWrap';
+    wrap.appendChild(svg);
+
+    const container = document.getElementById('chart-donut');
+    container.append(wrap, legend);
+  })();
 </script>
 
 </body>

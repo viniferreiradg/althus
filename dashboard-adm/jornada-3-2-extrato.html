@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Extrato Financeiro — Althus ADM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../storybook/src/tokens/tokens.css" />
+  <link rel="stylesheet" href="../shared/page.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Sidebar/Sidebar.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Avatar/Avatar.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Background/Background.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Button/Button.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Input/Input.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Dropdown/Dropdown.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Table/Table.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Pagination/Pagination.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Sheet/Sheet.module.css" />
+</head>
+<body data-page="extrato">
+
+<aside id="sidebar-root"></aside>
+
+<main class="main bgWrapper" id="main">
+  <div class="blob1"></div>
+  <div class="blob2"></div>
+
+  <!-- Page header -->
+  <div class="pageHeader" style="display:flex;align-items:center;justify-content:space-between;">
+    <div>
+      <h1 class="pageTitle">Extrato Financeiro</h1>
+      <p class="pageSubtitle">Transações da plataforma no período selecionado</p>
+    </div>
+    <button class="btn primary hasLeft" id="btn-exportar">
+      <span class="icon"><i data-lucide="download" width="16" height="16"></i></span>
+      Exportar planilha
+    </button>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="searchWrap">
+      <div class="wrapper hasLeft">
+        <div class="inputWrap">
+          <span class="iconLeft"><i data-lucide="search" width="16" height="16"></i></span>
+          <input class="input" type="text" placeholder="Buscar por rede ou CNPJ…" />
+        </div>
+      </div>
+    </div>
+
+    <div class="filterWrap">
+      <div class="wrapper" id="pagamento-dropdown">
+        <div class="trigger" id="pagamento-trigger">
+          <span id="pagamento-value" class="placeholder">Pagamento</span>
+          <span class="chevron"><i data-lucide="chevron-down" width="14" height="14"></i></span>
+        </div>
+        <div class="menu">
+          <div class="option selected" data-value="">Todos</div>
+          <div class="option" data-value="pix">PIX</div>
+          <div class="option" data-value="cartao">Cartão</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="filterWrap" style="display:flex;align-items:center;gap:var(--spacing-xs);">
+      <div class="inputWrap" style="width:136px;">
+        <input class="input" type="date" value="2026-05-01" style="height:36px;" />
+      </div>
+      <span style="color:var(--color-text-tertiary);font-size:var(--font-size-sm);">–</span>
+      <div class="inputWrap" style="width:136px;">
+        <input class="input" type="date" value="2026-05-26" style="height:36px;" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="pageContent">
+    <div class="card">
+      <div class="tableWrap">
+        <table class="table" style="min-width:1200px;">
+          <thead>
+            <tr class="headerRow">
+              <th class="th thFirst sortable" style="width:120px;">
+                <span class="thInner">CNPJ <span class="sortIcon"><i data-lucide="chevrons-up-down" width="12" height="12"></i></span></span>
+              </th>
+              <th class="th sortable" style="width:150px;">
+                <span class="thInner">Nome Fantasia <span class="sortIcon"><i data-lucide="chevrons-up-down" width="12" height="12"></i></span></span>
+              </th>
+              <th class="th sortable" style="width:128px;">
+                <span class="thInner">Data e hora <span class="sortIcon"><i data-lucide="chevrons-up-down" width="12" height="12"></i></span></span>
+              </th>
+              <th class="th" style="width:148px;">Local</th>
+              <th class="th" style="width:82px;">Pagamento</th>
+              <th class="th" style="width:70px;text-align:right;">kWh</th>
+              <th class="th sortable" style="width:100px;text-align:right;">
+                <span class="thInner" style="justify-content:flex-end;">Bruto (R$) <span class="sortIcon"><i data-lucide="chevrons-up-down" width="12" height="12"></i></span></span>
+              </th>
+              <th class="th" style="width:90px;text-align:right;">Cupom (R$)</th>
+              <th class="th" style="width:90px;text-align:right;">Split (R$)</th>
+              <th class="th sortable" style="width:100px;text-align:right;">
+                <span class="thInner" style="justify-content:flex-end;">Líquido (R$) <span class="sortIcon"><i data-lucide="chevrons-up-down" width="12" height="12"></i></span></span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr class="tr">
+              <td class="td tdFirst"><span style="font-size:var(--font-size-sm);color:var(--color-text-tertiary);">12.345.678/0001-90</span></td>
+              <td class="td">EcoCharge Soluções</td>
+              <td class="td" style="white-space:nowrap;color:var(--color-text-tertiary);font-size:var(--font-size-sm);">26/05/2026 14:32</td>
+              <td class="td">Shopping Iguatemi SP</td>
+              <td class="td"><span class="badge" data-status="success"><span class="badgeDot"></span>PIX</span></td>
+              <td class="td" style="text-align:right;">45,2</td>
+              <td class="td" style="text-align:right;">68,28</td>
+              <td class="td" style="text-align:right;color:var(--color-text-tertiary);">—</td>
+              <td class="td" style="text-align:right;">13,66</td>
+              <td class="td" style="text-align:right;color:var(--color-status-success-fg);font-weight:var(--font-weight-medium);">54,62</td>
+            </tr>
+
+            <tr class="tr">
+              <td class="td tdFirst"><span style="font-size:var(--font-size-sm);color:var(--color-text-tertiary);">98.765.432/0001-11</span></td>
+              <td class="td">Flex Eletropostos</td>
+              <td class="td" style="white-space:nowrap;color:var(--color-text-tertiary);font-size:var(--font-size-sm);">26/05/2026 13:15</td>
+              <td class="td">Posto Shell Anhanguera</td>
+              <td class="td"><span class="badge" data-status="indigo"><span class="badgeDot"></span>Cartão</span></td>
+              <td class="td" style="text-align:right;">30,8</td>
+              <td class="td" style="text-align:right;">46,51</td>
+              <td class="td" style="text-align:right;">5,00</td>
+              <td class="td" style="text-align:right;">9,30</td>
+              <td class="td" style="text-align:right;color:var(--color-status-success-fg);font-weight:var(--font-weight-medium);">32,21</td>
+            </tr>
+
+            <tr class="tr">
+              <td class="td tdFirst"><span style="font-size:var(--font-size-sm);color:var(--color-text-tertiary);">23.456.789/0001-22</span></td>
+              <td class="td">Spark Charging</td>
+              <td class="td" style="white-space:nowrap;color:var(--color-text-tertiary);font-size:var(--font-size-sm);">26/05/2026 10:44</td>
+              <td class="td">Estac. Vila Olímpia</td>
+              <td class="td"><span class="badge" data-status="success"><span class="badgeDot"></span>PIX</span></td>
+              <td class="td" style="text-align:right;">62,4</td>
+              <td class="td" style="text-align:right;">94,26</td>
+              <td class="td" style="text-align:right;color:var(--color-text-tertiary);">—</td>
+              <td class="td" style="text-align:right;">18,85</td>
+              <td class="td" style="text-align:right;color:var(--color-status-success-fg);font-weight:var(--font-weight-medium);">75,41</td>
+            </tr>
+
+            <tr class="tr">
+              <td class="td tdFirst"><span style="font-size:var(--font-size-sm);color:var(--color-text-tertiary);">34.567.890/0001-33</span></td>
+              <td class="td">VoltMax Networks</td>
+              <td class="td" style="white-space:nowrap;color:var(--color-text-tertiary);font-size:var(--font-size-sm);">25/05/2026 22:10</td>
+              <td class="td">Aeroporto de Congonhas</td>
+              <td class="td"><span class="badge" data-status="indigo"><span class="badgeDot"></span>Cartão</span></td>
+              <td class="td" style="text-align:right;">28,1</td>
+              <td class="td" style="text-align:right;">42,45</td>
+              <td class="td" style="text-align:right;">10,00</td>
+              <td class="td" style="text-align:right;">8,49</td>
+              <td class="td" style="text-align:right;color:var(--color-status-success-fg);font-weight:var(--font-weight-medium);">23,96</td>
+            </tr>
+
+            <tr class="tr">
+              <td class="td tdFirst"><span style="font-size:var(--font-size-sm);color:var(--color-text-tertiary);">12.345.678/0001-90</span></td>
+              <td class="td">EcoCharge Soluções</td>
+              <td class="td" style="white-space:nowrap;color:var(--color-text-tertiary);font-size:var(--font-size-sm);">25/05/2026 18:30</td>
+              <td class="td">Shopping Iguatemi SP</td>
+              <td class="td"><span class="badge" data-status="success"><span class="badgeDot"></span>PIX</span></td>
+              <td class="td" style="text-align:right;">51,7</td>
+              <td class="td" style="text-align:right;">78,07</td>
+              <td class="td" style="text-align:right;color:var(--color-text-tertiary);">—</td>
+              <td class="td" style="text-align:right;">15,61</td>
+              <td class="td" style="text-align:right;color:var(--color-status-success-fg);font-weight:var(--font-weight-medium);">62,46</td>
+            </tr>
+
+            <tr class="tr">
+              <td class="td tdFirst"><span style="font-size:var(--font-size-sm);color:var(--color-text-tertiary);">98.765.432/0001-11</span></td>
+              <td class="td">Flex Eletropostos</td>
+              <td class="td" style="white-space:nowrap;color:var(--color-text-tertiary);font-size:var(--font-size-sm);">25/05/2026 15:22</td>
+              <td class="td">Shopping Morumbi</td>
+              <td class="td"><span class="badge" data-status="success"><span class="badgeDot"></span>PIX</span></td>
+              <td class="td" style="text-align:right;">38,9</td>
+              <td class="td" style="text-align:right;">58,76</td>
+              <td class="td" style="text-align:right;color:var(--color-text-tertiary);">—</td>
+              <td class="td" style="text-align:right;">11,75</td>
+              <td class="td" style="text-align:right;color:var(--color-status-success-fg);font-weight:var(--font-weight-medium);">47,01</td>
+            </tr>
+
+            <tr class="tr">
+              <td class="td tdFirst"><span style="font-size:var(--font-size-sm);color:var(--color-text-tertiary);">23.456.789/0001-22</span></td>
+              <td class="td">Spark Charging</td>
+              <td class="td" style="white-space:nowrap;color:var(--color-text-tertiary);font-size:var(--font-size-sm);">24/05/2026 20:45</td>
+              <td class="td">Hipermercado Extra Tatuapé</td>
+              <td class="td"><span class="badge" data-status="indigo"><span class="badgeDot"></span>Cartão</span></td>
+              <td class="td" style="text-align:right;">44,3</td>
+              <td class="td" style="text-align:right;">66,89</td>
+              <td class="td" style="text-align:right;">5,00</td>
+              <td class="td" style="text-align:right;">13,38</td>
+              <td class="td" style="text-align:right;color:var(--color-status-success-fg);font-weight:var(--font-weight-medium);">48,51</td>
+            </tr>
+
+            <tr class="tr">
+              <td class="td tdFirst"><span style="font-size:var(--font-size-sm);color:var(--color-text-tertiary);">34.567.890/0001-33</span></td>
+              <td class="td">VoltMax Networks</td>
+              <td class="td" style="white-space:nowrap;color:var(--color-text-tertiary);font-size:var(--font-size-sm);">24/05/2026 16:00</td>
+              <td class="td">Centro Emp. Berrini</td>
+              <td class="td"><span class="badge" data-status="success"><span class="badgeDot"></span>PIX</span></td>
+              <td class="td" style="text-align:right;">35,6</td>
+              <td class="td" style="text-align:right;">53,76</td>
+              <td class="td" style="text-align:right;color:var(--color-text-tertiary);">—</td>
+              <td class="td" style="text-align:right;">10,75</td>
+              <td class="td" style="text-align:right;color:var(--color-status-success-fg);font-weight:var(--font-weight-medium);">43,01</td>
+            </tr>
+
+          </tbody>
+          <tfoot>
+            <tr class="tr" style="border-top:var(--border-width-thin) solid var(--color-border-subtle);">
+              <td class="td tdFirst" colspan="5" style="font-weight:var(--font-weight-semibold);color:var(--color-text-primary);">Total — 8 transações</td>
+              <td class="td" style="text-align:right;font-weight:var(--font-weight-semibold);color:var(--color-text-primary);">337,0</td>
+              <td class="td" style="text-align:right;font-weight:var(--font-weight-semibold);color:var(--color-text-primary);">508,98</td>
+              <td class="td" style="text-align:right;font-weight:var(--font-weight-semibold);color:var(--color-text-primary);">20,00</td>
+              <td class="td" style="text-align:right;font-weight:var(--font-weight-semibold);color:var(--color-text-primary);">101,79</td>
+              <td class="td" style="text-align:right;font-weight:var(--font-weight-semibold);color:var(--color-status-success-fg);">387,19</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <span class="info">Exibindo 1–8 de 47 resultados</span>
+        <div class="controls">
+          <button class="paginBtn" disabled aria-label="Página anterior">
+            <i data-lucide="chevron-left" width="14" height="14"></i>
+          </button>
+          <button class="paginBtn paginBtnActive" aria-current="page">1</button>
+          <button class="paginBtn">2</button>
+          <button class="paginBtn">3</button>
+          <button class="paginBtn">4</button>
+          <button class="paginBtn">5</button>
+          <button class="paginBtn" aria-label="Próxima página">
+            <i data-lucide="chevron-right" width="14" height="14"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ── Sheet: Notificações ── -->
+<div class="sheetOverlay" id="notif-sheet" onclick="notifSheetClose()">
+  <aside class="sheetPanel" style="width:420px" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-label="Notificações">
+    <div class="sheetHeader">
+      <span class="sheetTitle">Notificações</span>
+      <button class="sheetClose" onclick="notifSheetClose()" aria-label="Fechar" type="button">
+        <i data-lucide="x" width="16" height="16"></i>
+      </button>
+    </div>
+    <div class="sheetBody">
+      <div class="notifList">
+        <div class="notifListItem unread">
+          <div class="notifListIcon warning"><i data-lucide="clock" width="16" height="16"></i></div>
+          <div class="notifListBody">
+            <div class="notifListTitle"><span class="notifListDot"></span>Credenciado aguardando aprovação</div>
+            <div class="notifListDesc">Spark Charging LTDA enviou cadastro e aguarda revisão.</div>
+          </div>
+          <span class="notifListTime">Agora</span>
+        </div>
+        <div class="notifListItem unread">
+          <div class="notifListIcon error"><i data-lucide="wifi-off" width="16" height="16"></i></div>
+          <div class="notifListBody">
+            <div class="notifListTitle"><span class="notifListDot"></span>Falha crítica na rede</div>
+            <div class="notifListDesc">ALT-112 offline — Rede Flex Eletropostos, há 18 min.</div>
+          </div>
+          <span class="notifListTime">18 min</span>
+        </div>
+        <div class="notifListItem">
+          <div class="notifListIcon warning"><i data-lucide="file-warning" width="16" height="16"></i></div>
+          <div class="notifListBody">
+            <div class="notifListTitle">Contrato vencendo em 7 dias</div>
+            <div class="notifListDesc">EcoCharge Soluções — contrato expira em 02/06/2026.</div>
+          </div>
+          <span class="notifListTime">2h</span>
+        </div>
+        <div class="notifListItem">
+          <div class="notifListIcon success"><i data-lucide="trending-up" width="16" height="16"></i></div>
+          <div class="notifListBody">
+            <div class="notifListTitle">Meta de faturamento atingida</div>
+            <div class="notifListDesc">Plataforma atingiu R$ 100k em recargas em Maio/2026.</div>
+          </div>
+          <span class="notifListTime">Ontem</span>
+        </div>
+        <div class="notifListItem">
+          <div class="notifListIcon info"><i data-lucide="file-text" width="16" height="16"></i></div>
+          <div class="notifListBody">
+            <div class="notifListTitle">Relatório mensal disponível</div>
+            <div class="notifListDesc">Relatório consolidado de Abril/2026 pronto para download.</div>
+          </div>
+          <span class="notifListTime">Ontem</span>
+        </div>
+      </div>
+    </div>
+    <div class="sheetFooter">
+      <button class="btn ghost hasLeft" type="button" onclick="notifMarkAllRead()">
+        <span class="icon"><i data-lucide="check-check" width="15" height="15"></i></span>
+        Marcar todas como lidas
+      </button>
+    </div>
+  </aside>
+</div>
+
+<script src="shared/sidebar.js"></script>
+<script>
+  function notifSheetOpen() {
+    document.getElementById('notif-sheet').classList.add('sheetOpen');
+    document.body.style.overflow = 'hidden';
+  }
+  function notifSheetClose() {
+    document.getElementById('notif-sheet').classList.remove('sheetOpen');
+    document.body.style.overflow = '';
+  }
+  function notifMarkAllRead() {
+    document.querySelectorAll('.notifListItem.unread').forEach(el => el.classList.remove('unread'));
+    const badge = document.getElementById('notif-badge');
+    if (badge) { badge.textContent = '0'; badge.style.display = 'none'; }
+    const btn = document.getElementById('notif-btn');
+    if (btn) btn.setAttribute('aria-label', 'Notificações');
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') notifSheetClose(); });
+
+  /* ── Dropdown ── */
+  function makeDropdown(dropId, triggerId, valueId, placeholder) {
+    const drop = document.getElementById(dropId);
+    const trig = document.getElementById(triggerId);
+    const val  = document.getElementById(valueId);
+    trig.addEventListener('click', e => { e.stopPropagation(); drop.classList.toggle('open'); });
+    drop.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        drop.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        const v = opt.dataset.value;
+        val.textContent = v ? opt.textContent : placeholder;
+        val.classList.toggle('placeholder', !v);
+        drop.classList.remove('open');
+      });
+    });
+    return drop;
+  }
+
+  const drops = [
+    makeDropdown('pagamento-dropdown', 'pagamento-trigger', 'pagamento-value', 'Pagamento'),
+  ];
+  document.addEventListener('click', () => drops.forEach(d => d.classList.remove('open')));
+
+  /* ── Exportar (simulado) ── */
+  document.getElementById('btn-exportar').addEventListener('click', () => {
+    const btn = document.getElementById('btn-exportar');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<span class="icon"><i data-lucide="check" width="16" height="16"></i></span> Exportado!';
+    btn.disabled = true;
+    lucide.createIcons();
+    setTimeout(() => { btn.innerHTML = orig; btn.disabled = false; lucide.createIcons(); }, 2000);
+  });
+
+  lucide.createIcons();
+</script>
+
+</body>
+</html>

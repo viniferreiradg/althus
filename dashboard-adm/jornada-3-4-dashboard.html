@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Althus ADM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../storybook/src/tokens/tokens.css" />
+  <link rel="stylesheet" href="../shared/page.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Sidebar/Sidebar.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Avatar/Avatar.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/MetricCard/MetricCard.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/LineChart/LineChart.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/DonutChart/DonutChart.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Button/Button.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Background/Background.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Sheet/Sheet.module.css" />
+</head>
+<body data-page="dashboard">
+
+<aside id="sidebar-root"></aside>
+
+<!-- ── Main ── -->
+<main class="main bgWrapper">
+  <div class="blob1"></div>
+  <div class="blob2"></div>
+  <div class="pageHeader" style="display:flex;align-items:center;justify-content:space-between;">
+    <div>
+      <h1 class="pageTitle">Dashboard</h1>
+      <p class="pageSubtitle">Visão geral da plataforma Althus</p>
+    </div>
+
+    <div class="periodSelect" id="period-select">
+      <button class="periodTrigger" id="period-trigger">
+        <i data-lucide="calendar" width="14" height="14"></i>
+        <span id="period-label">Últimos 30 dias</span>
+        <i data-lucide="chevron-down" width="14" height="14"></i>
+      </button>
+      <div class="periodMenu">
+        <div class="periodOption" data-value="7">Últimos 7 dias</div>
+        <div class="periodOption selected" data-value="30">Últimos 30 dias</div>
+        <div class="periodOption" data-value="90">Últimos 3 meses</div>
+        <div class="periodOption" data-value="365">Último ano</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pageContent" style="display:flex;flex-direction:column;gap:var(--spacing-lg);padding-top:var(--spacing-lg);">
+
+    <!-- KPI Cards — 5 colunas -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:var(--spacing-md);">
+
+      <div class="root">
+        <div class="iconWrap">
+          <i data-lucide="building-2" width="18" height="18"></i>
+        </div>
+        <div class="label">Credenciados ativos</div>
+        <div class="value">48</div>
+        <div class="trend up">
+          <i data-lucide="trending-up" width="13" height="13"></i>
+          <span>+3 vs. período anterior</span>
+        </div>
+      </div>
+
+      <div class="root">
+        <div class="iconWrap">
+          <i data-lucide="zap" width="18" height="18"></i>
+        </div>
+        <div class="label">Carregadores na rede</div>
+        <div class="value">318</div>
+        <div class="trend up">
+          <i data-lucide="trending-up" width="13" height="13"></i>
+          <span>+14 vs. período anterior</span>
+        </div>
+      </div>
+
+      <div class="root">
+        <div class="iconWrap">
+          <i data-lucide="rotate-ccw" width="18" height="18"></i>
+        </div>
+        <div class="label">Recargas no período</div>
+        <div class="value">12.847</div>
+        <div class="trend up">
+          <i data-lucide="trending-up" width="13" height="13"></i>
+          <span>+18% vs. período anterior</span>
+        </div>
+      </div>
+
+      <div class="root">
+        <div class="iconWrap">
+          <i data-lucide="circle-dollar-sign" width="18" height="18"></i>
+        </div>
+        <div class="label">Faturamento credenciados</div>
+        <div class="value">R$ 143.200</div>
+        <div class="trend up">
+          <i data-lucide="trending-up" width="13" height="13"></i>
+          <span>+9% vs. período anterior</span>
+        </div>
+      </div>
+
+      <div class="root">
+        <div class="iconWrap">
+          <i data-lucide="landmark" width="18" height="18"></i>
+        </div>
+        <div class="label">Receita Althus (taxa)</div>
+        <div class="value">R$ 14.320</div>
+        <div class="trend up">
+          <i data-lucide="trending-up" width="13" height="13"></i>
+          <span>+9% vs. período anterior</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Charts -->
+    <div class="chartsRow">
+      <div class="root">
+        <div class="title">Recargas e Faturamento no período</div>
+        <div id="chart-line"></div>
+      </div>
+      <div class="root">
+        <div class="title">Status dos carregadores</div>
+        <div id="chart-donut"></div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- ── Sheet: Notificações ── -->
+<div class="sheetOverlay" id="notif-sheet" onclick="notifSheetClose()">
+  <aside class="sheetPanel" style="width:420px" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-label="Notificações">
+    <div class="sheetHeader">
+      <span class="sheetTitle">Notificações</span>
+      <button class="sheetClose" onclick="notifSheetClose()" aria-label="Fechar" type="button">
+        <i data-lucide="x" width="16" height="16"></i>
+      </button>
+    </div>
+    <div class="sheetBody">
+      <div class="notifList">
+
+        <div class="notifListItem unread">
+          <div class="notifListIcon warning">
+            <i data-lucide="clock" width="16" height="16"></i>
+          </div>
+          <div class="notifListBody">
+            <div class="notifListTitle">
+              <span class="notifListDot"></span>
+              Credenciado aguardando aprovação
+            </div>
+            <div class="notifListDesc">Spark Charging LTDA enviou cadastro e aguarda revisão.</div>
+          </div>
+          <span class="notifListTime">Agora</span>
+        </div>
+
+        <div class="notifListItem unread">
+          <div class="notifListIcon error">
+            <i data-lucide="wifi-off" width="16" height="16"></i>
+          </div>
+          <div class="notifListBody">
+            <div class="notifListTitle">
+              <span class="notifListDot"></span>
+              Falha crítica na rede
+            </div>
+            <div class="notifListDesc">ALT-112 offline — Rede Flex Eletropostos, há 18 min.</div>
+          </div>
+          <span class="notifListTime">18 min</span>
+        </div>
+
+        <div class="notifListItem">
+          <div class="notifListIcon warning">
+            <i data-lucide="file-warning" width="16" height="16"></i>
+          </div>
+          <div class="notifListBody">
+            <div class="notifListTitle">Contrato vencendo em 7 dias</div>
+            <div class="notifListDesc">EcoCharge Soluções — contrato expira em 02/06/2026.</div>
+          </div>
+          <span class="notifListTime">2h</span>
+        </div>
+
+        <div class="notifListItem">
+          <div class="notifListIcon success">
+            <i data-lucide="trending-up" width="16" height="16"></i>
+          </div>
+          <div class="notifListBody">
+            <div class="notifListTitle">Meta de faturamento atingida</div>
+            <div class="notifListDesc">Plataforma atingiu R$ 100k em recargas em Maio/2026.</div>
+          </div>
+          <span class="notifListTime">Ontem</span>
+        </div>
+
+        <div class="notifListItem">
+          <div class="notifListIcon info">
+            <i data-lucide="file-text" width="16" height="16"></i>
+          </div>
+          <div class="notifListBody">
+            <div class="notifListTitle">Relatório mensal disponível</div>
+            <div class="notifListDesc">Relatório consolidado de Abril/2026 pronto para download.</div>
+          </div>
+          <span class="notifListTime">Ontem</span>
+        </div>
+
+      </div>
+    </div>
+    <div class="sheetFooter">
+      <button class="btn ghost hasLeft" type="button" onclick="notifMarkAllRead()">
+        <span class="icon"><i data-lucide="check-check" width="15" height="15"></i></span>
+        Marcar todas como lidas
+      </button>
+    </div>
+  </aside>
+</div>
+
+<script src="shared/sidebar.js"></script>
+<script>
+  /* ── Sheet de notificações ── */
+  function notifSheetOpen() {
+    document.getElementById('notif-sheet').classList.add('sheetOpen');
+    document.body.style.overflow = 'hidden';
+  }
+  function notifSheetClose() {
+    document.getElementById('notif-sheet').classList.remove('sheetOpen');
+    document.body.style.overflow = '';
+  }
+  function notifMarkAllRead() {
+    document.querySelectorAll('.notifListItem.unread').forEach(el => el.classList.remove('unread'));
+    const badge = document.getElementById('notif-badge');
+    if (badge) { badge.textContent = '0'; badge.style.display = 'none'; }
+    const btn = document.getElementById('notif-btn');
+    if (btn) btn.setAttribute('aria-label', 'Notificações');
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') notifSheetClose(); });
+
+  lucide.createIcons();
+
+  /* ── Period filter ── */
+  const periodSelect  = document.getElementById('period-select');
+  const periodTrigger = document.getElementById('period-trigger');
+  const periodLabel   = document.getElementById('period-label');
+
+  periodTrigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    periodSelect.classList.toggle('open');
+  });
+  document.addEventListener('click', () => periodSelect.classList.remove('open'));
+  document.querySelectorAll('.periodOption').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('.periodOption').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      periodLabel.textContent = opt.textContent;
+      periodSelect.classList.remove('open');
+    });
+  });
+
+  /* ── Token helper ── */
+  const css = (token) => getComputedStyle(document.documentElement).getPropertyValue(token).trim();
+
+  /* ── Charts base config ── */
+  const mode = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  const base = {
+    chart: {
+      background: 'transparent',
+      fontFamily: css('--font-body') + ', system-ui, sans-serif',
+      toolbar: { show: false },
+      animations: { enabled: true, speed: 400 },
+    },
+    theme: { mode },
+    tooltip: { theme: mode },
+  };
+
+  /* Line chart */
+  new ApexCharts(document.getElementById('chart-line'), {
+    ...base,
+    chart: { ...base.chart, type: 'line', height: 264 },
+    stroke: { curve: 'smooth', width: [2, 2] },
+    colors: [css('--color-text-brand'), css('--color-text-link')],
+    series: [
+      { name: 'Recargas',              data: [380, 510, 430, 680, 590, 820, 870, 740] },
+      { name: 'Receita Althus (R$)',   data: [4200, 5600, 4750, 7500, 6500, 9000, 9600, 8100] },
+    ],
+    xaxis: {
+      categories: ['01/05','05/05','09/05','13/05','17/05','21/05','25/05','29/05'],
+      axisBorder: { show: false },
+      axisTicks:  { show: false },
+      labels: { style: { colors: css('--color-text-tertiary'), fontSize: '11px' } },
+    },
+    yaxis: [
+      {
+        title: { text: 'Recargas', style: { color: css('--color-text-brand'), fontSize: '11px' } },
+        labels: { style: { colors: css('--color-text-tertiary'), fontSize: '11px' } },
+      },
+      {
+        opposite: true,
+        title: { text: 'Receita Althus (R$)', style: { color: css('--color-text-link'), fontSize: '11px' } },
+        labels: {
+          style: { colors: css('--color-text-tertiary'), fontSize: '11px' },
+          formatter: v => 'R$ ' + v.toLocaleString('pt-BR'),
+        },
+      },
+    ],
+    grid: { borderColor: css('--color-border-subtle'), strokeDashArray: 4 },
+    legend: { labels: { colors: css('--color-text-tertiary') }, fontSize: '12px' },
+    markers: { size: 0 },
+    tooltip: {
+      theme: mode,
+      y: [
+        { formatter: v => v + ' recargas' },
+        { formatter: v => 'R$ ' + v.toLocaleString('pt-BR') },
+      ],
+    },
+  }).render();
+
+  /* Donut chart — SVG nativo (rounded caps, gaps) */
+  (function () {
+    const ns = 'http://www.w3.org/2000/svg';
+    const CX = 50, CY = 50, R = 38, SW = 8, GAP = 12;
+
+    const series     = [248, 38, 20, 12];
+    const labels     = ['Ativo', 'Inativo', 'Em manutenção', 'Instalando'];
+    const colors     = [
+      css('--color-status-success-fg'),
+      css('--color-status-disabled-fg'),
+      css('--color-status-warning-fg'),
+      css('--color-status-info-fg'),
+    ];
+    const totalLabel = 'Total';
+    const svgSize    = 174; /* 264 - 90 */
+
+    const total = series.reduce((a, b) => a + b, 0);
+    const circ  = 2 * Math.PI * R;
+
+    /* SVG */
+    const svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('viewBox', '0 0 100 100');
+    svg.setAttribute('width',  svgSize);
+    svg.setAttribute('height', svgSize);
+    svg.setAttribute('aria-hidden', 'true');
+
+    let cum = 0;
+    series.forEach((v, i) => {
+      const arc = (v / total) * circ;
+      const len = Math.max(0, arc - GAP);
+      const rot = (cum / circ) * 360 - 90;
+      cum += arc;
+      const c = document.createElementNS(ns, 'circle');
+      c.setAttribute('cx', CX);           c.setAttribute('cy', CY);       c.setAttribute('r', R);
+      c.setAttribute('fill', 'none');     c.setAttribute('stroke', colors[i]);
+      c.setAttribute('stroke-width', SW); c.setAttribute('stroke-linecap', 'round');
+      c.setAttribute('stroke-dasharray', `${len} ${circ}`);
+      c.setAttribute('transform', `rotate(${rot}, ${CX}, ${CY})`);
+      svg.appendChild(c);
+    });
+
+    const mkText = (y, size, weight, fill, content) => {
+      const t = document.createElementNS(ns, 'text');
+      t.setAttribute('x', CX);       t.setAttribute('y', y);
+      t.setAttribute('text-anchor', 'middle');
+      t.setAttribute('dominant-baseline', 'middle');
+      t.setAttribute('font-size', size);   t.setAttribute('font-weight', weight);
+      t.setAttribute('font-family', 'Inter, system-ui, sans-serif');
+      t.setAttribute('fill', fill);  t.textContent = content;
+      return t;
+    };
+    svg.appendChild(mkText(44, 16, 600, 'var(--color-text-primary)',   total));
+    svg.appendChild(mkText(59,  8, 400, 'var(--color-text-tertiary)', totalLabel));
+
+    /* Legend */
+    const legend = document.createElement('div');
+    legend.className = 'legend';
+    labels.forEach((lbl, i) => {
+      const item  = document.createElement('div');  item.className  = 'legendItem';
+      const dot   = document.createElement('span'); dot.className   = 'legendDot';   dot.style.background = colors[i];
+      const label = document.createElement('span'); label.className = 'legendLabel'; label.textContent = lbl;
+      const val   = document.createElement('span'); val.className   = 'legendValue'; val.textContent   = series[i];
+      item.append(dot, label, val);
+      legend.appendChild(item);
+    });
+
+    const wrap = document.createElement('div');
+    wrap.className = 'svgWrap';
+    wrap.appendChild(svg);
+
+    const container = document.getElementById('chart-donut');
+    container.append(wrap, legend);
+  })();
+</script>
+
+</body>
+</html>

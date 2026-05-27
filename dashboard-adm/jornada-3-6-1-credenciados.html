@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Credenciados — Althus ADM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../storybook/src/tokens/tokens.css" />
+  <link rel="stylesheet" href="../shared/page.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Sidebar/Sidebar.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Avatar/Avatar.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Background/Background.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Button/Button.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Input/Input.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Dropdown/Dropdown.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Table/Table.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Pagination/Pagination.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Sheet/Sheet.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Tab/Tab.module.css" />
+
+
+</head>
+<body data-page="credenciados">
+
+<aside id="sidebar-root"></aside>
+
+<main class="main bgWrapper" id="main">
+  <div class="blob1"></div>
+  <div class="blob2"></div>
+
+  <!-- Page header -->
+  <div class="pageHeader pageHeaderRow">
+    <div>
+      <h1 class="pageTitle">Credenciados</h1>
+      <p class="pageSubtitle">Empresas e redes credenciadas na plataforma Althus</p>
+    </div>
+    <button class="btn primary hasLeft" onclick="location.href='jornada-3-6-2-editar-credenciado.html'">
+      <span class="icon"><i data-lucide="plus" width="16" height="16"></i></span>
+      Novo credenciado
+    </button>
+  </div>
+
+  <!-- Tab nav -->
+  <div class="tabNav">
+    <div class="tabList" role="tablist">
+      <button class="tabBtn tabBtnActive tabLeft" role="tab" aria-selected="true">Credenciados</button>
+      <button class="tabBtn tabRight" role="tab" aria-selected="false" onclick="location.href='jornada-3-6-1b-distribuidores.html'">Distribuidores</button>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="searchWrap">
+      <div class="wrapper hasLeft">
+        <div class="inputWrap">
+          <span class="iconLeft"><i data-lucide="search" width="16" height="16"></i></span>
+          <input class="input" type="text" placeholder="Buscar por razão social ou CNPJ…" />
+        </div>
+      </div>
+    </div>
+
+    <div class="filterWrap">
+      <div class="wrapper" id="distribuidor-dropdown">
+        <div class="trigger" id="distribuidor-trigger">
+          <span id="distribuidor-value" class="placeholder">Distribuidor</span>
+          <span class="chevron"><i data-lucide="chevron-down" width="14" height="14"></i></span>
+        </div>
+        <div class="menu">
+          <div class="option selected" data-value="">Todos</div>
+          <div class="option" data-value="dist-norte">Distribuidora Norte SP</div>
+          <div class="option" data-value="dist-sul">Distribuidora Sul SP</div>
+          <div class="option" data-value="dist-leste">Distribuidora Leste</div>
+          <div class="option" data-value="dist-oeste">Distribuidora Oeste</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="filterWrap">
+      <div class="wrapper" id="status-dropdown">
+        <div class="trigger" id="status-trigger">
+          <span id="status-value" class="placeholder">Status</span>
+          <span class="chevron"><i data-lucide="chevron-down" width="14" height="14"></i></span>
+        </div>
+        <div class="menu">
+          <div class="option selected" data-value="">Todos</div>
+          <div class="option" data-value="ativo">Ativo</div>
+          <div class="option" data-value="inativo">Inativo</div>
+          <div class="option" data-value="pendente">Pendente</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="pageContent">
+    <div class="card">
+      <div class="tableWrap">
+        <table class="table">
+          <thead>
+            <tr class="headerRow">
+              <th class="th thFirst sortable" style="width:28%;">
+                <span class="thInner">Razão social <span class="sortIcon"><i data-lucide="chevrons-up-down" width="12" height="12"></i></span></span>
+              </th>
+              <th class="th" style="width:16%;">CNPJ</th>
+              <th class="th" style="width:18%;">Responsável</th>
+              <th class="th" style="width:20%;">Distribuidor</th>
+              <th class="th" style="width:10%;">Status</th>
+              <th class="th" style="width:8%;">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr class="tr">
+              <td class="td tdFirst">
+                <div class="cellUser">
+                  <div class="avatar sm"><img class="avatarImg" src="credenciados/logo-credenciados_03.jpg" alt="Rede Flex Eletropostos" /></div>
+                  Rede Flex Eletropostos
+                </div>
+              </td>
+              <td class="td">12.345.678/0001-90</td>
+              <td class="td">Marcos Lima</td>
+              <td class="td">Dist. Norte SP</td>
+              <td class="td"><span class="badge" data-status="success"><span class="badgeDot"></span>Ativo</span></td>
+              <td class="td tdActions">
+                <div class="cellActions">
+                  <button class="actionBtn" aria-label="Ver detalhes" onclick="location.href='jornada-3-6-1b-detalhe-credenciado.html'">
+                    <i data-lucide="eye" width="15" height="15"></i>
+                  </button>
+                  <button class="actionBtn" aria-label="Editar credenciado" onclick="location.href='jornada-3-6-2-editar-credenciado.html'">
+                    <i data-lucide="pencil" width="15" height="15"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <tr class="tr">
+              <td class="td tdFirst">
+                <div class="cellUser">
+                  <div class="avatar sm"><img class="avatarImg" src="credenciados/logo-credenciados_05.jpg" alt="AutoCharge Brasil Ltda" /></div>
+                  AutoCharge Brasil Ltda
+                </div>
+              </td>
+              <td class="td">23.456.789/0001-12</td>
+              <td class="td">Patrícia Nunes</td>
+              <td class="td">Dist. Sul SP</td>
+              <td class="td"><span class="badge" data-status="success"><span class="badgeDot"></span>Ativo</span></td>
+              <td class="td tdActions">
+                <div class="cellActions">
+                  <button class="actionBtn" aria-label="Ver detalhes" onclick="location.href='jornada-3-6-1b-detalhe-credenciado.html'">
+                    <i data-lucide="eye" width="15" height="15"></i>
+                  </button>
+                  <button class="actionBtn" aria-label="Editar credenciado" onclick="location.href='jornada-3-6-2-editar-credenciado.html'">
+                    <i data-lucide="pencil" width="15" height="15"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <tr class="tr">
+              <td class="td tdFirst">
+                <div class="cellUser">
+                  <div class="avatar sm"><img class="avatarImg" src="credenciados/logo-credenciados_07.jpg" alt="Voltamax Energia ME" /></div>
+                  Voltamax Energia ME
+                </div>
+              </td>
+              <td class="td">34.567.890/0001-34</td>
+              <td class="td">Ricardo Souza</td>
+              <td class="td">Dist. Leste</td>
+              <td class="td"><span class="badge" data-status="warning"><span class="badgeDot"></span>Pendente</span></td>
+              <td class="td tdActions">
+                <div class="cellActions">
+                  <button class="actionBtn" aria-label="Ver detalhes" onclick="location.href='jornada-3-6-1b-detalhe-credenciado.html'">
+                    <i data-lucide="eye" width="15" height="15"></i>
+                  </button>
+                  <button class="actionBtn" aria-label="Editar credenciado" onclick="location.href='jornada-3-6-2-editar-credenciado.html'">
+                    <i data-lucide="pencil" width="15" height="15"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <tr class="tr">
+              <td class="td tdFirst">
+                <div class="cellUser">
+                  <div class="avatar sm"><img class="avatarImg" src="credenciados/logo-credenciados_09.jpg" alt="EcoCharge Soluções" /></div>
+                  EcoCharge Soluções
+                </div>
+              </td>
+              <td class="td">45.678.901/0001-56</td>
+              <td class="td">Amanda Ferreira</td>
+              <td class="td">Dist. Norte SP</td>
+              <td class="td"><span class="badge" data-status="success"><span class="badgeDot"></span>Ativo</span></td>
+              <td class="td tdActions">
+                <div class="cellActions">
+                  <button class="actionBtn" aria-label="Ver detalhes" onclick="location.href='jornada-3-6-1b-detalhe-credenciado.html'">
+                    <i data-lucide="eye" width="15" height="15"></i>
+                  </button>
+                  <button class="actionBtn" aria-label="Editar credenciado" onclick="location.href='jornada-3-6-2-editar-credenciado.html'">
+                    <i data-lucide="pencil" width="15" height="15"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <tr class="tr">
+              <td class="td tdFirst">
+                <div class="cellUser">
+                  <div class="avatar sm"><img class="avatarImg" src="credenciados/logo-credenciados_15.jpg" alt="Turbo Eletro Serviços" /></div>
+                  Turbo Eletro Serviços
+                </div>
+              </td>
+              <td class="td">56.789.012/0001-78</td>
+              <td class="td">Bruno Costa</td>
+              <td class="td">Dist. Sul SP</td>
+              <td class="td"><span class="badge" data-status="error"><span class="badgeDot"></span>Inativo</span></td>
+              <td class="td tdActions">
+                <div class="cellActions">
+                  <button class="actionBtn" aria-label="Ver detalhes" onclick="location.href='jornada-3-6-1b-detalhe-credenciado.html'">
+                    <i data-lucide="eye" width="15" height="15"></i>
+                  </button>
+                  <button class="actionBtn" aria-label="Editar credenciado" onclick="location.href='jornada-3-6-2-editar-credenciado.html'">
+                    <i data-lucide="pencil" width="15" height="15"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <tr class="tr">
+              <td class="td tdFirst">
+                <div class="cellUser">
+                  <div class="avatar sm"><img class="avatarImg" src="credenciados/logo-credenciados_16.jpg" alt="GreenPower Charging" /></div>
+                  GreenPower Charging
+                </div>
+              </td>
+              <td class="td">67.890.123/0001-90</td>
+              <td class="td">Carla Matos</td>
+              <td class="td">Dist. Norte SP</td>
+              <td class="td"><span class="badge" data-status="success"><span class="badgeDot"></span>Ativo</span></td>
+              <td class="td tdActions">
+                <div class="cellActions">
+                  <button class="actionBtn" aria-label="Ver detalhes" onclick="location.href='jornada-3-6-1b-detalhe-credenciado.html'">
+                    <i data-lucide="eye" width="15" height="15"></i>
+                  </button>
+                  <button class="actionBtn" aria-label="Editar credenciado" onclick="location.href='jornada-3-6-2-editar-credenciado.html'">
+                    <i data-lucide="pencil" width="15" height="15"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <tr class="tr">
+              <td class="td tdFirst">
+                <div class="cellUser">
+                  <div class="avatar sm"><img class="avatarImg" src="credenciados/logo-credenciados_17.jpg" alt="IonMove Mobilidade" /></div>
+                  IonMove Mobilidade
+                </div>
+              </td>
+              <td class="td">78.901.234/0001-01</td>
+              <td class="td">Felipe Ramos</td>
+              <td class="td">Dist. Oeste</td>
+              <td class="td"><span class="badge" data-status="success"><span class="badgeDot"></span>Ativo</span></td>
+              <td class="td tdActions">
+                <div class="cellActions">
+                  <button class="actionBtn" aria-label="Ver detalhes" onclick="location.href='jornada-3-6-1b-detalhe-credenciado.html'">
+                    <i data-lucide="eye" width="15" height="15"></i>
+                  </button>
+                  <button class="actionBtn" aria-label="Editar credenciado" onclick="location.href='jornada-3-6-2-editar-credenciado.html'">
+                    <i data-lucide="pencil" width="15" height="15"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+            <tr class="tr">
+              <td class="td tdFirst">
+                <div class="cellUser">
+                  <div class="avatar sm"><img class="avatarImg" src="credenciados/logo-credenciados_18.jpg" alt="Spark Charging LTDA" /></div>
+                  Spark Charging LTDA
+                </div>
+              </td>
+              <td class="td">89.012.345/0001-23</td>
+              <td class="td">Luciana Torres</td>
+              <td class="td">Dist. Leste</td>
+              <td class="td"><span class="badge" data-status="warning"><span class="badgeDot"></span>Pendente</span></td>
+              <td class="td tdActions">
+                <div class="cellActions">
+                  <button class="actionBtn" aria-label="Ver detalhes" onclick="location.href='jornada-3-6-1b-detalhe-credenciado.html'">
+                    <i data-lucide="eye" width="15" height="15"></i>
+                  </button>
+                  <button class="actionBtn" aria-label="Editar credenciado" onclick="location.href='jornada-3-6-2-editar-credenciado.html'">
+                    <i data-lucide="pencil" width="15" height="15"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <span class="info">Exibindo 1–8 de 48 resultados</span>
+        <div class="controls">
+          <button class="paginBtn" disabled aria-label="Página anterior">
+            <i data-lucide="chevron-left" width="14" height="14"></i>
+          </button>
+          <button class="paginBtn paginBtnActive" aria-current="page">1</button>
+          <button class="paginBtn">2</button>
+          <button class="paginBtn">3</button>
+          <span class="paginBtn" style="pointer-events:none;border-color:transparent;background:transparent;">…</span>
+          <button class="paginBtn">6</button>
+          <button class="paginBtn" aria-label="Próxima página">
+            <i data-lucide="chevron-right" width="14" height="14"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- ── Sheet: Notificações ── -->
+<div class="sheetOverlay" id="notif-sheet" onclick="notifSheetClose()">
+  <aside class="sheetPanel" style="width:420px" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-label="Notificações">
+    <div class="sheetHeader">
+      <span class="sheetTitle">Notificações</span>
+      <button class="sheetClose" onclick="notifSheetClose()" aria-label="Fechar" type="button">
+        <i data-lucide="x" width="16" height="16"></i>
+      </button>
+    </div>
+    <div class="sheetBody">
+      <div class="notifList">
+
+        <div class="notifListItem unread">
+          <div class="notifListIcon warning">
+            <i data-lucide="clock" width="16" height="16"></i>
+          </div>
+          <div class="notifListBody">
+            <div class="notifListTitle">
+              <span class="notifListDot"></span>
+              Credenciado aguardando aprovação
+            </div>
+            <div class="notifListDesc">Spark Charging LTDA enviou cadastro e aguarda revisão.</div>
+          </div>
+          <span class="notifListTime">Agora</span>
+        </div>
+
+        <div class="notifListItem unread">
+          <div class="notifListIcon error">
+            <i data-lucide="wifi-off" width="16" height="16"></i>
+          </div>
+          <div class="notifListBody">
+            <div class="notifListTitle">
+              <span class="notifListDot"></span>
+              Falha crítica na rede
+            </div>
+            <div class="notifListDesc">ALT-112 offline — Rede Flex Eletropostos, há 18 min.</div>
+          </div>
+          <span class="notifListTime">18 min</span>
+        </div>
+
+        <div class="notifListItem">
+          <div class="notifListIcon warning">
+            <i data-lucide="file-warning" width="16" height="16"></i>
+          </div>
+          <div class="notifListBody">
+            <div class="notifListTitle">Contrato vencendo em 7 dias</div>
+            <div class="notifListDesc">EcoCharge Soluções — contrato expira em 02/06/2026.</div>
+          </div>
+          <span class="notifListTime">2h</span>
+        </div>
+
+        <div class="notifListItem">
+          <div class="notifListIcon success">
+            <i data-lucide="trending-up" width="16" height="16"></i>
+          </div>
+          <div class="notifListBody">
+            <div class="notifListTitle">Meta de faturamento atingida</div>
+            <div class="notifListDesc">Plataforma atingiu R$ 100k em recargas em Maio/2026.</div>
+          </div>
+          <span class="notifListTime">Ontem</span>
+        </div>
+
+        <div class="notifListItem">
+          <div class="notifListIcon info">
+            <i data-lucide="file-text" width="16" height="16"></i>
+          </div>
+          <div class="notifListBody">
+            <div class="notifListTitle">Relatório mensal disponível</div>
+            <div class="notifListDesc">Relatório consolidado de Abril/2026 pronto para download.</div>
+          </div>
+          <span class="notifListTime">Ontem</span>
+        </div>
+
+      </div>
+    </div>
+    <div class="sheetFooter">
+      <button class="btn ghost hasLeft" type="button" onclick="notifMarkAllRead()">
+        <span class="icon"><i data-lucide="check-check" width="15" height="15"></i></span>
+        Marcar todas como lidas
+      </button>
+    </div>
+  </aside>
+</div>
+
+<script src="shared/sidebar.js"></script>
+<script>
+  /* ── Sheet de notificações ── */
+  function notifSheetOpen() {
+    document.getElementById('notif-sheet').classList.add('sheetOpen');
+    document.body.style.overflow = 'hidden';
+  }
+  function notifSheetClose() {
+    document.getElementById('notif-sheet').classList.remove('sheetOpen');
+    document.body.style.overflow = '';
+  }
+  function notifMarkAllRead() {
+    document.querySelectorAll('.notifListItem.unread').forEach(el => el.classList.remove('unread'));
+    const badge = document.getElementById('notif-badge');
+    if (badge) { badge.textContent = '0'; badge.style.display = 'none'; }
+    const btn = document.getElementById('notif-btn');
+    if (btn) btn.setAttribute('aria-label', 'Notificações');
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') notifSheetClose(); });
+
+  function makeDropdown(dropId, triggerId, valueId, placeholder) {
+    const drop = document.getElementById(dropId);
+    const trig = document.getElementById(triggerId);
+    const val  = document.getElementById(valueId);
+    trig.addEventListener('click', e => { e.stopPropagation(); drop.classList.toggle('open'); });
+    drop.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        drop.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        const v = opt.dataset.value;
+        val.textContent = v ? opt.textContent : placeholder;
+        val.classList.toggle('placeholder', !v);
+        drop.classList.remove('open');
+      });
+    });
+    return drop;
+  }
+
+  const drops = [
+    makeDropdown('distribuidor-dropdown', 'distribuidor-trigger', 'distribuidor-value', 'Distribuidor'),
+    makeDropdown('status-dropdown',       'status-trigger',       'status-value',       'Status'),
+  ];
+
+  document.addEventListener('click', () => drops.forEach(d => d.classList.remove('open')));
+
+  lucide.createIcons();
+</script>
+
+</body>
+</html>

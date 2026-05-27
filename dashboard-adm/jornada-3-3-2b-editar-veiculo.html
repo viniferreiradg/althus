@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar veículo — Althus ADM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!-- Design system -->
+  <link rel="stylesheet" href="../storybook/src/tokens/tokens.css" />
+  <link rel="stylesheet" href="../shared/page.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Sidebar/Sidebar.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Avatar/Avatar.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Background/Background.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Button/Button.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Input/Input.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Dropdown/Dropdown.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Breadcrumb/Breadcrumb.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Divider/Divider.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Feedback/Feedback.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Card/Card.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Chip/Chip.module.css" />
+  <link rel="stylesheet" href="../storybook/src/components/Sheet/Sheet.module.css" />
+</head>
+<body data-page="veiculos">
+
+<aside id="sidebar-root"></aside>
+
+<main class="main bgWrapper" id="main">
+  <div class="blob1"></div>
+  <div class="blob2"></div>
+
+  <!-- Page header -->
+  <div class="pageHeader">
+    <nav aria-label="Breadcrumb" class="nav">
+      <ol class="list">
+        <li class="item">
+          <a href="jornada-3-3-veiculos.html" class="link">
+            Catálogo de Veículos
+            <span class="sep" aria-hidden="true"><i data-lucide="chevron-right" width="12" height="12"></i></span>
+          </a>
+        </li>
+        <li class="item">
+          <a href="jornada-3-3-1b-detalhe-veiculo.html" class="link">
+            Model 3
+            <span class="sep" aria-hidden="true"><i data-lucide="chevron-right" width="12" height="12"></i></span>
+          </a>
+        </li>
+        <li class="item">
+          <span class="current" aria-current="page">Editar</span>
+        </li>
+      </ol>
+    </nav>
+    <h1 class="pageTitle">Editar veículo</h1>
+    <p class="pageSubtitle">Model 3</p>
+  </div>
+
+  <div class="pageContent">
+
+    <!-- Feedback de sucesso -->
+    <div class="feedbackWrap" id="feedback-wrap">
+      <div class="alert success" role="alert">
+        <span style="flex-shrink:0;margin-top:1px;">
+          <i data-lucide="circle-check" width="18" height="18"></i>
+        </span>
+        <div class="body">
+          <div class="title">Alterações salvas com sucesso!</div>
+          <div class="message">Os dados do veículo foram atualizados na plataforma.</div>
+        </div>
+        <button class="dismiss" aria-label="Fechar" onclick="document.getElementById('feedback-wrap').classList.remove('visible')">
+          <i data-lucide="x" width="14" height="14"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="card">
+
+      <!-- ── Seção 1: Identificação ── -->
+      <div class="formSection">
+        <h2 class="sectionTitle">Identificação</h2>
+        <p class="sectionSubtitle">Marca, modelo e versão do veículo</p>
+
+        <div class="formGrid" style="gap:var(--spacing-md);">
+
+          <div class="wrapper" id="marca-dropdown">
+            <label class="label" for="marca-trigger">Marca</label>
+            <div class="trigger" id="marca-trigger" style="height:40px;">
+              <span id="marca-value">Tesla</span>
+              <span class="chevron"><i data-lucide="chevron-down" width="14" height="14"></i></span>
+            </div>
+            <div class="menu">
+              <div class="option" data-value="">Selecione a marca</div>
+              <div class="option" data-value="bmw">BMW</div>
+              <div class="option" data-value="byd">BYD</div>
+              <div class="option" data-value="chevrolet">Chevrolet</div>
+              <div class="option" data-value="fiat">Fiat</div>
+              <div class="option" data-value="hyundai">Hyundai</div>
+              <div class="option" data-value="renault">Renault</div>
+              <div class="option selected" data-value="tesla">Tesla</div>
+              <div class="option" data-value="volkswagen">Volkswagen</div>
+            </div>
+          </div>
+
+          <div class="formGrid grid2">
+            <div class="wrapper">
+              <label class="label" for="modelo">Modelo</label>
+              <div class="inputWrap">
+                <input class="input" id="modelo" type="text" value="Model 3" placeholder="Ex.: Model 3" />
+              </div>
+            </div>
+            <div class="wrapper">
+              <label class="label" for="versao">Versão <span style="color:var(--color-text-tertiary);font-weight:var(--font-weight-regular);">(opcional)</span></label>
+              <div class="inputWrap">
+                <input class="input" id="versao" type="text" value="Long Range AWD" placeholder="Ex.: Long Range AWD" />
+              </div>
+            </div>
+          </div>
+
+          <div class="formGrid grid2">
+            <div class="wrapper">
+              <label class="label" for="ano">Ano de fabricação</label>
+              <div class="inputWrap">
+                <input class="input" id="ano" type="number" value="2023" placeholder="Ex.: 2023" min="2000" max="2030" />
+              </div>
+            </div>
+            <div class="wrapper" id="status-dropdown">
+              <label class="label" for="status-trigger">Status</label>
+              <div class="trigger" id="status-trigger" style="height:40px;">
+                <span id="status-value">Ativo</span>
+                <span class="chevron"><i data-lucide="chevron-down" width="14" height="14"></i></span>
+              </div>
+              <div class="menu">
+                <div class="option selected" data-value="ativo">Ativo</div>
+                <div class="option" data-value="inativo">Inativo</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- ── Seção 2: Especificações de carga ── -->
+      <div class="formSection">
+        <h2 class="sectionTitle">Especificações de carga</h2>
+        <p class="sectionSubtitle">Dados técnicos de carregamento e autonomia</p>
+
+        <div class="formGrid" style="gap:var(--spacing-md);">
+
+          <div class="wrapper">
+            <span class="label">Tipos de conectores</span>
+            <div class="chipGroup">
+              <label class="chip"><input type="checkbox" value="ccs2" checked />CCS2</label>
+              <label class="chip"><input type="checkbox" value="ccs1" />CCS1</label>
+              <label class="chip"><input type="checkbox" value="tipo2" />Tipo 2</label>
+              <label class="chip"><input type="checkbox" value="chademo" />CHAdeMO</label>
+              <label class="chip"><input type="checkbox" value="gbt" />GB/T</label>
+            </div>
+          </div>
+
+          <div class="formGrid grid2">
+            <div class="wrapper" id="tracao-dropdown">
+              <label class="label" for="tracao-trigger">Tipo de tração</label>
+              <div class="trigger" id="tracao-trigger" style="height:40px;">
+                <span id="tracao-value">AWD (Tração integral)</span>
+                <span class="chevron"><i data-lucide="chevron-down" width="14" height="14"></i></span>
+              </div>
+              <div class="menu">
+                <div class="option" data-value="">Selecione a tração</div>
+                <div class="option selected" data-value="awd">AWD (Tração integral)</div>
+                <div class="option" data-value="rwd">RWD (Tração traseira)</div>
+                <div class="option" data-value="fwd">FWD (Tração dianteira)</div>
+              </div>
+            </div>
+            <div class="wrapper hasLeft">
+              <label class="label" for="potencia-dc">Potência DC máx. (kW)</label>
+              <div class="inputWrap">
+                <span class="iconLeft"><i data-lucide="zap" width="16" height="16"></i></span>
+                <input class="input" id="potencia-dc" type="number" value="170" placeholder="Ex.: 170" min="0" />
+              </div>
+            </div>
+          </div>
+
+          <div class="formGrid grid2">
+            <div class="wrapper hasLeft">
+              <label class="label" for="potencia-ac">Potência AC (kW) <span style="color:var(--color-text-tertiary);font-weight:var(--font-weight-regular);">(opcional)</span></label>
+              <div class="inputWrap">
+                <span class="iconLeft"><i data-lucide="zap" width="16" height="16"></i></span>
+                <input class="input" id="potencia-ac" type="number" value="11" placeholder="Ex.: 11" min="0" />
+              </div>
+            </div>
+            <div class="wrapper">
+              <label class="label" for="bateria">Capacidade da bateria (kWh)</label>
+              <div class="inputWrap">
+                <input class="input" id="bateria" type="number" value="82" placeholder="Ex.: 82" min="0" />
+              </div>
+            </div>
+          </div>
+
+          <div class="formGrid grid2">
+            <div class="wrapper">
+              <label class="label" for="autonomia">Autonomia WLTP (km) <span style="color:var(--color-text-tertiary);font-weight:var(--font-weight-regular);">(opcional)</span></label>
+              <div class="inputWrap">
+                <input class="input" id="autonomia" type="number" value="602" placeholder="Ex.: 602" min="0" />
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Rodapé do formulário ── -->
+      <div class="formFooter">
+        <button class="btn ghost" type="button" onclick="location.href='jornada-3-3-1b-detalhe-veiculo.html'">
+          Cancelar
+        </button>
+        <button class="btn primary" type="button" id="btn-salvar">
+          Salvar alterações
+        </button>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<!-- ── Sheet: Notificações ── -->
+<div class="sheetOverlay" id="notif-sheet" onclick="notifSheetClose()">
+  <aside class="sheetPanel" style="width:420px" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-label="Notificações">
+    <div class="sheetHeader">
+      <span class="sheetTitle">Notificações</span>
+      <button class="sheetClose" onclick="notifSheetClose()" aria-label="Fechar" type="button">
+        <i data-lucide="x" width="16" height="16"></i>
+      </button>
+    </div>
+    <div class="sheetBody">
+      <div class="notifList">
+        <div class="notifListItem unread">
+          <div class="notifListIcon warning"><i data-lucide="clock" width="16" height="16"></i></div>
+          <div class="notifListBody">
+            <div class="notifListTitle"><span class="notifListDot"></span>Credenciado aguardando aprovação</div>
+            <div class="notifListDesc">Spark Charging LTDA enviou cadastro e aguarda revisão.</div>
+          </div>
+          <span class="notifListTime">Agora</span>
+        </div>
+        <div class="notifListItem unread">
+          <div class="notifListIcon error"><i data-lucide="wifi-off" width="16" height="16"></i></div>
+          <div class="notifListBody">
+            <div class="notifListTitle"><span class="notifListDot"></span>Falha crítica na rede</div>
+            <div class="notifListDesc">ALT-112 offline — Rede Flex Eletropostos, há 18 min.</div>
+          </div>
+          <span class="notifListTime">18 min</span>
+        </div>
+        <div class="notifListItem">
+          <div class="notifListIcon warning"><i data-lucide="file-warning" width="16" height="16"></i></div>
+          <div class="notifListBody">
+            <div class="notifListTitle">Contrato vencendo em 7 dias</div>
+            <div class="notifListDesc">EcoCharge Soluções — contrato expira em 02/06/2026.</div>
+          </div>
+          <span class="notifListTime">2h</span>
+        </div>
+        <div class="notifListItem">
+          <div class="notifListIcon success"><i data-lucide="trending-up" width="16" height="16"></i></div>
+          <div class="notifListBody">
+            <div class="notifListTitle">Meta de faturamento atingida</div>
+            <div class="notifListDesc">Plataforma atingiu R$ 100k em recargas em Maio/2026.</div>
+          </div>
+          <span class="notifListTime">Ontem</span>
+        </div>
+        <div class="notifListItem">
+          <div class="notifListIcon info"><i data-lucide="file-text" width="16" height="16"></i></div>
+          <div class="notifListBody">
+            <div class="notifListTitle">Relatório mensal disponível</div>
+            <div class="notifListDesc">Relatório consolidado de Abril/2026 pronto para download.</div>
+          </div>
+          <span class="notifListTime">Ontem</span>
+        </div>
+      </div>
+    </div>
+    <div class="sheetFooter">
+      <button class="btn ghost hasLeft" type="button" onclick="notifMarkAllRead()">
+        <span class="icon"><i data-lucide="check-check" width="15" height="15"></i></span>
+        Marcar todas como lidas
+      </button>
+    </div>
+  </aside>
+</div>
+
+<script src="shared/sidebar.js"></script>
+<script>
+  function notifSheetOpen() {
+    document.getElementById('notif-sheet').classList.add('sheetOpen');
+    document.body.style.overflow = 'hidden';
+  }
+  function notifSheetClose() {
+    document.getElementById('notif-sheet').classList.remove('sheetOpen');
+    document.body.style.overflow = '';
+  }
+  function notifMarkAllRead() {
+    document.querySelectorAll('.notifListItem.unread').forEach(el => el.classList.remove('unread'));
+    const badge = document.getElementById('notif-badge');
+    if (badge) { badge.textContent = '0'; badge.style.display = 'none'; }
+    const btn = document.getElementById('notif-btn');
+    if (btn) btn.setAttribute('aria-label', 'Notificações');
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') notifSheetClose(); });
+
+  /* ── Dropdowns ── */
+  function makeDropdown(dropId, triggerId, valueId, placeholder) {
+    const drop = document.getElementById(dropId);
+    const trig = document.getElementById(triggerId);
+    const val  = document.getElementById(valueId);
+    trig.addEventListener('click', e => { e.stopPropagation(); drop.classList.toggle('open'); });
+    drop.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        drop.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        const v = opt.dataset.value;
+        val.textContent = v ? opt.textContent : placeholder;
+        val.classList.toggle('placeholder', !v);
+        drop.classList.remove('open');
+      });
+    });
+    return drop;
+  }
+
+  const drops = [
+    makeDropdown('marca-dropdown',  'marca-trigger',  'marca-value',  'Selecione a marca'),
+    makeDropdown('status-dropdown', 'status-trigger', 'status-value', 'Selecione o status'),
+    makeDropdown('tracao-dropdown', 'tracao-trigger', 'tracao-value', 'Selecione a tração'),
+  ];
+  document.addEventListener('click', () => drops.forEach(d => d.classList.remove('open')));
+
+  /* ── Submit simulado ── */
+  document.getElementById('btn-salvar').addEventListener('click', () => {
+    const wrap = document.getElementById('feedback-wrap');
+    wrap.classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => location.href = 'jornada-3-3-1b-detalhe-veiculo.html', 2000);
+  });
+
+  lucide.createIcons();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Althus App</title>
+
+  <!-- ── Design tokens ───────────────────────────────── -->
+  <link rel="stylesheet" href="../storybook/src/tokens/tokens.css" />
+
+  <!-- ── Router transitions ──────────────────────────── -->
+  <link rel="stylesheet" href="../shared/transitions.css" />
+
+  <!-- ── Shell styles ────────────────────────────────── -->
+  <style>
+    /* ── Reset & base ────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* Garante que [hidden] funciona mesmo com display: flex no elemento */
+    [hidden] { display: none !important; }
+
+    body {
+      background: #0a0a0b;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-body);
+      overflow: hidden;
+    }
+
+    /* ── Desktop background ──────────────────────────── */
+    .phoneBg {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(ellipse 60% 50% at 70% 20%, rgba(185,55,55,0.18) 0%, transparent 70%),
+                  radial-gradient(ellipse 50% 40% at 30% 80%, rgba(185,55,55,0.10) 0%, transparent 70%),
+                  #0a0a0b;
+    }
+
+    /* ── Phone hardware frame ────────────────────────── */
+    .phoneFrame {
+      position: relative;
+      width: 393px;
+      height: 852px;
+      background: var(--color-gray-950);
+      border-radius: 52px;
+      border: var(--border-width-medium) solid var(--color-gray-800);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.06),
+        0 32px 80px rgba(0,0,0,0.70),
+        0 8px 20px rgba(0,0,0,0.50),
+        inset 0 0 0 1px rgba(255,255,255,0.04);
+      overflow: hidden;
+    }
+
+    /* Decorative side buttons */
+    .phoneFrame::before {
+      content: '';
+      position: absolute;
+      left: -4px;
+      top: 120px;
+      width: 3px;
+      height: 36px;
+      background: var(--color-gray-800);
+      border-radius: 2px 0 0 2px;
+      box-shadow: 0 52px 0 var(--color-gray-800), 0 96px 0 var(--color-gray-800);
+    }
+    .phoneFrame::after {
+      content: '';
+      position: absolute;
+      right: -4px;
+      top: 160px;
+      width: 3px;
+      height: 64px;
+      background: var(--color-gray-800);
+      border-radius: 0 2px 2px 0;
+    }
+
+    /* ── Dynamic island ──────────────────────────────── */
+    .dynamicIsland {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 126px;
+      height: 37px;
+      background: var(--color-gray-black);
+      border-radius: var(--radius-full);
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    /* ── Status bar ──────────────────────────────────── */
+    .statusBar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 59px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 0 var(--spacing-xl) var(--spacing-xs);
+      z-index: 50;
+      pointer-events: none;
+      font-size: 12px;
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-primary);
+      letter-spacing: 0.2px;
+    }
+    .statusBarTime {
+      font-size: 15px;
+      font-weight: var(--font-weight-semibold);
+    }
+    .statusBarIcons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ── App viewport (inside the phone) ────────────── */
+    #app {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ── Screen area ─────────────────────────────────── */
+    #screen-container {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── Bottom navigation ───────────────────────────── */
+    #bottom-nav {
+      position: relative;
+      z-index: 20;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-around;
+      padding-top: var(--spacing-xs);
+      padding-bottom: calc(var(--spacing-md) + env(safe-area-inset-bottom, 0px));
+      background: rgba(13, 14, 17, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: var(--border-width-hairline) solid var(--color-border-glass);
+    }
+
+    .navItem {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: var(--spacing-xs) var(--spacing-md);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--color-nav-idle);
+      transition: color var(--transition-fast);
+      min-width: 64px;
+    }
+    .navItem.navActive {
+      color: var(--color-text-primary);
+    }
+    .navItem:active {
+      opacity: 0.6;
+    }
+    .navIcon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .navLabel {
+      font-size: 10px;
+      font-weight: var(--font-weight-medium);
+      letter-spacing: 0.2px;
+      line-height: 1;
+    }
+
+    /* ── AppBar (used by partials) ───────────────────── */
+    .appBar {
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: var(--spacing-xs) var(--spacing-xs) var(--spacing-xs) var(--spacing-xs);
+      min-height: 56px;
+      flex-shrink: 0;
+    }
+    .appBarBack {
+      flex-shrink: 0;
+    }
+    .appBarTitle {
+      flex: 1;
+      text-align: center;
+      font-size: var(--font-size-md);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-primary);
+      padding: 0 var(--spacing-2xl);
+    }
+    .appBarAction {
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Desktop bg ──────────────────────────────────── -->
+  <div class="phoneBg">
+
+    <!-- ── Phone hardware frame ───────────────────────── -->
+    <div class="phoneFrame">
+
+      <!-- Dynamic Island -->
+      <div class="dynamicIsland"></div>
+
+      <!-- Status bar -->
+      <div class="statusBar">
+        <span class="statusBarTime">9:41</span>
+        <div class="statusBarIcons">
+          <!-- Signal bars -->
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor">
+            <rect x="0" y="6" width="3" height="6" rx="1" opacity="0.4"/>
+            <rect x="4.5" y="4" width="3" height="8" rx="1" opacity="0.6"/>
+            <rect x="9" y="2" width="3" height="10" rx="1" opacity="0.8"/>
+            <rect x="13.5" y="0" width="3" height="12" rx="1"/>
+          </svg>
+          <!-- WiFi -->
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor">
+            <path d="M8 9.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z"/>
+            <path d="M3.5 6.5a6.5 6.5 0 0 1 9 0" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <path d="M1 4A9.5 9.5 0 0 1 15 4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          </svg>
+          <!-- Battery -->
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="currentColor">
+            <rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity="0.35" fill="none"/>
+            <rect x="2" y="2" width="17" height="8" rx="2"/>
+            <path d="M23 4v4a2 2 0 0 0 0-4z"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- App -->
+      <div id="app">
+        <div id="screen-container"></div>
+
+        <!-- Bottom navigation -->
+        <nav id="bottom-nav" hidden>
+          <button class="navItem navActive" data-tab="mapa" onclick="router.tab('home-map')" aria-label="Mapa">
+            <span class="navIcon"><i data-lucide="map" width="22" height="22"></i></span>
+            <span class="navLabel">Mapa</span>
+          </button>
+          <button class="navItem" data-tab="historico" onclick="router.tab('historico-lista')" aria-label="Histórico">
+            <span class="navIcon"><i data-lucide="clock" width="22" height="22"></i></span>
+            <span class="navLabel">Histórico</span>
+          </button>
+          <button class="navItem" data-tab="carteira" onclick="router.tab('carteira')" aria-label="Carteira">
+            <span class="navIcon"><i data-lucide="wallet" width="22" height="22"></i></span>
+            <span class="navLabel">Carteira</span>
+          </button>
+          <button class="navItem" data-tab="perfil" onclick="router.tab('perfil')" aria-label="Perfil">
+            <span class="navIcon"><i data-lucide="user" width="22" height="22"></i></span>
+            <span class="navLabel">Perfil</span>
+          </button>
+        </nav>
+      </div>
+
+    </div><!-- /.phoneFrame -->
+  </div><!-- /.phoneBg -->
+
+  <!-- ── Lucide icons ────────────────────────────────── -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!-- ── Router ──────────────────────────────────────── -->
+  <script src="router.js"></script>
+
+  <!-- ── Boot ────────────────────────────────────────── -->
+  <script>
+    lucide.createIcons();
+    router.init('splash');
+  </script>
+
+</body>
+</html>
