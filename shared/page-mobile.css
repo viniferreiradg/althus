@@ -264,3 +264,236 @@ body.login-screen {
   pointer-events: none;
   z-index: 0;
 }
+
+/* ─── Map pin clickable button ───────────────────── */
+.map-pin-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+/* Second Althus pin — overrides top/left of .map-pin-center */
+.map-pin-center-2 {
+  top: 13%;
+  left: 80%;
+}
+
+/* ─── Map bottom sheet ────────────────────────────── */
+
+.map-sheet-panel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--color-bg-elevated);
+  border-top: var(--border-width-thin) solid var(--color-glass-border);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  display: flex;
+  flex-direction: column;
+  max-height: 62%;
+  box-shadow: var(--shadow-xl);
+  z-index: 10;
+}
+
+.map-sheet-close {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-md);
+  width: var(--spacing-xl);
+  height: var(--spacing-xl);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-subtle);
+  border: var(--border-width-thin) solid var(--color-border-default);
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  z-index: 1;
+}
+
+.map-sheet-close:hover { background: var(--color-bg-elevated); }
+
+.map-sheet-handle {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-sm) 0 var(--spacing-xs);
+  flex-shrink: 0;
+}
+
+.map-sheet-handle-bar {
+  width: calc(var(--spacing-xl) + var(--spacing-xs));
+  height: var(--spacing-xs);
+  border-radius: var(--radius-full);
+  background: var(--color-border-muted);
+}
+
+.map-sheet-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: 0 var(--spacing-md) calc(var(--spacing-md) + env(safe-area-inset-bottom));
+}
+
+.map-sheet-scroll::-webkit-scrollbar { display: none; }
+
+/* Station header */
+.station-header { display: flex; flex-direction: column; gap: var(--spacing-2xs); }
+
+.station-network {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-brand);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.station-name {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-snug);
+}
+
+.station-address {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  line-height: var(--line-height-normal);
+}
+
+.station-meta { display: flex; align-items: center; margin-top: var(--spacing-2xs); }
+
+.station-rating { display: flex; align-items: center; gap: var(--spacing-xs); }
+
+.station-stars {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2xs);
+  color: var(--color-action-warning);
+}
+
+.station-stars svg { fill: currentColor; }
+
+.station-rating-value {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+}
+
+.station-rating-count { font-size: var(--font-size-xs); color: var(--color-text-tertiary); }
+
+/* Section label reutilizavel */
+.sheet-section-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--spacing-xs);
+}
+
+/* Carrossel de carregadores */
+.charger-carousel {
+  display: flex;
+  gap: var(--spacing-sm);
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: var(--spacing-xs);
+  margin-left: calc(var(--spacing-md) * -1);
+  margin-right: calc(var(--spacing-md) * -1);
+  padding-left: var(--spacing-md);
+  padding-right: var(--spacing-md);
+}
+
+.charger-carousel::-webkit-scrollbar { display: none; }
+
+.charger-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-bg-subtle);
+  border: var(--border-width-thin) solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  min-width: calc(var(--spacing-4xl) + var(--spacing-xs));
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.charger-card.active {
+  background: var(--color-bg-brand);
+  border-color: var(--color-action-primary);
+}
+
+.charger-card-connector {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-tertiary);
+}
+
+.charger-card.active .charger-card-connector { color: var(--color-text-brand); }
+
+.charger-card-power {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+
+.charger-card-kw { font-size: var(--font-size-xs); color: var(--color-text-tertiary); }
+
+/* Linhas de detalhe */
+.detail-rows {
+  background: var(--color-bg-subtle);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
+  gap: var(--spacing-sm);
+}
+
+.detail-row:last-child { border-bottom: none; }
+
+.detail-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  flex-shrink: 0;
+}
+
+.detail-value {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  text-align: right;
+}
+
+.detail-value-brand {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-brand);
+  text-align: right;
+}
+
+/* Botoes de acao do sheet */
+.sheet-actions { display: flex; gap: var(--spacing-sm); flex-shrink: 0; }
+.sheet-actions .btn { flex: 1; justify-content: center; }

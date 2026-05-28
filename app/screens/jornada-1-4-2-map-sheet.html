@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Posto de Recarga — Althus</title>
+  <link rel="stylesheet" href="../../storybook/src/tokens/tokens.css" />
+  <link rel="stylesheet" href="../../shared/page-mobile.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/MapPin/MapPin.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Table/Table.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Button/Button.module.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="layout-fullbleed map-bg-dark">
+
+  <!-- ── Distributor pins (decorativos) ───────────────── -->
+  <div class="map-pin-pos-1 pin-tupi">
+    <svg class="mapPin md distributor" viewBox="0 0 24 24" fill="none" aria-label="TUPI">
+      <path class="pinBody" d="M12.601 21.799C14.461 20.193 20 14.993 20 10C20 7.87827 19.1571 5.84344 17.6569 4.34315C16.1566 2.84285 14.1217 2 12 2C9.87827 2 7.84344 2.84285 6.34315 4.34315C4.84285 5.84344 4 7.87827 4 10C4 14.993 9.539 20.193 11.399 21.799C11.5723 21.9293 11.7832 21.9998 12 21.9998C12.2168 21.9998 12.4277 21.9293 12.601 21.799Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path class="pinDot" d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div class="map-pin-pos-2 pin-tupi">
+    <svg class="mapPin md distributor" viewBox="0 0 24 24" fill="none" aria-label="TUPI">
+      <path class="pinBody" d="M12.601 21.799C14.461 20.193 20 14.993 20 10C20 7.87827 19.1571 5.84344 17.6569 4.34315C16.1566 2.84285 14.1217 2 12 2C9.87827 2 7.84344 2.84285 6.34315 4.34315C4.84285 5.84344 4 7.87827 4 10C4 14.993 9.539 20.193 11.399 21.799C11.5723 21.9293 11.7832 21.9998 12 21.9998C12.2168 21.9998 12.4277 21.9293 12.601 21.799Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path class="pinDot" d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div class="map-pin-pos-3 pin-dcc">
+    <svg class="mapPin md distributor" viewBox="0 0 24 24" fill="none" aria-label="DCC">
+      <path class="pinBody" d="M12.601 21.799C14.461 20.193 20 14.993 20 10C20 7.87827 19.1571 5.84344 17.6569 4.34315C16.1566 2.84285 14.1217 2 12 2C9.87827 2 7.84344 2.84285 6.34315 4.34315C4.84285 5.84344 4 7.87827 4 10C4 14.993 9.539 20.193 11.399 21.799C11.5723 21.9293 11.7832 21.9998 12 21.9998C12.2168 21.9998 12.4277 21.9293 12.601 21.799Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path class="pinDot" d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <!-- ── Althus pins (selecionado = centro) ────────────── -->
+  <div class="map-pin-center">
+    <svg class="mapPin md brand" viewBox="0 0 24 24" fill="none" aria-label="Auto Shopping Eixo">
+      <path class="pinBody" d="M12.601 21.799C14.461 20.193 20 14.993 20 10C20 7.87827 19.1571 5.84344 17.6569 4.34315C16.1566 2.84285 14.1217 2 12 2C9.87827 2 7.84344 2.84285 6.34315 4.34315C4.84285 5.84344 4 7.87827 4 10C4 14.993 9.539 20.193 11.399 21.799C11.5723 21.9293 11.7832 21.9998 12 21.9998C12.2168 21.9998 12.4277 21.9293 12.601 21.799Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path class="pinDot" d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+  <div class="map-pin-center map-pin-center-2">
+    <svg class="mapPin md brand" viewBox="0 0 24 24" fill="none" aria-label="Carregador">
+      <path class="pinBody" d="M12.601 21.799C14.461 20.193 20 14.993 20 10C20 7.87827 19.1571 5.84344 17.6569 4.34315C16.1566 2.84285 14.1217 2 12 2C9.87827 2 7.84344 2.84285 6.34315 4.34315C4.84285 5.84344 4 7.87827 4 10C4 14.993 9.539 20.193 11.399 21.799C11.5723 21.9293 11.7832 21.9998 12 21.9998C12.2168 21.9998 12.4277 21.9293 12.601 21.799Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path class="pinDot" d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <!-- ── Bottom sheet ───────────────────────────────────── -->
+  <div class="map-sheet-panel">
+
+    <button class="map-sheet-close" onclick="router.closeModal()" aria-label="Fechar">
+      <i data-lucide="x" width="16" height="16"></i>
+    </button>
+
+    <div class="map-sheet-handle">
+      <div class="map-sheet-handle-bar"></div>
+    </div>
+
+    <div class="map-sheet-scroll">
+
+      <!-- Cabeçalho do posto -->
+      <div class="station-header">
+        <span class="station-network">Althus Eletropostos</span>
+        <h2 class="station-name">Auto Shopping Eixo</h2>
+        <p class="station-address">Av. das Nações Unidas, 14261 — Chácara Sto. Antônio, São Paulo</p>
+        <div class="station-meta">
+          <div class="station-rating">
+            <div class="station-stars">
+              <i data-lucide="star" width="13" height="13"></i>
+              <i data-lucide="star" width="13" height="13"></i>
+              <i data-lucide="star" width="13" height="13"></i>
+              <i data-lucide="star" width="13" height="13"></i>
+              <i data-lucide="star" width="13" height="13"></i>
+            </div>
+            <span class="station-rating-value">4.8</span>
+            <span class="station-rating-count">(127 avaliações)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Carrossel de carregadores -->
+      <div>
+        <p class="sheet-section-label">Carregadores</p>
+        <div class="charger-carousel" id="charger-carousel">
+
+          <div class="charger-card active" onclick="selectCharger(0)" role="button" aria-pressed="true">
+            <span class="charger-card-connector">CCS2</span>
+            <span class="charger-card-power">50</span>
+            <span class="charger-card-kw">kW</span>
+            <span class="badge" data-status="success"><span class="badgeDot"></span>Disponível</span>
+          </div>
+
+          <div class="charger-card" onclick="selectCharger(1)" role="button" aria-pressed="false">
+            <span class="charger-card-connector">CCS2</span>
+            <span class="charger-card-power">50</span>
+            <span class="charger-card-kw">kW</span>
+            <span class="badge" data-status="error"><span class="badgeDot"></span>Ocupado</span>
+          </div>
+
+          <div class="charger-card" onclick="selectCharger(2)" role="button" aria-pressed="false">
+            <span class="charger-card-connector">Tipo 2</span>
+            <span class="charger-card-power">22</span>
+            <span class="charger-card-kw">kW</span>
+            <span class="badge" data-status="success"><span class="badgeDot"></span>Disponível</span>
+          </div>
+
+          <div class="charger-card" onclick="selectCharger(3)" role="button" aria-pressed="false">
+            <span class="charger-card-connector">CHAdeMO</span>
+            <span class="charger-card-power">44</span>
+            <span class="charger-card-kw">kW</span>
+            <span class="badge" data-status="warning"><span class="badgeDot"></span>Reservado</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Detalhe do carregador selecionado -->
+      <div>
+        <p class="sheet-section-label">Detalhes</p>
+        <div class="detail-rows" id="detail-rows">
+          <div class="detail-row">
+            <span class="detail-label">Status</span>
+            <span class="badge" data-status="success" id="detail-status"><span class="badgeDot"></span>Disponível</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Conector</span>
+            <span class="detail-value" id="detail-connector">CCS2</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Potência</span>
+            <span class="detail-value" id="detail-power">50 kW</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Preço</span>
+            <span class="detail-value-brand" id="detail-price">R$ 1,89 / kWh</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Ociosidade</span>
+            <span class="detail-value" id="detail-idle">R$ 0,50 / min (após 5 min)</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Reserva</span>
+            <span class="detail-value" id="detail-reserve">R$ 2,00 · até 30 min</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ações secundárias -->
+      <div class="sheet-actions">
+        <button class="btn secondary" id="btn-rota" onclick="openMaps()" type="button">
+          <i data-lucide="navigation" width="16" height="16"></i>
+          Traçar Rota
+        </button>
+        <button class="btn ghost" id="btn-reservar" onclick="router.push('jornada-1-4-9-reserva-confirmar')" type="button">
+          <i data-lucide="calendar" width="16" height="16"></i>
+          Reservar
+        </button>
+      </div>
+
+      <!-- Ação principal -->
+      <button class="btn primary full-width" id="btn-recarga" onclick="router.push('jornada-1-4-5-recarga-metodo')" type="button">
+        <i data-lucide="zap" width="16" height="16"></i>
+        Iniciar Recarga
+      </button>
+
+    </div>
+  </div>
+
+  <script>
+    var router = (window.parent && window.parent.router)
+      ? window.parent.router
+      : { push: function(){}, pop: function(){}, replace: function(){}, modal: function(){}, closeModal: function(){}, tab: function(){} };
+
+    var CHARGERS = [
+      { connector: 'CCS2',    power: '50 kW',  status: 'success', statusLabel: 'Disponível', price: 'R$ 1,89 / kWh', idle: 'R$ 0,50 / min (após 5 min)', reserve: 'R$ 2,00 · até 30 min',  canCharge: true,  canReserve: true  },
+      { connector: 'CCS2',    power: '50 kW',  status: 'error',   statusLabel: 'Ocupado',    price: 'R$ 1,89 / kWh', idle: 'R$ 0,50 / min (após 5 min)', reserve: '—',                      canCharge: false, canReserve: false },
+      { connector: 'Tipo 2',  power: '22 kW',  status: 'success', statusLabel: 'Disponível', price: 'R$ 1,49 / kWh', idle: '—',                          reserve: '—',                      canCharge: true,  canReserve: false },
+      { connector: 'CHAdeMO', power: '44 kW',  status: 'warning', statusLabel: 'Reservado',  price: 'R$ 1,79 / kWh', idle: 'R$ 0,50 / min (após 5 min)', reserve: 'R$ 2,00 · até 30 min',  canCharge: false, canReserve: false },
+    ];
+
+    function selectCharger(index) {
+      var cards = document.querySelectorAll('.charger-card');
+      cards.forEach(function(c, i) {
+        c.classList.toggle('active', i === index);
+        c.setAttribute('aria-pressed', i === index ? 'true' : 'false');
+      });
+
+      var c = CHARGERS[index];
+      var statusEl = document.getElementById('detail-status');
+      statusEl.dataset.status = c.status;
+      statusEl.querySelector('.badgeDot').nextSibling.textContent = c.statusLabel;
+
+      document.getElementById('detail-connector').textContent = c.connector;
+      document.getElementById('detail-power').textContent = c.power;
+      document.getElementById('detail-price').textContent = c.price;
+      document.getElementById('detail-idle').textContent = c.idle;
+      document.getElementById('detail-reserve').textContent = c.reserve;
+
+      document.getElementById('btn-recarga').disabled = !c.canCharge;
+      document.getElementById('btn-reservar').hidden = !c.canReserve;
+    }
+
+    function openMaps() {
+      window.open('https://maps.google.com/?q=Auto+Shopping+Eixo,+São+Paulo', '_blank');
+    }
+  </script>
+  <script>lucide.createIcons();</script>
+
+</body>
+</html>
