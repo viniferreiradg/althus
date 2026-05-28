@@ -28,6 +28,7 @@ const router = (() => {
 
   const TAB_MAP = {
     'jornada-1-4-1-home-map': 'mapa', 'jornada-1-4-2-map-sheet': 'mapa',
+    'jornada-1-4-lista-postos': 'postos',
     'jornada-1-4-3-map-device': 'mapa', 'jornada-1-4-4-map-filters': 'mapa',
     'jornada-1-4-5-recarga-metodo': 'mapa', 'jornada-1-4-6-recarga-pagamento': 'mapa',
     'jornada-1-4-7-recarga-andamento': 'mapa', 'jornada-1-4-8-recarga-avaliacao': 'mapa',

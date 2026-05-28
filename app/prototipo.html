@@ -601,6 +601,9 @@
             <button class="navItem navActive" data-tab="mapa" onclick="router.tab('jornada-1-4-1-home-map')" aria-label="Mapa" aria-current="page">
               <span class="navIcon"><i data-lucide="map" width="22" height="22"></i></span>
             </button>
+            <button class="navItem" data-tab="postos" onclick="router.tab('jornada-1-4-lista-postos')" aria-label="Postos">
+              <span class="navIcon"><i data-lucide="zap" width="22" height="22"></i></span>
+            </button>
             <button class="navItem" data-tab="historico" onclick="router.tab('historico-lista')" aria-label="Histórico">
               <span class="navIcon"><i data-lucide="clock" width="22" height="22"></i></span>
             </button>
@@ -654,6 +657,7 @@
         label: 'RF004 — Mapa de Postos',
         screens: [
           { label: 'Home — Mapa',                  id: 'jornada-1-4-1-home-map',            built: true },
+          { label: 'Lista de postos',               id: 'jornada-1-4-lista-postos',          built: true },
           { label: 'Detalhe — Guest (sem conta)',   id: 'jornada-1-4-2-map-sheet-guest',    built: true },
           { label: 'Detalhe — Sem veículo',         id: 'jornada-1-4-2-map-sheet-no-car',   built: true },
           { label: 'Detalhe da localidade',         id: 'jornada-1-4-2-map-sheet',          built: true },
