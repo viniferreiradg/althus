@@ -508,3 +508,18 @@ body.login-screen {
 /* Botoes de acao do sheet */
 .sheet-actions { display: flex; gap: var(--spacing-sm); flex-shrink: 0; }
 .sheet-actions .btn { flex: 1; justify-content: center; }
+
+/* ─── Guest notice (sheet sem autenticação) ──────────── */
+.sheet-guest-notice {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) 0 0;
+}
+
+.sheet-guest-notice-text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-normal);
+  text-align: center;
+}

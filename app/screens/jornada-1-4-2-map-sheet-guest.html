@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Posto de Recarga — Althus</title>
+  <link rel="stylesheet" href="../../storybook/src/tokens/tokens.css" />
+  <link rel="stylesheet" href="../../shared/page-mobile.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/MapPin/MapPin.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Button/Button.module.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="layout-fullbleed map-bg-dark">
+
+  <!-- ── Pins layer (mover esta div desloca todos os pins) ── -->
+  <div class="map-pins-layer" id="map-pins-layer">
+
+    <!-- Distributor pins (decorativos) -->
+    <div class="map-pin-pos-1 pin-tupi">
+      <svg class="mapPin md distributor" viewBox="0 0 24 24" fill="none" aria-label="TUPI">
+        <path class="pinBody" d="M12.601 21.799C14.461 20.193 20 14.993 20 10C20 7.87827 19.1571 5.84344 17.6569 4.34315C16.1566 2.84285 14.1217 2 12 2C9.87827 2 7.84344 2.84285 6.34315 4.34315C4.84285 5.84344 4 7.87827 4 10C4 14.993 9.539 20.193 11.399 21.799C11.5723 21.9293 11.7832 21.9998 12 21.9998C12.2168 21.9998 12.4277 21.9293 12.601 21.799Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="pinDot" d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="map-pin-pos-2 pin-tupi">
+      <svg class="mapPin md distributor" viewBox="0 0 24 24" fill="none" aria-label="TUPI">
+        <path class="pinBody" d="M12.601 21.799C14.461 20.193 20 14.993 20 10C20 7.87827 19.1571 5.84344 17.6569 4.34315C16.1566 2.84285 14.1217 2 12 2C9.87827 2 7.84344 2.84285 6.34315 4.34315C4.84285 5.84344 4 7.87827 4 10C4 14.993 9.539 20.193 11.399 21.799C11.5723 21.9293 11.7832 21.9998 12 21.9998C12.2168 21.9998 12.4277 21.9293 12.601 21.799Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="pinDot" d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="map-pin-pos-3 pin-dcc">
+      <svg class="mapPin md distributor" viewBox="0 0 24 24" fill="none" aria-label="DCC">
+        <path class="pinBody" d="M12.601 21.799C14.461 20.193 20 14.993 20 10C20 7.87827 19.1571 5.84344 17.6569 4.34315C16.1566 2.84285 14.1217 2 12 2C9.87827 2 7.84344 2.84285 6.34315 4.34315C4.84285 5.84344 4 7.87827 4 10C4 14.993 9.539 20.193 11.399 21.799C11.5723 21.9293 11.7832 21.9998 12 21.9998C12.2168 21.9998 12.4277 21.9293 12.601 21.799Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="pinDot" d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Althus pins (selecionado = centro) -->
+    <div class="map-pin-center">
+      <svg class="mapPin md brand" viewBox="0 0 24 24" fill="none" aria-label="Auto Shopping Eixo">
+        <path class="pinBody" d="M12.601 21.799C14.461 20.193 20 14.993 20 10C20 7.87827 19.1571 5.84344 17.6569 4.34315C16.1566 2.84285 14.1217 2 12 2C9.87827 2 7.84344 2.84285 6.34315 4.34315C4.84285 5.84344 4 7.87827 4 10C4 14.993 9.539 20.193 11.399 21.799C11.5723 21.9293 11.7832 21.9998 12 21.9998C12.2168 21.9998 12.4277 21.9293 12.601 21.799Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="pinDot" d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="map-pin-center map-pin-center-2">
+      <svg class="mapPin md brand" viewBox="0 0 24 24" fill="none" aria-label="Carregador">
+        <path class="pinBody" d="M12.601 21.799C14.461 20.193 20 14.993 20 10C20 7.87827 19.1571 5.84344 17.6569 4.34315C16.1566 2.84285 14.1217 2 12 2C9.87827 2 7.84344 2.84285 6.34315 4.34315C4.84285 5.84344 4 7.87827 4 10C4 14.993 9.539 20.193 11.399 21.799C11.5723 21.9293 11.7832 21.9998 12 21.9998C12.2168 21.9998 12.4277 21.9293 12.601 21.799Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path class="pinDot" d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+  </div>
+
+  <!-- ── Bottom sheet ───────────────────────────────────── -->
+  <div class="map-sheet-panel">
+
+    <button class="map-sheet-close" onclick="router.closeModal()" aria-label="Fechar">
+      <i data-lucide="x" width="16" height="16"></i>
+    </button>
+
+    <div class="map-sheet-handle">
+      <div class="map-sheet-handle-bar"></div>
+    </div>
+
+    <div class="map-sheet-scroll">
+
+      <!-- Cabeçalho do posto -->
+      <div class="station-header">
+        <span class="station-network">Althus Eletropostos</span>
+        <h2 class="station-name">Auto Shopping Eixo</h2>
+        <p class="station-address">Av. das Nações Unidas, 14261 — Chácara Sto. Antônio, São Paulo</p>
+        <div class="station-meta">
+          <div class="station-rating">
+            <div class="station-stars">
+              <i data-lucide="star" width="13" height="13"></i>
+              <i data-lucide="star" width="13" height="13"></i>
+              <i data-lucide="star" width="13" height="13"></i>
+              <i data-lucide="star" width="13" height="13"></i>
+              <i data-lucide="star" width="13" height="13"></i>
+            </div>
+            <span class="station-rating-value">4.8</span>
+            <span class="station-rating-count">(127 avaliações)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Aviso para usuário não autenticado -->
+      <div class="sheet-guest-notice">
+        <p class="sheet-guest-notice-text">
+          Você precisa ter uma conta na Althus e cadastrar pelo menos um veículo para iniciar uma recarga.
+        </p>
+        <button class="btn primary full-width" onclick="router.push('jornada-1-2-2-cadastro-step1')" type="button">
+          <i data-lucide="user-plus" width="16" height="16"></i>
+          Criar conta
+        </button>
+        <button class="btn secondary full-width" onclick="router.replace('jornada-1-2-1-login')" type="button">
+          Fazer login
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    var router = (window.parent && window.parent.router)
+      ? window.parent.router
+      : { push: function(){}, pop: function(){}, replace: function(){}, modal: function(){}, closeModal: function(){}, tab: function(){} };
+  </script>
+  <script>lucide.createIcons();</script>
+
+</body>
+</html>

@@ -140,6 +140,7 @@ router.tab('screen-id')       // trocar aba (fade + shift)
 | Status | ID | Title |
 |---|---|---|
 | ✅ | jornada-1-4-1-home-map | Home — Mapa |
+| ✅ | jornada-1-4-2-map-sheet-guest | Detalhe da localidade — Guest (sem conta) |
 | ✅ | jornada-1-4-2-map-sheet | Detalhe da localidade |
 | ⬜ | jornada-1-4-3-map-device | Detalhe do dispositivo |
 | ⬜ | jornada-1-4-4-map-filters | Filtros de busca |
