@@ -13,9 +13,11 @@
 }
 
 /* Impede propagação do background do body + centraliza a tela no viewport */
+/* (no desktop prototipo, centraliza os 393px; no iframe/PWA, body já preenche 100%) */
 html {
   background: #000;
-  min-height: 100vh;
+  width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,14 +33,15 @@ html {
 [hidden] { display: none !important; }
 
 /* ─── Base body ──────────────────────────────────────── */
+/* width/height 100% → adapta ao iframe (prototipo desktop = 393×852, PWA = viewport real) */
 body {
   font-family: var(--font-body);
   color: var(--color-text-primary);
   background: var(--color-bg-default);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  width: 393px;
-  height: 852px;
+  width: 100%;
+  height: 100%;
 }
 
 /* ─── Layout: tela mobile padrão ─────────────────────── */
@@ -60,8 +63,6 @@ body.layout-screen.scrollable::-webkit-scrollbar {
 
 /* ─── Layout: mapa ou mídia full-bleed ───────────────── */
 body.layout-fullbleed {
-  width: 393px;
-  height: 852px;
   overflow: hidden;
   position: relative;
 }
@@ -637,4 +638,141 @@ body.login-screen {
   color: var(--color-border-muted);
   display: flex;
   align-items: center;
+}
+
+/* ─── Cadastro — nota de segurança (pagamento) ──────────── */
+.card-security-note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-disabled);
+  line-height: var(--line-height-normal);
+}
+
+.card-security-note svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ─── Checkbox — estado ativo via :has (HTML standalone) ────
+   Checkbox.module.css usa a classe .checked no wrapper (toggle
+   via React). Em HTML puro, usamos :has para dispensar o JS
+   de classe e manter a mesma aparência visual.               */
+.wrapper:has(input[type="checkbox"]:checked) .box {
+  background: var(--color-action-primary);
+  border-color: var(--color-action-primary);
+}
+.wrapper:has(input[type="checkbox"]:checked) .mark {
+  display: flex;
+}
+
+/* ─── Cadastro step 5 — termos ───────────────────────────── */
+
+/* Caixa com scroll para o resumo dos termos */
+.terms-box {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-muted) transparent;
+  background: var(--color-bg-subtle);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-md);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+}
+
+.terms-box h3 {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-xs);
+}
+
+.terms-box p { margin: 0 0 var(--spacing-sm); }
+.terms-box p:last-child { margin-bottom: 0; }
+
+/* Grupo vertical de checkboxes */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+/* Link inline dentro do label de checkbox (ex: "Termos de Uso") */
+.terms-inline-link {
+  color: var(--color-text-brand);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  cursor: pointer;
+  transition: text-decoration-color var(--transition-fast);
+}
+
+.terms-inline-link:hover {
+  text-decoration-color: var(--color-text-brand);
+}
+
+/* Chip — extensão para radio button (seleção exclusiva) ── */
+/* Chip.module.css oculta checkbox; esta regra estende o mesmo
+   comportamento para <input type="radio"> dentro de .chip       */
+.chip input[type="radio"] { display: none; }
+
+/* ─── Cadastro — fluxo multi-etapa ──────────────────── */
+
+/* Faixa abaixo do AppBar: step indicator + título do passo */
+.cadastro-header {
+  flex-shrink: 0;
+  padding: var(--spacing-md) var(--spacing-md) var(--spacing-xs);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+/* Título principal do passo */
+.cadastro-title {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-snug);
+}
+
+/* Instrução / descrição do passo */
+.cadastro-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  line-height: var(--line-height-normal);
+}
+
+/* Área de scroll com os campos do formulário */
+.cadastro-body {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md) var(--spacing-2xl);
+}
+
+.cadastro-body::-webkit-scrollbar { display: none; }
+
+/* Dois campos lado a lado (ex: Cidade + Estado) */
+.form-row {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.form-row .wrapper { flex: 1; }
+
+/* Rodapé fixo com o(s) botão(ões) de ação — flex column para empilhar */
+.cadastro-footer {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md) calc(var(--spacing-md) + env(safe-area-inset-bottom));
+  background: linear-gradient(to top, var(--color-bg-default) 90%, transparent);
 }

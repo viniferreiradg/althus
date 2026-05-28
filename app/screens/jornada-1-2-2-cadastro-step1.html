@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criar conta — Dados pessoais — Althus</title>
+  <link rel="stylesheet" href="../../storybook/src/tokens/tokens.css" />
+  <link rel="stylesheet" href="../../shared/page-mobile.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/AppBar/AppBar.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Input/Input.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Button/Button.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/StepIndicator/StepIndicator.module.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="layout-screen">
+
+  <!-- ── AppBar ──────────────────────────────────────── -->
+  <header class="appBar">
+    <div class="appBarSide appBarSideLeft">
+      <button class="appBarIconBtn" onclick="router.pop()" aria-label="Voltar">
+        <i data-lucide="chevron-left" width="24" height="24"></i>
+      </button>
+    </div>
+    <span class="appBarTitle">Criar conta</span>
+    <div class="appBarSide appBarSideRight"></div>
+  </header>
+
+  <!-- ── Step indicator + título ──────────────────────── -->
+  <div class="cadastro-header">
+    <div class="stepRoot" role="progressbar"
+         aria-valuenow="1" aria-valuemin="1" aria-valuemax="5"
+         aria-label="Passo 1 de 5">
+      <div class="stepBars">
+        <div class="stepBar done"></div>
+        <div class="stepBar pending"></div>
+        <div class="stepBar pending"></div>
+        <div class="stepBar pending"></div>
+        <div class="stepBar pending"></div>
+      </div>
+      <span class="stepLabel" aria-hidden="true">Passo 1 de 5</span>
+    </div>
+    <p class="cadastro-title">Dados pessoais</p>
+    <p class="cadastro-subtitle">Preencha suas informações para criarmos sua conta.</p>
+  </div>
+
+  <!-- ── Formulário ────────────────────────────────────── -->
+  <div class="cadastro-body">
+
+    <!-- Nome completo -->
+    <div class="wrapper">
+      <label class="label" for="nome">Nome completo</label>
+      <div class="inputWrap">
+        <input class="input" id="nome" type="text"
+               placeholder="Seu nome completo"
+               autocomplete="name" />
+      </div>
+    </div>
+
+    <!-- CPF -->
+    <div class="wrapper">
+      <label class="label" for="cpf">CPF</label>
+      <div class="inputWrap">
+        <input class="input" id="cpf" type="text"
+               placeholder="000.000.000-00"
+               inputmode="numeric"
+               autocomplete="off" />
+      </div>
+    </div>
+
+    <!-- Data de nascimento -->
+    <div class="wrapper">
+      <label class="label" for="nascimento">Data de nascimento</label>
+      <div class="inputWrap">
+        <input class="input" id="nascimento" type="text"
+               placeholder="DD/MM/AAAA"
+               inputmode="numeric"
+               autocomplete="bday" />
+      </div>
+    </div>
+
+    <!-- E-mail -->
+    <div class="wrapper hasLeft">
+      <label class="label" for="email">E-mail</label>
+      <div class="inputWrap">
+        <span class="iconLeft"><i data-lucide="mail" width="16" height="16"></i></span>
+        <input class="input" id="email" type="email"
+               placeholder="seu@email.com"
+               autocomplete="email" />
+      </div>
+    </div>
+
+    <!-- Telefone -->
+    <div class="wrapper hasLeft">
+      <label class="label" for="telefone">Telefone celular</label>
+      <div class="inputWrap">
+        <span class="iconLeft"><i data-lucide="smartphone" width="16" height="16"></i></span>
+        <input class="input" id="telefone" type="tel"
+               placeholder="(00) 00000-0000"
+               inputmode="tel"
+               autocomplete="tel" />
+      </div>
+    </div>
+
+    <!-- Cidade + Estado -->
+    <div class="form-row">
+      <div class="wrapper">
+        <label class="label" for="cidade">Cidade</label>
+        <div class="inputWrap">
+          <input class="input" id="cidade" type="text"
+                 placeholder="Sua cidade"
+                 autocomplete="address-level2" />
+        </div>
+      </div>
+
+      <div class="wrapper">
+        <label class="label" for="estado">Estado</label>
+        <div class="inputWrap">
+          <select class="input" id="estado" autocomplete="address-level1">
+            <option value="" disabled selected>UF</option>
+            <option value="AC">AC</option>
+            <option value="AL">AL</option>
+            <option value="AM">AM</option>
+            <option value="AP">AP</option>
+            <option value="BA">BA</option>
+            <option value="CE">CE</option>
+            <option value="DF">DF</option>
+            <option value="ES">ES</option>
+            <option value="GO">GO</option>
+            <option value="MA">MA</option>
+            <option value="MG">MG</option>
+            <option value="MS">MS</option>
+            <option value="MT">MT</option>
+            <option value="PA">PA</option>
+            <option value="PB">PB</option>
+            <option value="PE">PE</option>
+            <option value="PI">PI</option>
+            <option value="PR">PR</option>
+            <option value="RJ">RJ</option>
+            <option value="RN">RN</option>
+            <option value="RO">RO</option>
+            <option value="RR">RR</option>
+            <option value="RS">RS</option>
+            <option value="SC">SC</option>
+            <option value="SE">SE</option>
+            <option value="SP">SP</option>
+            <option value="TO">TO</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Rodapé fixo ───────────────────────────────────── -->
+  <div class="cadastro-footer">
+    <button class="btn primary full-width"
+            onclick="router.push('jornada-1-2-3-cadastro-step2')">
+      Próximo
+    </button>
+  </div>
+
+  <script>
+    var router = (window.parent && window.parent.router)
+      ? window.parent.router
+      : { push: function(){}, pop: function(){}, replace: function(){}, modal: function(){}, closeModal: function(){}, tab: function(){} };
+  </script>
+  <script>lucide.createIcons();</script>
+
+</body>
+</html>

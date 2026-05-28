@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criar conta — Verificar contato — Althus</title>
+  <link rel="stylesheet" href="../../storybook/src/tokens/tokens.css" />
+  <link rel="stylesheet" href="../../shared/page-mobile.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/AppBar/AppBar.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Chip/Chip.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/OTPInput/OTPInput.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Button/Button.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/StepIndicator/StepIndicator.module.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="layout-screen">
+
+  <!-- ── AppBar ──────────────────────────────────────── -->
+  <header class="appBar">
+    <div class="appBarSide appBarSideLeft">
+      <button class="appBarIconBtn" onclick="router.pop()" aria-label="Voltar">
+        <i data-lucide="chevron-left" width="24" height="24"></i>
+      </button>
+    </div>
+    <span class="appBarTitle">Criar conta</span>
+    <div class="appBarSide appBarSideRight"></div>
+  </header>
+
+  <!-- ── Step indicator + título ──────────────────────── -->
+  <div class="cadastro-header">
+    <div class="stepRoot" role="progressbar"
+         aria-valuenow="2" aria-valuemin="1" aria-valuemax="5"
+         aria-label="Passo 2 de 5">
+      <div class="stepBars">
+        <div class="stepBar done"></div>
+        <div class="stepBar done"></div>
+        <div class="stepBar pending"></div>
+        <div class="stepBar pending"></div>
+        <div class="stepBar pending"></div>
+      </div>
+      <span class="stepLabel" aria-hidden="true">Passo 2 de 5</span>
+    </div>
+    <p class="cadastro-title">Verificar contato</p>
+    <p class="cadastro-subtitle">Escolha como prefere receber o código de verificação.</p>
+  </div>
+
+  <!-- ── Conteúdo ──────────────────────────────────────── -->
+  <div class="cadastro-body">
+
+    <!-- Seleção de canal -->
+    <fieldset style="border:none;padding:0;margin:0">
+      <legend class="screen-description">Canal de envio</legend>
+      <div class="chipGroup">
+        <label class="chip">
+          <input type="radio" name="canal" value="email" checked />
+          <span class="chipIcon"><i data-lucide="mail" width="14" height="14"></i></span>
+          E-mail
+        </label>
+        <label class="chip">
+          <input type="radio" name="canal" value="sms" />
+          <span class="chipIcon"><i data-lucide="message-square" width="14" height="14"></i></span>
+          SMS
+        </label>
+      </div>
+    </fieldset>
+
+    <!-- Instrução dinâmica -->
+    <p class="screen-description" id="otp-instruction">
+      Insira o código de 6 dígitos enviado para o seu e-mail.
+    </p>
+
+    <!-- OTP -->
+    <div class="otpRoot" id="otp-root" role="group" aria-label="Código de verificação">
+      <input class="otpCell" type="text" inputmode="numeric" maxlength="1"
+             placeholder="·" autocomplete="one-time-code" aria-label="Dígito 1 de 6" />
+      <input class="otpCell" type="text" inputmode="numeric" maxlength="1"
+             placeholder="·" aria-label="Dígito 2 de 6" />
+      <input class="otpCell" type="text" inputmode="numeric" maxlength="1"
+             placeholder="·" aria-label="Dígito 3 de 6" />
+      <input class="otpCell" type="text" inputmode="numeric" maxlength="1"
+             placeholder="·" aria-label="Dígito 4 de 6" />
+      <input class="otpCell" type="text" inputmode="numeric" maxlength="1"
+             placeholder="·" aria-label="Dígito 5 de 6" />
+      <input class="otpCell" type="text" inputmode="numeric" maxlength="1"
+             placeholder="·" aria-label="Dígito 6 de 6" />
+    </div>
+
+    <!-- Reenviar -->
+    <p class="otp-resend">
+      Não recebeu?
+      <button type="button" class="otp-resend-link" id="btn-reenviar">Reenviar código</button>
+    </p>
+
+  </div>
+
+  <!-- ── Rodapé fixo ───────────────────────────────────── -->
+  <div class="cadastro-footer">
+    <button class="btn primary full-width"
+            onclick="router.push('jornada-1-2-4-cadastro-step3')">
+      Verificar
+    </button>
+  </div>
+
+  <script>
+    var router = (window.parent && window.parent.router)
+      ? window.parent.router
+      : { push: function(){}, pop: function(){}, replace: function(){}, modal: function(){}, closeModal: function(){}, tab: function(){} };
+  </script>
+  <script>
+    lucide.createIcons();
+
+    /* ── Canal — atualiza instrução ao trocar ──────────── */
+    (function () {
+      var radios      = document.querySelectorAll('input[name="canal"]');
+      var instruction = document.getElementById('otp-instruction');
+
+      radios.forEach(function (r) {
+        r.addEventListener('change', function () {
+          instruction.textContent = r.value === 'email'
+            ? 'Insira o código de 6 dígitos enviado para o seu e-mail.'
+            : 'Insira o código de 6 dígitos enviado por SMS para o seu celular.';
+        });
+      });
+    }());
+
+    /* ── OTP navigation ────────────────────────────────── */
+    (function () {
+      var cells = Array.from(document.querySelectorAll('#otp-root .otpCell'));
+
+      function focusCell(i) { if (cells[i]) cells[i].focus(); }
+      function markFilled(cell) { cell.classList.toggle('filled', cell.value.length > 0); }
+
+      cells.forEach(function (cell, i) {
+        cell.addEventListener('input', function () {
+          var digit = cell.value.replace(/\D/g, '').slice(-1);
+          cell.value = digit;
+          markFilled(cell);
+          if (digit && i < cells.length - 1) focusCell(i + 1);
+        });
+
+        cell.addEventListener('keydown', function (e) {
+          if (e.key === 'Backspace') {
+            if (cell.value) { cell.value = ''; markFilled(cell); }
+            else if (i > 0) { focusCell(i - 1); cells[i - 1].value = ''; markFilled(cells[i - 1]); }
+            e.preventDefault();
+          } else if (e.key === 'ArrowLeft'  && i > 0)              focusCell(i - 1);
+            else if (e.key === 'ArrowRight' && i < cells.length - 1) focusCell(i + 1);
+        });
+
+        cell.addEventListener('paste', function (e) {
+          e.preventDefault();
+          var pasted = (e.clipboardData || window.clipboardData)
+            .getData('text').replace(/\D/g, '').slice(0, cells.length - i);
+          for (var j = 0; j < pasted.length; j++) {
+            cells[i + j].value = pasted[j];
+            markFilled(cells[i + j]);
+          }
+          focusCell(Math.min(i + pasted.length, cells.length - 1));
+        });
+
+        cell.addEventListener('focus', function () { cell.select(); });
+      });
+
+      /* ── Reenviar com cooldown de 60s ─────────────────── */
+      var btn = document.getElementById('btn-reenviar');
+      btn.addEventListener('click', function () {
+        var seconds = 60;
+        btn.disabled = true;
+        btn.textContent = 'Reenviar em ' + seconds + 's';
+        var timer = setInterval(function () {
+          seconds -= 1;
+          if (seconds <= 0) {
+            clearInterval(timer);
+            btn.disabled = false;
+            btn.textContent = 'Reenviar código';
+          } else {
+            btn.textContent = 'Reenviar em ' + seconds + 's';
+          }
+        }, 1000);
+      });
+    }());
+  </script>
+
+</body>
+</html>

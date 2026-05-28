@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criar conta — Forma de pagamento — Althus</title>
+  <link rel="stylesheet" href="../../storybook/src/tokens/tokens.css" />
+  <link rel="stylesheet" href="../../shared/page-mobile.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/AppBar/AppBar.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Input/Input.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Button/Button.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/StepIndicator/StepIndicator.module.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="layout-screen">
+
+  <!-- ── AppBar ──────────────────────────────────────── -->
+  <header class="appBar">
+    <div class="appBarSide appBarSideLeft">
+      <button class="appBarIconBtn" onclick="router.pop()" aria-label="Voltar">
+        <i data-lucide="chevron-left" width="24" height="24"></i>
+      </button>
+    </div>
+    <span class="appBarTitle">Criar conta</span>
+    <div class="appBarSide appBarSideRight"></div>
+  </header>
+
+  <!-- ── Step indicator + título ──────────────────────── -->
+  <div class="cadastro-header">
+    <div class="stepRoot" role="progressbar"
+         aria-valuenow="3" aria-valuemin="1" aria-valuemax="5"
+         aria-label="Passo 3 de 5">
+      <div class="stepBars">
+        <div class="stepBar done"></div>
+        <div class="stepBar done"></div>
+        <div class="stepBar done"></div>
+        <div class="stepBar pending"></div>
+        <div class="stepBar pending"></div>
+      </div>
+      <span class="stepLabel" aria-hidden="true">Passo 3 de 5</span>
+    </div>
+    <p class="cadastro-title">Forma de pagamento</p>
+    <p class="cadastro-subtitle">Opcional — adicione um cartão agora ou faça isso depois na carteira.</p>
+  </div>
+
+  <!-- ── Formulário ────────────────────────────────────── -->
+  <div class="cadastro-body">
+
+    <!-- Número do cartão -->
+    <div class="wrapper hasLeft">
+      <label class="label" for="card-numero">Número do cartão</label>
+      <div class="inputWrap">
+        <span class="iconLeft"><i data-lucide="credit-card" width="16" height="16"></i></span>
+        <input class="input" id="card-numero" type="text"
+               placeholder="0000 0000 0000 0000"
+               inputmode="numeric"
+               maxlength="19"
+               autocomplete="cc-number" />
+      </div>
+    </div>
+
+    <!-- Nome impresso no cartão -->
+    <div class="wrapper">
+      <label class="label" for="card-nome">Nome no cartão</label>
+      <div class="inputWrap">
+        <input class="input" id="card-nome" type="text"
+               placeholder="Como está no cartão"
+               autocomplete="cc-name" />
+      </div>
+    </div>
+
+    <!-- Validade + CVV lado a lado -->
+    <div class="form-row">
+      <div class="wrapper">
+        <label class="label" for="card-validade">Validade</label>
+        <div class="inputWrap">
+          <input class="input" id="card-validade" type="text"
+                 placeholder="MM/AA"
+                 inputmode="numeric"
+                 maxlength="5"
+                 autocomplete="cc-exp" />
+        </div>
+      </div>
+
+      <div class="wrapper">
+        <label class="label" for="card-cvv">CVV</label>
+        <div class="inputWrap">
+          <input class="input" id="card-cvv" type="text"
+                 placeholder="000"
+                 inputmode="numeric"
+                 maxlength="4"
+                 autocomplete="cc-csc" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Aviso de segurança -->
+    <p class="card-security-note">
+      <i data-lucide="lock" width="12" height="12"></i>
+      Seus dados de pagamento são processados com segurança via Stripe. Não armazenamos os dados do cartão.
+    </p>
+
+  </div>
+
+  <!-- ── Rodapé fixo ───────────────────────────────────── -->
+  <div class="cadastro-footer">
+    <button class="btn primary full-width"
+            onclick="router.push('jornada-1-2-5-cadastro-step4')">
+      Próximo
+    </button>
+    <button class="btn ghost full-width"
+            onclick="router.push('jornada-1-2-5-cadastro-step4')">
+      Pular esta etapa
+    </button>
+  </div>
+
+  <script>
+    var router = (window.parent && window.parent.router)
+      ? window.parent.router
+      : { push: function(){}, pop: function(){}, replace: function(){}, modal: function(){}, closeModal: function(){}, tab: function(){} };
+  </script>
+  <script>
+    lucide.createIcons();
+
+    /* ── Formata número do cartão com espaços a cada 4 dígitos ── */
+    (function () {
+      var num = document.getElementById('card-numero');
+      num.addEventListener('input', function () {
+        var raw = num.value.replace(/\D/g, '').slice(0, 16);
+        num.value = raw.match(/.{1,4}/g)?.join(' ') ?? raw;
+      });
+
+      var val = document.getElementById('card-validade');
+      val.addEventListener('input', function () {
+        var raw = val.value.replace(/\D/g, '').slice(0, 4);
+        val.value = raw.length > 2 ? raw.slice(0, 2) + '/' + raw.slice(2) : raw;
+      });
+
+      var cvv = document.getElementById('card-cvv');
+      cvv.addEventListener('input', function () {
+        cvv.value = cvv.value.replace(/\D/g, '').slice(0, 4);
+      });
+    }());
+  </script>
+
+</body>
+</html>

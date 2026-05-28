@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criar conta — Criar senha — Althus</title>
+  <link rel="stylesheet" href="../../storybook/src/tokens/tokens.css" />
+  <link rel="stylesheet" href="../../shared/page-mobile.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/AppBar/AppBar.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Input/Input.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Button/Button.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/StepIndicator/StepIndicator.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/PasswordStrength/PasswordStrength.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/PasswordRequirements/PasswordRequirements.module.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="layout-screen">
+
+  <!-- ── AppBar ──────────────────────────────────────── -->
+  <header class="appBar">
+    <div class="appBarSide appBarSideLeft">
+      <button class="appBarIconBtn" onclick="router.pop()" aria-label="Voltar">
+        <i data-lucide="chevron-left" width="24" height="24"></i>
+      </button>
+    </div>
+    <span class="appBarTitle">Criar conta</span>
+    <div class="appBarSide appBarSideRight"></div>
+  </header>
+
+  <!-- ── Step indicator + título ──────────────────────── -->
+  <div class="cadastro-header">
+    <div class="stepRoot" role="progressbar"
+         aria-valuenow="4" aria-valuemin="1" aria-valuemax="5"
+         aria-label="Passo 4 de 5">
+      <div class="stepBars">
+        <div class="stepBar done"></div>
+        <div class="stepBar done"></div>
+        <div class="stepBar done"></div>
+        <div class="stepBar done"></div>
+        <div class="stepBar pending"></div>
+      </div>
+      <span class="stepLabel" aria-hidden="true">Passo 4 de 5</span>
+    </div>
+    <p class="cadastro-title">Criar senha</p>
+    <p class="cadastro-subtitle">Defina uma senha segura para proteger sua conta.</p>
+  </div>
+
+  <!-- ── Formulário ────────────────────────────────────── -->
+  <div class="cadastro-body">
+
+    <!-- Senha -->
+    <div class="wrapper">
+      <label class="label" for="senha">Senha</label>
+      <div class="inputWrap hasRight">
+        <input class="input" id="senha" type="password"
+               placeholder="••••••••"
+               autocomplete="new-password" />
+        <button type="button" class="iconRightBtn" id="toggle-senha" aria-label="Mostrar senha">
+          <i data-lucide="eye"     width="16" height="16"></i>
+          <i data-lucide="eye-off" width="16" height="16" hidden></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- PasswordStrength -->
+    <div class="root" id="strength" aria-live="polite" aria-label="Força da senha">
+      <div class="bars">
+        <div class="bar" id="bar1"></div>
+        <div class="bar" id="bar2"></div>
+        <div class="bar" id="bar3"></div>
+        <div class="bar" id="bar4"></div>
+      </div>
+      <span class="strengthLabel" id="strength-label">Digite uma senha</span>
+    </div>
+
+    <!-- PasswordRequirements -->
+    <div class="root" id="req-root">
+      <p class="title" id="req-title">A senha deve conter</p>
+      <ul class="list">
+        <li class="item" id="req-len">
+          <span class="iconWrap">
+            <span class="bullet"></span>
+            <i data-lucide="check" class="iconSuccess" width="12" height="12"></i>
+            <i data-lucide="x"     class="iconError"   width="12" height="12"></i>
+          </span>
+          Mínimo 8 caracteres
+        </li>
+        <li class="item" id="req-upper">
+          <span class="iconWrap">
+            <span class="bullet"></span>
+            <i data-lucide="check" class="iconSuccess" width="12" height="12"></i>
+            <i data-lucide="x"     class="iconError"   width="12" height="12"></i>
+          </span>
+          Uma letra maiúscula
+        </li>
+        <li class="item" id="req-lower">
+          <span class="iconWrap">
+            <span class="bullet"></span>
+            <i data-lucide="check" class="iconSuccess" width="12" height="12"></i>
+            <i data-lucide="x"     class="iconError"   width="12" height="12"></i>
+          </span>
+          Uma letra minúscula
+        </li>
+        <li class="item" id="req-num">
+          <span class="iconWrap">
+            <span class="bullet"></span>
+            <i data-lucide="check" class="iconSuccess" width="12" height="12"></i>
+            <i data-lucide="x"     class="iconError"   width="12" height="12"></i>
+          </span>
+          Um número
+        </li>
+        <li class="item" id="req-special">
+          <span class="iconWrap">
+            <span class="bullet"></span>
+            <i data-lucide="check" class="iconSuccess" width="12" height="12"></i>
+            <i data-lucide="x"     class="iconError"   width="12" height="12"></i>
+          </span>
+          Um símbolo (!@#$,)
+        </li>
+      </ul>
+    </div>
+
+    <!-- Confirmar senha -->
+    <div class="wrapper" id="confirmar-wrapper">
+      <label class="label" for="confirmar">Confirmar senha</label>
+      <div class="inputWrap hasRight">
+        <input class="input" id="confirmar" type="password"
+               placeholder="••••••••"
+               autocomplete="new-password" />
+        <button type="button" class="iconRightBtn" id="toggle-confirmar" aria-label="Mostrar confirmação">
+          <i data-lucide="eye"     width="16" height="16"></i>
+          <i data-lucide="eye-off" width="16" height="16" hidden></i>
+        </button>
+      </div>
+      <span class="errorText" id="confirmar-error" hidden>
+        <i data-lucide="circle-x" class="msgIcon" width="14" height="14"></i>
+        As senhas não coincidem.
+      </span>
+    </div>
+
+  </div>
+
+  <!-- ── Rodapé fixo ───────────────────────────────────── -->
+  <div class="cadastro-footer">
+    <button class="btn primary full-width" id="btn-proximo"
+            onclick="router.push('jornada-1-2-6-cadastro-step5')">
+      Próximo
+    </button>
+  </div>
+
+  <script>
+    var router = (window.parent && window.parent.router)
+      ? window.parent.router
+      : { push: function(){}, pop: function(){}, replace: function(){}, modal: function(){}, closeModal: function(){}, tab: function(){} };
+  </script>
+  <script>
+    lucide.createIcons();
+
+    (function () {
+      var senhaInput     = document.getElementById('senha');
+      var confirmarInput = document.getElementById('confirmar');
+      var confirmarWrap  = document.getElementById('confirmar-wrapper');
+      var confirmarError = document.getElementById('confirmar-error');
+
+      /* ── Toggle visibilidade das senhas ──────────────── */
+      function makeToggle(inputId, btnId) {
+        var input = document.getElementById(inputId);
+        var btn   = document.getElementById(btnId);
+        btn.addEventListener('click', function () {
+          var showing = input.type === 'text';
+          input.type  = showing ? 'password' : 'text';
+          var svgs = btn.querySelectorAll('svg');
+          if (svgs.length === 2) {
+            svgs[0].style.display = showing ? '' : 'none';
+            svgs[1].style.display = showing ? 'none' : '';
+          }
+          btn.setAttribute('aria-label', showing ? 'Mostrar ' + (inputId === 'senha' ? 'senha' : 'confirmação') : 'Ocultar ' + (inputId === 'senha' ? 'senha' : 'confirmação'));
+        });
+        /* esconde o segundo ícone inicialmente */
+        var svgs = btn.querySelectorAll('svg');
+        if (svgs.length === 2) svgs[1].style.display = 'none';
+      }
+
+      makeToggle('senha', 'toggle-senha');
+      makeToggle('confirmar', 'toggle-confirmar');
+
+      /* ── Avaliação de força e requisitos ─────────────── */
+      var bars        = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3'), document.getElementById('bar4')];
+      var strengthLbl = document.getElementById('strength-label');
+      var reqTitle    = document.getElementById('req-title');
+      var reqs = {
+        len:     { el: document.getElementById('req-len'),     test: function(v){ return v.length >= 8; } },
+        upper:   { el: document.getElementById('req-upper'),   test: function(v){ return /[A-Z]/.test(v); } },
+        lower:   { el: document.getElementById('req-lower'),   test: function(v){ return /[a-z]/.test(v); } },
+        num:     { el: document.getElementById('req-num'),     test: function(v){ return /[0-9]/.test(v); } },
+        special: { el: document.getElementById('req-special'), test: function(v){ return /[!@#$,]/.test(v); } }
+      };
+
+      var LABELS   = ['', 'Fraca', 'Média', 'Boa', 'Forte'];
+      var BAR_CLASSES = ['', 'weak', 'medium', 'strong'];
+      /* score 1→weak, 2-3→medium, 4-5→strong */
+      function scoreClass(score) {
+        if (score <= 1) return 'weak';
+        if (score <= 3) return 'medium';
+        return 'strong';
+      }
+
+      senhaInput.addEventListener('input', function () {
+        var v = senhaInput.value;
+        var score = 0;
+        var allMet = true;
+        var anyFailed = v.length > 0;
+
+        Object.keys(reqs).forEach(function(k) {
+          var met = reqs[k].test(v);
+          if (met) score++;
+          else allMet = false;
+          reqs[k].el.classList.toggle('itemSuccess', met);
+          reqs[k].el.classList.toggle('itemError', v.length > 0 && !met);
+        });
+
+        /* Barras de força */
+        var cls = v.length === 0 ? '' : scoreClass(score);
+        bars.forEach(function(b, i) {
+          b.className = 'bar';
+          if (v.length > 0 && i < score) b.classList.add(cls);
+        });
+        strengthLbl.textContent = v.length === 0 ? 'Digite uma senha' : LABELS[Math.min(score, 4)];
+
+        /* Título de requisitos */
+        reqTitle.classList.toggle('titleSuccess', allMet && v.length > 0);
+        reqTitle.classList.toggle('titleError',   !allMet && v.length > 0);
+
+        /* Re-valida confirmar se já foi preenchida */
+        if (confirmarInput.value.length > 0) validateConfirmar();
+      });
+
+      /* ── Validação de confirmação ─────────────────────── */
+      function validateConfirmar() {
+        var match = senhaInput.value === confirmarInput.value;
+        confirmarError.hidden = match || confirmarInput.value.length === 0;
+        confirmarWrap.classList.toggle('error', !match && confirmarInput.value.length > 0);
+      }
+
+      confirmarInput.addEventListener('input', validateConfirmar);
+      confirmarInput.addEventListener('blur',  validateConfirmar);
+    }());
+  </script>
+
+</body>
+</html>

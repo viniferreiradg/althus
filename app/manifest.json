@@ -1,0 +1,11 @@
+{
+  "name": "Althus Eletropostos",
+  "short_name": "Althus",
+  "description": "Recarga elétrica inteligente",
+  "start_url": "./pwa.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0a0b",
+  "theme_color": "#0a0a0b",
+  "lang": "pt-BR"
+}

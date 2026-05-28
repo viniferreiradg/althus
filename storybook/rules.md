@@ -41,6 +41,33 @@ Botão de tema alterna `data-theme` e re-executa `lucide.createIcons()`.
 
 ## Componentes — CSS paths e classes HTML
 
+### StepIndicator _(Mobile)_
+```html
+<link rel="stylesheet" href="../../storybook/src/components/StepIndicator/StepIndicator.module.css" />
+```
+Classes: `.stepRoot` (container flex-column), `.stepBars` (row de barras), `.stepBar` (barra individual), `.stepBar.done` (preenchida — brand gradient), `.stepBar.pending` (vazia — fundo elevado), `.stepLabel` (texto "Passo X de Y")
+
+```html
+<!-- Passo 1 de 5 -->
+<div class="stepRoot" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5" aria-label="Passo 1 de 5">
+  <div class="stepBars">
+    <div class="stepBar done"></div>
+    <div class="stepBar pending"></div>
+    <div class="stepBar pending"></div>
+    <div class="stepBar pending"></div>
+    <div class="stepBar pending"></div>
+  </div>
+  <span class="stepLabel" aria-hidden="true">Passo 1 de 5</span>
+</div>
+```
+
+Regras:
+- `.done` = todos os passos com índice < current (1-indexed)
+- `.pending` = todos os passos com índice >= current
+- Sempre incluir `role="progressbar"` + `aria-valuenow/min/max` no `.stepRoot`
+
+---
+
 ### MapPin _(Mobile)_
 ```html
 <link rel="stylesheet" href="../storybook/src/components/MapPin/MapPin.module.css" />

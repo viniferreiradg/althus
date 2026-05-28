@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Criar conta — Termos e aceite — Althus</title>
+  <link rel="stylesheet" href="../../storybook/src/tokens/tokens.css" />
+  <link rel="stylesheet" href="../../shared/page-mobile.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/AppBar/AppBar.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Checkbox/Checkbox.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Button/Button.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/StepIndicator/StepIndicator.module.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="layout-screen">
+
+  <!-- ── AppBar ──────────────────────────────────────── -->
+  <header class="appBar">
+    <div class="appBarSide appBarSideLeft">
+      <button class="appBarIconBtn" onclick="router.pop()" aria-label="Voltar">
+        <i data-lucide="chevron-left" width="24" height="24"></i>
+      </button>
+    </div>
+    <span class="appBarTitle">Criar conta</span>
+    <div class="appBarSide appBarSideRight"></div>
+  </header>
+
+  <!-- ── Step indicator + título ──────────────────────── -->
+  <div class="cadastro-header">
+    <div class="stepRoot" role="progressbar"
+         aria-valuenow="5" aria-valuemin="1" aria-valuemax="5"
+         aria-label="Passo 5 de 5">
+      <div class="stepBars">
+        <div class="stepBar done"></div>
+        <div class="stepBar done"></div>
+        <div class="stepBar done"></div>
+        <div class="stepBar done"></div>
+        <div class="stepBar done"></div>
+      </div>
+      <span class="stepLabel" aria-hidden="true">Passo 5 de 5</span>
+    </div>
+    <p class="cadastro-title">Termos e aceite</p>
+    <p class="cadastro-subtitle">Leia e aceite os termos para concluir seu cadastro.</p>
+  </div>
+
+  <!-- ── Corpo ─────────────────────────────────────────── -->
+  <div class="cadastro-body">
+
+    <!-- Caixa de termos (scroll interno) -->
+    <div class="terms-box" tabindex="0" aria-label="Termos de Uso e Política de Privacidade">
+
+      <h3>Termos de Uso</h3>
+      <p>
+        Ao utilizar o aplicativo Althus Eletropostos, você concorda em usar os serviços de recarga
+        elétrica exclusivamente para fins lícitos e de acordo com estas condições. O cadastro é
+        pessoal e intransferível.
+      </p>
+      <p>
+        A Althus reserva o direito de suspender contas em caso de uso indevido, fraude ou
+        inadimplência. Os valores cobrados pelas sessões de recarga são definidos pelos postos
+        credenciados e podem variar conforme tarifa vigente.
+      </p>
+      <p>
+        Reservas confirmadas e não utilizadas dentro da janela de tolerância poderão ser cobradas
+        conforme política de cancelamento do posto. Para mais detalhes, acesse a versão completa
+        em althus.com.br/termos.
+      </p>
+
+      <h3>Política de Privacidade</h3>
+      <p>
+        Coletamos seus dados pessoais (nome, CPF, e-mail, telefone e localização aproximada) para
+        operar os serviços de recarga e personalizar sua experiência. Esses dados são protegidos
+        conforme a Lei Geral de Proteção de Dados (LGPD — Lei 13.709/2018).
+      </p>
+      <p>
+        Seus dados poderão ser compartilhados com a rede de postos credenciados Althus para fins
+        de autenticação e processamento das sessões de recarga. Não vendemos seus dados a
+        terceiros para fins publicitários.
+      </p>
+      <p>
+        Você pode solicitar a exclusão de seus dados a qualquer momento pela seção Perfil do
+        aplicativo. Para a versão completa, acesse althus.com.br/privacidade.
+      </p>
+
+    </div>
+
+    <!-- Checkboxes de aceite -->
+    <div class="checkbox-group">
+
+      <label class="wrapper" for="aceite-termos">
+        <input class="input" type="checkbox" id="aceite-termos" />
+        <span class="box">
+          <span class="mark">
+            <i data-lucide="check" width="11" height="11"></i>
+          </span>
+        </span>
+        <span class="label">
+          Li e aceito os <span class="terms-inline-link">Termos de Uso</span>
+        </span>
+      </label>
+
+      <label class="wrapper" for="aceite-privacidade">
+        <input class="input" type="checkbox" id="aceite-privacidade" />
+        <span class="box">
+          <span class="mark">
+            <i data-lucide="check" width="11" height="11"></i>
+          </span>
+        </span>
+        <span class="label">
+          Li e aceito a <span class="terms-inline-link">Política de Privacidade</span>
+          e autorizo o uso dos meus dados pela rede de parceiros Althus (LGPD)
+        </span>
+      </label>
+
+    </div>
+
+  </div>
+
+  <!-- ── Rodapé fixo ───────────────────────────────────── -->
+  <div class="cadastro-footer">
+    <button class="btn primary full-width" id="btn-criar" disabled
+            onclick="router.replace('jornada-1-4-1-home-map')">
+      Criar conta
+    </button>
+  </div>
+
+  <script>
+    var router = (window.parent && window.parent.router)
+      ? window.parent.router
+      : { push: function(){}, pop: function(){}, replace: function(){}, modal: function(){}, closeModal: function(){}, tab: function(){} };
+  </script>
+  <script>
+    lucide.createIcons();
+
+    /* ── Habilita o botão somente quando ambos os aceites estão marcados ── */
+    (function () {
+      var cb1 = document.getElementById('aceite-termos');
+      var cb2 = document.getElementById('aceite-privacidade');
+      var btn = document.getElementById('btn-criar');
+
+      function update() {
+        btn.disabled = !(cb1.checked && cb2.checked);
+      }
+
+      cb1.addEventListener('change', update);
+      cb2.addEventListener('change', update);
+    }());
+  </script>
+
+</body>
+</html>

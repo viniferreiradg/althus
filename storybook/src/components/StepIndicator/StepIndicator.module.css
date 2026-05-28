@@ -1,0 +1,41 @@
+/* ── StepIndicator ──────────────────────────────────── */
+
+.stepRoot {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  width: 100%;
+}
+
+/* ── Bars row ───────────────────────────────────────── */
+.stepBars {
+  display: flex;
+  gap: var(--spacing-xs);
+  width: 100%;
+}
+
+.stepBar {
+  flex: 1;
+  height: 3px;
+  border-radius: var(--radius-full);
+  transition: background var(--transition-normal);
+}
+
+.stepBar.done {
+  background: var(--gradient-brand);
+}
+
+.stepBar.pending {
+  background: var(--color-bg-elevated);
+}
+
+/* ── Label ──────────────────────────────────────────── */
+.stepLabel {
+  font-family: var(--font-body);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-tertiary);
+  text-align: center;
+  line-height: var(--line-height-tight);
+  user-select: none;
+}
