@@ -12,8 +12,13 @@
   background-repeat: no-repeat;
 }
 
-/* Impede propagação do background do body + centraliza a tela no viewport */
-/* (no desktop prototipo, centraliza os 393px; no iframe/PWA, body já preenche 100%) */
+/* ─── html/body: comportamento duplo ─────────────────────
+   • Dentro de iframe (prototipo.html ou pwa.html):
+     viewport do iframe é estreito (~393px) → body preenche 100%.
+   • Aberto direto no browser desktop (viewport > 500px):
+     body fica fixo em 393×852px, centralizado na tela.
+   O media query min-width: 500px distingue os dois casos.     */
+
 html {
   background: #000;
   width: 100%;
@@ -21,6 +26,11 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Desktop direto: html ocupa a viewport inteira */
+@media (min-width: 500px) {
+  html { min-height: 100vh; height: auto; }
 }
 
 /* ─── Reset ──────────────────────────────────────────── */
@@ -33,7 +43,6 @@ html {
 [hidden] { display: none !important; }
 
 /* ─── Base body ──────────────────────────────────────── */
-/* width/height 100% → adapta ao iframe (prototipo desktop = 393×852, PWA = viewport real) */
 body {
   font-family: var(--font-body);
   color: var(--color-text-primary);
@@ -42,6 +51,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
   height: 100%;
+}
+
+/* Desktop direto: body vira o "celular" de 393×852px */
+@media (min-width: 500px) {
+  body { width: 393px; height: 852px; }
 }
 
 /* ─── Layout: tela mobile padrão ─────────────────────── */
