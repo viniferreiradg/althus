@@ -14,3 +14,7 @@ type Story = StoryObj<typeof UserPin>;
 export const Default: Story = {
   args: { 'aria-label': 'Sua localização' },
 };
+
+export const Pulse: Story = {
+  args: { pulse: true, 'aria-label': 'Sua localização (atualizando)' },
+};
