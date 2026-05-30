@@ -170,6 +170,12 @@ body.login-screen {
   z-index: 1;
 }
 
+/* Variante sem padding — para telas com hero full-bleed + cards com padding próprio */
+.screen-content--flush {
+  padding: 0;
+  gap: 0;
+}
+
 /* Description text used in auth/onboarding screens */
 .screen-description {
   font-family: var(--font-body);
@@ -185,6 +191,18 @@ body.login-screen {
   left: 0;
   right: 0;
   z-index: 20;
+}
+
+/* ─── Nav overlap compensation ────────────────────────── */
+/* Adds clearance to scrollable containers when a bottom nav is present */
+body.layout-screen:has(.screen-nav) .screen-content,
+body.layout-screen:has(.screen-nav) .terms-box,
+body.layout-screen:has(.screen-nav) .cadastro-body {
+  padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + var(--spacing-md));
+}
+
+body.layout-screen:has(.screen-nav) .cadastro-footer {
+  padding-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + var(--spacing-md));
 }
 
 /* Iframe de fundo que embute a home-map em telas de sheet/detalhe.
@@ -508,6 +526,7 @@ body.login-screen {
   gap: var(--spacing-sm);
   overflow-x: auto;
   scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
   padding-bottom: var(--spacing-xs);
   margin-left: calc(var(--spacing-md) * -1);
   margin-right: calc(var(--spacing-md) * -1);
@@ -525,7 +544,7 @@ body.login-screen {
   background: var(--color-bg-subtle);
   border: var(--border-width-thin) solid var(--color-border-default);
   border-radius: var(--radius-sm);
-  min-width: calc(var(--spacing-4xl) + var(--spacing-xs));
+  min-width: 96px;
   flex-shrink: 0;
   cursor: pointer;
   transition: border-color var(--transition-fast), background var(--transition-fast);
@@ -552,6 +571,33 @@ body.login-screen {
 }
 
 .charger-card-kw { font-size: var(--font-size-xs); color: var(--color-text-tertiary); }
+
+/* Status badge dos carregadores (evita conflito com NotificationBadge .badge) */
+.charger-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-2xs) var(--spacing-sm);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  margin-top: auto;
+}
+
+.charger-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.charger-status[data-status="success"] { background: var(--color-status-success-bg); color: var(--color-status-success-fg); }
+.charger-status[data-status="success"] .charger-status-dot { background: var(--color-status-success-fg); }
+.charger-status[data-status="error"]   { background: var(--color-status-error-bg);   color: var(--color-status-error-fg);   }
+.charger-status[data-status="error"]   .charger-status-dot { background: var(--color-status-error-fg);   }
+.charger-status[data-status="warning"] { background: var(--color-status-warning-bg); color: var(--color-status-warning-fg); }
+.charger-status[data-status="warning"] .charger-status-dot { background: var(--color-status-warning-fg); }
 
 /* Linhas de detalhe */
 .detail-rows {
@@ -647,7 +693,7 @@ body.login-screen {
   flex: 1;
   overflow-y: auto;
   scrollbar-width: none;
-  padding: var(--spacing-xs) var(--spacing-md) calc(var(--nav-height) + env(safe-area-inset-bottom));
+  padding: var(--spacing-xs) var(--spacing-md) calc(var(--nav-height) + env(safe-area-inset-bottom) + var(--spacing-md));
   display: flex;
   flex-direction: column;
 }
@@ -760,16 +806,19 @@ body.login-screen {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-border-muted) transparent;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   background: var(--color-bg-subtle);
   border: var(--border-width-thin) solid var(--color-border-subtle);
   border-radius: var(--radius-sm);
   padding: var(--spacing-md);
+  margin: 0 var(--spacing-md) calc(var(--nav-height) + env(safe-area-inset-bottom) + var(--spacing-md));
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   line-height: var(--line-height-relaxed);
 }
+.terms-box::-webkit-scrollbar { display: none; }
 
 .terms-box h3 {
   font-size: var(--font-size-sm);
@@ -942,6 +991,104 @@ body.login-screen {
   cursor: pointer;
 }
 
+/* ─── Vehicle hero — imagem do carro (troca com o tema) ──── */
+.vehicle-hero-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  content: url('../links/carro-dark.jpg');
+}
+
+[data-theme="light"] .vehicle-hero-img {
+  content: url('../links/carro-light.jpg');
+}
+
+/* ─── Vehicle hero — placeholder 16:9 para foto do carro ─── */
+.vehicle-hero {
+  width: 80%;
+  flex-shrink: 0;
+  background: var(--color-bg-subtle);
+  border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-disabled);
+  display: block;
+  margin: 0 auto;
+  padding: 29px 0;
+  border-radius: 20px;
+}
+
+.vehicle-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ─── Vehicle detail — header com nome e badge ───────── */
+.detail-section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-md) 0;
+  flex-shrink: 0;
+}
+
+.detail-section-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+/* ─── Info cards grid (2 colunas) ───────────────────── */
+.info-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  flex-shrink: 0;
+}
+
+.info-card {
+  background: var(--color-bg-subtle);
+  border-radius: var(--radius-md);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  padding: var(--spacing-sm) var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.info-card--full {
+  grid-column: span 2;
+}
+
+.info-card__label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.info-card__icon {
+  color: var(--color-action-primary);
+  display: flex;
+  align-items: center;
+}
+
+.info-card__value {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.info-card__value--brand {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-action-primary);
+}
+
 /* Badge "Ativo" inline no label do veículo */
 .vehicle-badge {
   display: inline-flex;
@@ -955,6 +1102,168 @@ body.login-screen {
   font-weight: var(--font-weight-semibold);
   line-height: 1.6;
   vertical-align: middle;
+}
+
+/* ─── Wallet layout ──────────────────────────────────── */
+
+/* Wrapper da tela principal da carteira: sem padding para o card ir edge-to-edge */
+.wallet-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  scrollbar-width: none;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-md);
+}
+
+.wallet-screen::-webkit-scrollbar { display: none; }
+
+/* Seção com título + link "ver tudo" */
+.wallet-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  flex-shrink: 0;
+}
+
+.wallet-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wallet-section__title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.wallet-section__link {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-brand);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: none;
+}
+
+/* Lista de transações recentes */
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  overflow: hidden;
+}
+
+.transaction-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
+}
+
+.transaction-item:last-child { border-bottom: none; }
+
+.transaction-item__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.transaction-item__icon--in {
+  background: var(--color-status-success-bg);
+  color: var(--color-status-success-fg);
+}
+
+.transaction-item__icon--out {
+  background: var(--color-status-error-bg);
+  color: var(--color-status-error-fg);
+}
+
+.transaction-item__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xs);
+  flex: 1;
+  min-width: 0;
+}
+
+.transaction-item__desc {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.transaction-item__date {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+}
+
+.transaction-item__amount {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  flex-shrink: 0;
+}
+
+.transaction-item__amount--in  { color: var(--color-status-success-fg); }
+.transaction-item__amount--out { color: var(--color-text-primary); }
+
+/* Item de cartão cadastrado */
+.payment-card-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
+  cursor: pointer;
+}
+
+.payment-card-item:last-child { border-bottom: none; }
+
+.payment-card-item__logo {
+  width: 40px;
+  height: 26px;
+  border-radius: var(--radius-xs);
+  background: var(--color-bg-elevated);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-secondary);
+}
+
+.payment-card-item__info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xs);
+  flex: 1;
+}
+
+.payment-card-item__name {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.payment-card-item__number {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
 }
 
 /* Grupo de itens de configurações (card com separadores internos) */
@@ -1060,6 +1369,22 @@ body.login-screen {
 
 .cadastro-body::-webkit-scrollbar { display: none; }
 
+/* ─── Select nativo estilizado igual ao Input ────────── */
+select.input {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--spacing-sm) center;
+  padding-right: calc(var(--spacing-md) + 20px);
+  cursor: pointer;
+}
+
+select.input option {
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+}
+
 /* Dois campos lado a lado (ex: Cidade + Estado) */
 .form-row {
   display: flex;
@@ -1076,4 +1401,769 @@ body.login-screen {
   gap: var(--spacing-sm);
   padding: var(--spacing-sm) var(--spacing-md) calc(var(--spacing-md) + env(safe-area-inset-bottom));
   background: linear-gradient(to top, var(--color-bg-default) 90%, transparent);
+}
+
+/* ─── Extrato ────────────────────────────────────────── */
+
+/* Seletor de mês — navegação prev/next */
+.month-selector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm) var(--spacing-md);
+  flex-shrink: 0;
+}
+
+.month-selector__btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.month-selector__btn:hover  { color: var(--color-text-primary); background: var(--color-bg-subtle); }
+.month-selector__btn:disabled { color: var(--color-text-disabled); cursor: default; }
+
+.month-selector__label {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+/* Resumo do mês: entradas e saídas */
+.extrato-summary {
+  display: flex;
+  gap: var(--spacing-sm);
+  padding: 0 var(--spacing-md);
+  flex-shrink: 0;
+}
+
+.extrato-summary__item {
+  flex: 1;
+  background: var(--color-bg-surface);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xs);
+}
+
+.extrato-summary__label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.extrato-summary__value {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+}
+
+.extrato-summary__value--in  { color: var(--color-status-success-fg); }
+.extrato-summary__value--out { color: var(--color-text-primary); }
+
+/* Separador de grupo de data dentro da lista */
+.transaction-group-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  padding: var(--spacing-sm) var(--spacing-md) var(--spacing-xs);
+  flex-shrink: 0;
+}
+
+/* ─── PIX / adicionar saldo ──────────────────────────── */
+
+/* Campo de valor em destaque — cifra grande centralizada */
+.amount-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xl) var(--spacing-md) var(--spacing-md);
+  flex-shrink: 0;
+}
+
+.amount-input-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.amount-input-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-xs);
+}
+
+.amount-input-currency {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+}
+
+.amount-input-field {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-heavy);
+  color: var(--color-text-primary);
+  background: none;
+  border: none;
+  outline: none;
+  text-align: center;
+  width: 180px;
+  caret-color: var(--color-action-primary);
+  font-family: var(--font-body);
+}
+
+.amount-input-field::placeholder {
+  color: var(--color-text-disabled);
+}
+
+/* Placeholder de QR Code */
+.qr-placeholder {
+  width: 200px;
+  height: 200px;
+  border-radius: var(--radius-md);
+  border: var(--border-width-medium) dashed var(--color-border-muted);
+  background: var(--color-bg-subtle);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  color: var(--color-text-disabled);
+  font-size: var(--font-size-xs);
+  align-self: center;
+  flex-shrink: 0;
+}
+
+/* Caixa "copia e cola" */
+.pix-copy-box {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: var(--color-bg-surface);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  flex-shrink: 0;
+}
+
+.pix-copy-box__key {
+  flex: 1;
+  font-size: var(--font-size-xs);
+  font-family: var(--font-mono);
+  color: var(--color-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pix-copy-box__btn {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-action-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  padding: 0;
+  font-family: var(--font-body);
+}
+
+/* ─── Notificações — caixa de entrada ───────────────── */
+
+/* Cabeçalho da tela: título + link "marcar todas como lidas" */
+.notif-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-sm) var(--spacing-md) 0;
+  flex-shrink: 0;
+}
+
+.notif-topbar__link {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-brand);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: var(--font-body);
+}
+
+/* Separador de grupo de data (reusa o mesmo padrão do extrato) */
+/* .transaction-group-label já cobre isso */
+
+/* Lista de notificações */
+.notif-list {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  overflow: hidden;
+}
+
+/* Item de notificação */
+.notif-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+  border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
+  cursor: pointer;
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  text-align: left;
+  width: 100%;
+  font-family: var(--font-body);
+  transition: background var(--transition-fast);
+  position: relative;
+}
+
+.notif-item:last-child { border-bottom: none; }
+.notif-item:active { background: var(--color-bg-subtle); }
+
+/* Estado não lido — fundo levemente destacado */
+.notif-item--unread {
+  background: var(--color-bg-subtle);
+}
+
+.notif-item--unread:active { background: var(--color-bg-elevated); }
+
+/* Ícone da categoria */
+.notif-item__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--color-bg-elevated);
+  color: var(--color-text-secondary);
+}
+
+.notif-item__icon--brand {
+  background: var(--color-bg-brand);
+  color: var(--color-text-brand);
+}
+
+.notif-item__icon--success {
+  background: var(--color-status-success-bg);
+  color: var(--color-status-success-fg);
+}
+
+.notif-item__icon--warning {
+  background: var(--color-status-warning-bg);
+  color: var(--color-status-warning-fg);
+}
+
+.notif-item__icon--error {
+  background: var(--color-status-error-bg);
+  color: var(--color-status-error-fg);
+}
+
+/* Corpo do item */
+.notif-item__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xs);
+}
+
+.notif-item__title {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-snug);
+}
+
+.notif-item--unread .notif-item__title {
+  font-weight: var(--font-weight-semibold);
+}
+
+.notif-item__desc {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-normal);
+}
+
+.notif-item__time {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  margin-top: var(--spacing-2xs);
+}
+
+/* Ponto indicador de não lido */
+.notif-unread-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-action-primary);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+/* Estado vazio */
+.notif-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-3xl) var(--spacing-xl);
+  color: var(--color-text-disabled);
+  text-align: center;
+}
+
+.notif-empty__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-disabled);
+}
+
+.notif-empty__title {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+}
+
+.notif-empty__subtitle {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+}
+
+/* ─── Cupons ──────────────────────────────────────────── */
+
+/* Lista de cupons: grupos de "Disponíveis" e "Utilizados/Expirados" */
+.coupon-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md);
+}
+
+/* Cabeçalho de seção dentro da lista de cupons */
+.coupon-section-label {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: var(--spacing-xs) 0;
+}
+
+/* Card de cupom */
+.coupon-card {
+  background: var(--color-bg-surface);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Linha lateral brand para cupons disponíveis */
+.coupon-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--gradient-brand);
+  border-radius: var(--radius-xs) 0 0 var(--radius-xs);
+}
+
+/* Estado utilizado / expirado — remove barra e desativa visual */
+.coupon-card--used::before,
+.coupon-card--expired::before {
+  display: none;
+}
+
+.coupon-card--used,
+.coupon-card--expired {
+  opacity: var(--opacity-50);
+  border-style: dashed;
+}
+
+/* Linha superior: badge de status + valor do desconto */
+.coupon-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+}
+
+/* Badge de tipo (% ou R$) */
+.coupon-card__type {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-2xs) var(--spacing-sm);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-brand);
+  color: var(--color-text-brand);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  flex-shrink: 0;
+}
+
+/* Valor do desconto em destaque */
+.coupon-card__discount {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-heavy);
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+
+/* Badge de status: Disponível / Utilizado / Expirado */
+.coupon-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2xs);
+  padding: var(--spacing-2xs) var(--spacing-sm);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  flex-shrink: 0;
+}
+
+.coupon-card__status--available {
+  background: var(--color-status-success-bg);
+  color: var(--color-status-success-fg);
+}
+
+.coupon-card__status--used {
+  background: var(--color-status-disabled-bg);
+  color: var(--color-status-disabled-fg);
+}
+
+.coupon-card__status--expired {
+  background: var(--color-status-warning-bg);
+  color: var(--color-status-warning-fg);
+}
+
+/* Descrição do cupom */
+.coupon-card__desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-normal);
+}
+
+/* Código do cupom */
+.coupon-card__code {
+  font-size: var(--font-size-xs);
+  font-family: var(--font-mono);
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.06em;
+}
+
+/* Data de validade */
+.coupon-card__validity {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-top: var(--spacing-xs);
+}
+
+/* Rodapé da tela de cupons com botão "Adicionar por código" */
+.coupon-footer {
+  flex-shrink: 0;
+  padding: var(--spacing-sm) var(--spacing-md)
+    calc(var(--nav-height) + env(safe-area-inset-bottom) + var(--spacing-sm));
+  border-top: var(--border-width-thin) solid var(--color-border-subtle);
+  background: linear-gradient(to top, var(--color-bg-default) 90%, transparent);
+}
+
+/* Estado vazio da lista de cupons */
+.coupon-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-3xl) var(--spacing-xl);
+  color: var(--color-text-disabled);
+  text-align: center;
+}
+
+.coupon-empty__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-subtle);
+  color: var(--color-text-disabled);
+}
+
+.coupon-empty__title {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+}
+
+.coupon-empty__subtitle {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+}
+
+/* ─── Card visual (mockup do cartão físico) ─────────── */
+
+/* Representação visual do cartão físico na tela de detalhe */
+.card-visual {
+  margin: var(--spacing-md);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  background: var(--color-bg-elevated);
+  border: var(--border-width-thin) solid var(--color-border-default);
+  position: relative;
+  overflow: hidden;
+  min-height: 160px;
+  flex-shrink: 0;
+}
+
+/* Círculos decorativos tipo cartão físico */
+.card-visual::before,
+.card-visual::after {
+  content: '';
+  position: absolute;
+  border-radius: var(--radius-full);
+  opacity: var(--opacity-10);
+}
+
+.card-visual::before {
+  width: 180px;
+  height: 180px;
+  background: var(--color-text-primary);
+  top: -60px;
+  right: -40px;
+}
+
+.card-visual::after {
+  width: 120px;
+  height: 120px;
+  background: var(--color-text-primary);
+  top: -20px;
+  right: 60px;
+}
+
+/* Chip do cartão */
+.card-visual__chip {
+  width: 36px;
+  height: 28px;
+  border-radius: var(--radius-xs);
+  background: linear-gradient(135deg, var(--color-bg-default) 0%, var(--color-border-default) 100%);
+  border: var(--border-width-thin) solid var(--color-border-muted);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Número do cartão */
+.card-visual__number {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  letter-spacing: 0.12em;
+  font-family: var(--font-mono);
+  position: relative;
+  z-index: 1;
+}
+
+/* Linha inferior: nome + bandeira */
+.card-visual__footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+.card-visual__holder {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xs);
+}
+
+.card-visual__holder-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.card-visual__holder-name {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  text-transform: uppercase;
+}
+
+.card-visual__expiry {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xs);
+  align-items: center;
+}
+
+.card-visual__expiry-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.card-visual__expiry-value {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  font-family: var(--font-mono);
+}
+
+.card-visual__brand {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-heavy);
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+  font-style: italic;
+}
+
+/* Badge "Padrão" sobreposto ao card */
+.card-visual__default-badge {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2xs);
+  padding: var(--spacing-2xs) var(--spacing-sm);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-brand);
+  color: var(--color-text-brand);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  z-index: 2;
+}
+
+/* Lista de ações abaixo do card visual */
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg-surface);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  margin: 0 var(--spacing-md);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.card-action-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: none;
+  border: none;
+  border-bottom: var(--border-width-thin) solid var(--color-border-subtle);
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: background var(--transition-fast);
+}
+
+.card-action-item:last-child { border-bottom: none; }
+.card-action-item:active { background: var(--color-bg-subtle); }
+
+.card-action-item__icon {
+  width: var(--spacing-xl);
+  height: var(--spacing-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-xs);
+  background: var(--color-bg-subtle);
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+}
+
+.card-action-item__label {
+  flex: 1;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.card-action-item--destructive .card-action-item__icon {
+  background: var(--color-status-error-bg);
+  color: var(--color-action-error);
+}
+
+.card-action-item--destructive .card-action-item__label {
+  color: var(--color-action-error);
+}
+
+/* Badge "Padrão" na lista de cartões */
+.card-default-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--spacing-xs);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-brand);
+  color: var(--color-text-brand);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.6;
+}
+
+/* Formulário de cartão — campo de número com máscara */
+.card-number-preview {
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+}
+
+/* Aviso de expiração */
+.pix-expire-notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-tertiary);
+  flex-shrink: 0;
 }

@@ -1,0 +1,82 @@
+/* ── DropdownMenu — menu flutuante de ações ────────────── */
+
+.dropdownMenu {
+  position: relative;
+  display: inline-flex;
+}
+
+/* ── Painel flutuante ─────────────────────────────────── */
+.dropdownMenu__panel {
+  position: absolute;
+  top: calc(100% + var(--spacing-xs));
+  z-index: 300;
+  min-width: 200px;
+  background: var(--color-bg-elevated);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: var(--spacing-xs) 0;
+  display: none;
+}
+
+.dropdownMenu__panel.open {
+  display: block;
+}
+
+/* Alinhamentos */
+.dropdownMenu__panel.start  { left: 0; }
+.dropdownMenu__panel.center { left: 50%; transform: translateX(-50%); }
+.dropdownMenu__panel.end    { right: 0; }
+
+/* ── Item ─────────────────────────────────────────────── */
+.dropdownMenu__item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  transition: background var(--transition-fast);
+  white-space: nowrap;
+}
+
+.dropdownMenu__item:hover {
+  background: var(--color-bg-subtle);
+}
+
+.dropdownMenu__item:active {
+  background: var(--color-bg-surface);
+}
+
+.dropdownMenu__item--destructive {
+  color: var(--color-action-error);
+}
+
+.dropdownMenu__item--destructive:hover {
+  background: var(--color-status-error-bg);
+}
+
+.dropdownMenu__item__icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--color-text-tertiary);
+}
+
+.dropdownMenu__item--destructive .dropdownMenu__item__icon {
+  color: var(--color-action-error);
+}
+
+/* ── Divider ──────────────────────────────────────────── */
+.dropdownMenu__divider {
+  height: var(--border-width-thin);
+  background: var(--color-border-subtle);
+  margin: var(--spacing-xs) 0;
+}

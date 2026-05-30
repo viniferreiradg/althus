@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="../../storybook/src/components/UserPin/UserPin.module.css" />
   <link rel="stylesheet" href="../../storybook/src/components/BottomNav/BottomNav.module.css" />
   <link rel="stylesheet" href="../../storybook/src/components/NotificationBadge/NotificationBadge.module.css" />
-  <link rel="stylesheet" href="../../storybook/src/components/Table/Table.module.css" />
   <link rel="stylesheet" href="../../storybook/src/components/Button/Button.module.css" />
   <link rel="stylesheet" href="../../storybook/src/components/SearchBar/SearchBar.module.css" />
   <link rel="stylesheet" href="../../storybook/src/components/VehicleChip/VehicleChip.module.css" />
@@ -107,7 +106,7 @@
       <span class="navIcon">
         <span class="wrap">
           <i data-lucide="bell" width="22" height="22"></i>
-          <span class="badge">3</span>
+          <span class="charger-status">3</span>
         </span>
       </span>
     </button>
@@ -161,28 +160,28 @@
             <span class="charger-card-connector">CCS2</span>
             <span class="charger-card-power">50</span>
             <span class="charger-card-kw">kW</span>
-            <span class="badge" data-status="success"><span class="badgeDot"></span>Disponível</span>
+            <span class="charger-status" data-status="success"><span class="charger-status-dot"></span>Disponível</span>
           </div>
 
           <div class="charger-card" onclick="selectCharger(1)" role="button" aria-pressed="false">
             <span class="charger-card-connector">CCS2</span>
             <span class="charger-card-power">50</span>
             <span class="charger-card-kw">kW</span>
-            <span class="badge" data-status="error"><span class="badgeDot"></span>Ocupado</span>
+            <span class="charger-status" data-status="error"><span class="charger-status-dot"></span>Ocupado</span>
           </div>
 
           <div class="charger-card" onclick="selectCharger(2)" role="button" aria-pressed="false">
             <span class="charger-card-connector">Tipo 2</span>
             <span class="charger-card-power">22</span>
             <span class="charger-card-kw">kW</span>
-            <span class="badge" data-status="success"><span class="badgeDot"></span>Disponível</span>
+            <span class="charger-status" data-status="success"><span class="charger-status-dot"></span>Disponível</span>
           </div>
 
           <div class="charger-card" onclick="selectCharger(3)" role="button" aria-pressed="false">
             <span class="charger-card-connector">CHAdeMO</span>
             <span class="charger-card-power">44</span>
             <span class="charger-card-kw">kW</span>
-            <span class="badge" data-status="warning"><span class="badgeDot"></span>Reservado</span>
+            <span class="charger-status" data-status="warning"><span class="charger-status-dot"></span>Reservado</span>
           </div>
 
         </div>
@@ -194,7 +193,7 @@
         <div class="detail-rows" id="detail-rows">
           <div class="detail-row">
             <span class="detail-label">Status</span>
-            <span class="badge" data-status="success" id="detail-status"><span class="badgeDot"></span>Disponível</span>
+            <span class="charger-status" data-status="success" id="detail-status"><span class="charger-status-dot"></span>Disponível</span>
           </div>
           <div class="detail-row">
             <span class="detail-label">Conector</span>
@@ -245,8 +244,6 @@
       ? window.parent.router
       : { push: function(){}, pop: function(){}, replace: function(){}, modal: function(){}, closeModal: function(){}, tab: function(){} };
 
-    if (window.parent !== window) document.getElementById('screen-bottom-nav').hidden = true;
-
     var CHARGERS = [
       { connector: 'CCS2',    power: '50 kW',  status: 'success', statusLabel: 'Disponível', price: 'R$ 1,89 / kWh', idle: 'R$ 0,50 / min (após 5 min)', reserve: 'R$ 2,00 · até 30 min',  canCharge: true,  canReserve: true  },
       { connector: 'CCS2',    power: '50 kW',  status: 'error',   statusLabel: 'Ocupado',    price: 'R$ 1,89 / kWh', idle: 'R$ 0,50 / min (após 5 min)', reserve: '—',                      canCharge: false, canReserve: false },
@@ -264,7 +261,7 @@
       var c = CHARGERS[index];
       var statusEl = document.getElementById('detail-status');
       statusEl.dataset.status = c.status;
-      statusEl.querySelector('.badgeDot').nextSibling.textContent = c.statusLabel;
+      statusEl.querySelector('.charger-status-dot').nextSibling.textContent = c.statusLabel;
 
       document.getElementById('detail-connector').textContent = c.connector;
       document.getElementById('detail-power').textContent = c.power;
@@ -275,6 +272,47 @@
       document.getElementById('btn-recarga').disabled = !c.canCharge;
       document.getElementById('btn-reservar').hidden = !c.canReserve;
     }
+
+    /* ── Drag-to-scroll no carrossel (desktop) ── */
+    (function() {
+      var el = document.getElementById('charger-carousel');
+      var isDown = false, startX, scrollLeft, moved = false;
+
+      el.style.cursor = 'grab';
+
+      el.addEventListener('mousedown', function(e) {
+        isDown = true;
+        moved = false;
+        el.style.cursor = 'grabbing';
+        startX = e.pageX - el.offsetLeft;
+        scrollLeft = el.scrollLeft;
+      });
+
+      el.addEventListener('mouseleave', function() { isDown = false; el.style.cursor = 'grab'; });
+
+      el.addEventListener('mouseup', function() {
+        isDown = false;
+        el.style.cursor = 'grab';
+        /* Snap suave para o card mais próximo */
+        var cards = el.querySelectorAll('.charger-card');
+        var closest = null, minDist = Infinity;
+        cards.forEach(function(card) {
+          var dist = Math.abs(card.offsetLeft - el.scrollLeft);
+          if (dist < minDist) { minDist = dist; closest = card; }
+        });
+        if (closest) {
+          el.scrollTo({ left: closest.offsetLeft - 16, behavior: 'smooth' });
+        }
+      });
+
+      el.addEventListener('mousemove', function(e) {
+        if (!isDown) return;
+        e.preventDefault();
+        moved = true;
+        var x = e.pageX - el.offsetLeft;
+        el.scrollLeft = scrollLeft - (x - startX);
+      });
+    })();
 
     function openMaps() {
       window.open('https://maps.google.com/?q=Auto+Shopping+Eixo,+São+Paulo', '_blank');

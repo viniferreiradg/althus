@@ -1,0 +1,123 @@
+/* ── WalletCard — hero card de saldo da carteira digital ── */
+
+.walletCard {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  background: var(--gradient-brand);
+  box-shadow: var(--shadow-glow-md), var(--shadow-lg);
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Reflexo decorativo no canto superior direito */
+.walletCard::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -20%;
+  width: 220px;
+  height: 220px;
+  border-radius: var(--radius-full);
+  background: var(--color-glass-surface);
+  pointer-events: none;
+}
+
+.walletCard::after {
+  content: '';
+  position: absolute;
+  bottom: -60%;
+  left: -10%;
+  width: 180px;
+  height: 180px;
+  border-radius: var(--radius-full);
+  background: var(--color-glass-surface);
+  pointer-events: none;
+}
+
+/* ── Header: label + menu ─────────────────────────────── */
+.walletCard__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+.walletCard__label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: rgba(255, 255, 255, 0.72);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+}
+
+.walletCard__menuBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.72);
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.walletCard__menuBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 1);
+}
+
+/* ── Balance ──────────────────────────────────────────── */
+.walletCard__balance {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xs);
+  position: relative;
+  z-index: 1;
+}
+
+.walletCard__currency {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: rgba(255, 255, 255, 0.80);
+  line-height: 1;
+}
+
+.walletCard__amount {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-heavy);
+  color: var(--color-gray-white);
+  line-height: 1;
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+/* ── CTA button ───────────────────────────────────────── */
+.walletCard__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-xs);
+  background: rgba(255, 255, 255, 0.18);
+  border: var(--border-width-thin) solid rgba(255, 255, 255, 0.28);
+  border-radius: var(--radius-full);
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: var(--color-gray-white);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  backdrop-filter: blur(var(--blur-glass));
+}
+
+.walletCard__cta:hover {
+  background: rgba(255, 255, 255, 0.26);
+}

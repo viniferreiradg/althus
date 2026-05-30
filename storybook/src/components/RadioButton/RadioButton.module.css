@@ -49,3 +49,42 @@
 .checked .dot { transform: scale(1); }
 
 .optionLabel { font-family: var(--font-body); font-size: var(--font-size-base); color: var(--color-text-primary); }
+
+/* ── Variante card — linha full-width, círculo à direita ─ */
+.group--card { gap: var(--spacing-sm); }
+
+.option--card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: var(--border-width-thin) solid var(--color-border-subtle);
+  background: var(--color-bg-surface);
+  cursor: pointer;
+  user-select: none;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.option--card:hover {
+  border-color: var(--color-border-default);
+  background: var(--color-bg-elevated);
+}
+
+.option--card.checked {
+  border-color: var(--color-action-primary);
+  background: var(--color-bg-brand);
+}
+
+.option--card .circle {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.option--card .optionLabel {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  flex: 1;
+}

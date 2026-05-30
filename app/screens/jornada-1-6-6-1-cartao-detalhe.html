@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detalhe do Cartão — Althus</title>
+  <link rel="stylesheet" href="../../storybook/src/tokens/tokens.css" />
+  <link rel="stylesheet" href="../../shared/page-mobile.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/AppBar/AppBar.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/BottomNav/BottomNav.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/NotificationBadge/NotificationBadge.module.css" />
+  <link rel="stylesheet" href="../../storybook/src/components/Dialog/Dialog.module.css" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="layout-screen">
+
+  <header class="appBar">
+    <div class="appBarSide appBarSideLeft">
+      <button class="appBarIconBtn" onclick="router.pop()" aria-label="Voltar">
+        <i data-lucide="chevron-left" width="24" height="24"></i>
+      </button>
+    </div>
+    <span class="appBarTitle">Detalhes do Cartão</span>
+    <div class="appBarSide appBarSideRight"></div>
+  </header>
+
+  <div class="screen-content">
+
+    <!-- Mockup visual do cartão -->
+    <div class="card-visual">
+      <span class="card-visual__default-badge">
+        <i data-lucide="star" width="10" height="10"></i>
+        Padrão
+      </span>
+      <div class="card-visual__chip"></div>
+      <span class="card-visual__number">•••• •••• •••• 4242</span>
+      <div class="card-visual__footer">
+        <div class="card-visual__holder">
+          <span class="card-visual__holder-label">Titular</span>
+          <span class="card-visual__holder-name">João Silva</span>
+        </div>
+        <div class="card-visual__expiry">
+          <span class="card-visual__expiry-label">Validade</span>
+          <span class="card-visual__expiry-value">12/28</span>
+        </div>
+        <span class="card-visual__brand">VISA</span>
+      </div>
+    </div>
+
+    <!-- Ações -->
+    <div class="card-actions">
+      <button class="card-action-item" type="button" onclick="setDefault()" aria-label="Usar como padrão" id="default-action">
+        <span class="card-action-item__icon">
+          <i data-lucide="star" width="16" height="16"></i>
+        </span>
+        <span class="card-action-item__label">Usar como padrão</span>
+        <i data-lucide="chevron-right" width="16" height="16" style="color: var(--color-text-disabled);"></i>
+      </button>
+      <button class="card-action-item card-action-item--destructive" type="button" onclick="openDeleteDialog()" aria-label="Remover cartão">
+        <span class="card-action-item__icon">
+          <i data-lucide="trash-2" width="16" height="16"></i>
+        </span>
+        <span class="card-action-item__label">Remover cartão</span>
+        <i data-lucide="chevron-right" width="16" height="16" style="color: var(--color-text-disabled);"></i>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Dialog de confirmação de remoção -->
+  <div class="dialogOverlay" id="delete-dialog" style="display:none;" onclick="closeDeleteDialog()">
+    <div class="dialog sm" onclick="event.stopPropagation()" role="dialog" aria-modal="true">
+      <div class="dialogHeader">
+        <span class="dialogTitle">Remover cartão</span>
+        <button class="dialogCloseBtn" onclick="closeDeleteDialog()" aria-label="Fechar" type="button">
+          <i data-lucide="x" width="16" height="16"></i>
+        </button>
+      </div>
+      <div class="dialogBody">
+        <p style="margin:0; font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-normal);">
+          Tem certeza que deseja remover o cartão <strong>Nubank •••• 4242</strong>? Esta ação não pode ser desfeita.
+        </p>
+      </div>
+      <div class="dialogFooter">
+        <button class="btn ghost" type="button" onclick="closeDeleteDialog()">Cancelar</button>
+        <button class="btn destructive" type="button" onclick="confirmDelete()">Remover</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var router = (window.parent && window.parent.router)
+      ? window.parent.router
+      : { push: function(){}, pop: function(){}, replace: function(){}, modal: function(){}, closeModal: function(){}, tab: function(){} };
+
+    function setDefault() {
+      var badge = document.querySelector('.card-visual__default-badge');
+      badge.style.display = 'inline-flex';
+      var action = document.getElementById('default-action');
+      action.querySelector('.card-action-item__label').textContent = 'Já é o cartão padrão';
+      action.disabled = true;
+      action.style.opacity = 'var(--opacity-50)';
+      action.style.cursor = 'default';
+    }
+
+    function openDeleteDialog() {
+      document.getElementById('delete-dialog').style.display = 'flex';
+      lucide.createIcons();
+    }
+
+    function closeDeleteDialog() {
+      document.getElementById('delete-dialog').style.display = 'none';
+    }
+
+    function confirmDelete() {
+      closeDeleteDialog();
+      router.pop();
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeDeleteDialog();
+    });
+  </script>
+
+  <!-- ── Bottom navigation ─────────────────────────── -->
+  <nav id="screen-bottom-nav" class="screen-nav bottomNav" aria-label="Navegação principal">
+    <button class="navItem" data-tab="mapa" onclick="router.tab('jornada-1-4-1-home-map')" aria-label="Mapa">
+      <span class="navIcon"><i data-lucide="map" width="22" height="22"></i></span>
+    </button>
+    <button class="navItem" data-tab="postos" onclick="router.tab('jornada-1-4-lista-postos')" aria-label="Postos">
+      <span class="navIcon"><i data-lucide="zap" width="22" height="22"></i></span>
+    </button>
+    <button class="navItem" data-tab="notificacoes" onclick="router.tab('notificacoes')" aria-label="Notificações">
+      <span class="navIcon">
+        <span class="wrap">
+          <i data-lucide="bell" width="22" height="22"></i>
+          <span class="badge">3</span>
+        </span>
+      </span>
+    </button>
+    <button class="navItem navActive" data-tab="carteira" onclick="router.tab('jornada-1-6-1-carteira')" aria-label="Carteira" aria-current="page">
+      <span class="navIcon"><i data-lucide="wallet" width="22" height="22"></i></span>
+    </button>
+    <button class="navItem" data-tab="perfil" onclick="router.tab('jornada-1-7-1-perfil')" aria-label="Perfil">
+      <span class="navIcon"><i data-lucide="user" width="22" height="22"></i></span>
+    </button>
+  </nav>
+
+  <script>lucide.createIcons();</script>
+
+</body>
+</html>
